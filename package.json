@@ -1,0 +1,58 @@
+{
+  "name": "kulfon",
+  "description": "Kulfon is a simple and fast static site generator",
+  "version": "0.0.1",
+  "main": "./lib/index.js",
+  "devDependencies": {
+    "babel-cli": "^6.2.4",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.2.0",
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "build-test-es5": "npm run build && babel test --out-dir test-es5 && sed -i 's/\\/src\\//\\/lib\\//' test-es5/*.js",
+    "watch": "babel src --out-dir lib --watch",
+    "test": "mocha --ui tdd --compilers js:babel-register",
+    "test-es5": "mocha --ui tdd test-es5",
+    "prepublish": "npm run build"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "keywords": [
+    "es6",
+    "npm",
+    "starter",
+    "library",
+    "boilerplate",
+    "babel",
+    "light"
+  ],
+  "author": {
+    "name": "Zaiste",
+    "url": "https://github.com/zaiste"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaiste/kulfon"
+  },
+  "dependencies": {
+    "chokidar": "^1.6.0",
+    "colors": "^1.1.2",
+    "express": "^4.14.0",
+    "minimist": "^1.2.0",
+    "mz": "^2.4.0",
+    "node-sass": "^3.10.1",
+    "nunjucks": "^2.5.2",
+    "open": "^0.0.5",
+    "tmp": "^0.0.29",
+    "upath": "^0.2.0"
+  },
+  "bin": {
+    "kulfon": "cli.js"
+  }
+}

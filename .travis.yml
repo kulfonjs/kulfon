@@ -1,0 +1,12 @@
+language: node_js
+before_install:
+  - "npm install npm -g"
+node_js:
+  - "node"
+  - "iojs"
+env:
+  - BUILD=build TEST_SUITE=test
+  - BUILD=build-test-es5 TEST_SUITE=test-es5
+script: 
+  - npm run $BUILD
+  - npm run $TEST_SUITE
