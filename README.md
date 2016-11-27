@@ -1,7 +1,18 @@
-# Kulfon - simple and fast websites
+# [Kulfon](https://kulfon.net)
+
+[![npm](https://img.shields.io/npm/v/kulfon.svg)](https://www.npmjs.com/package/kulfon)
+[![npm](https://img.shields.io/npm/dm/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 
 **Kulfon** is a *one command* static site generator written entirely in
 JavaScript. It's bloody fast, modern and simple.
+
+[![Kulfon: a 100% JavaScript static site generator](https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg)](https://kulfon.net)
+
+[Website](https://kulfon.net) |
+[Documentation](https://kulfon.net/overview/introduction/) |
+[Installation Guide](https://kulfon.net/overview/installing/) |
+[Contribution Guide](CONTRIBUTING.md) |
+[Twitter](http://twitter.com/kufonapp)
 
 > \- Kulfon, Kulfon, co z Ciebie wyrośnie ?! martwię się już od tygodnia!
 >
@@ -14,14 +25,18 @@ While you're hesitating, listen to this wonderful [Kulfon song][5]!
 There is a ton of static site generators out there. Here are few points to
 convince you to try **Kulfon**
 
-* *one command* tool, similar to [Hugo][3], but written in JavaScript, so it's
-easier to integrate additional JavaScript libraries or style sheets
+* *one command* tool, similar to [Hugo][3], but written in [JavaScript][6], so it's
+easier to integrate additional JavaScript libraries or stylesheets
 * dependencies managed with [Yarn][4]
 * [Sass][2] for stylesheets
 * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
-* written in ES2015
+* written in ES6/ES2015
 
 ## Installation
+
+    yarn global add kulfon
+
+or
 
     npm install -g kulfon
 
@@ -36,10 +51,11 @@ It creates the following directory structure (`<my-project-name>` is optional,
 if not provided, the current directory is used):
 
 ```
-├── config.yml
 ├── public
 └── website
+    ├── config.yml
     ├── images
+    ├── javascripts
     ├── stylesheets
     │   └── styles.sass
     └── views
@@ -54,10 +70,8 @@ if not provided, the current directory is used):
 - [ ] assets minification in production
 - [ ] fingerprinting assets in production
 - [ ] support for source maps
-- [ ] out-of-the-box integration of modules from NPM repository
-- [ ] handful selection of themes at `themes.kulfon.net`
+- [ ] out-of-the-box integration of modules from `npm` repository
 - [ ] support for blogging
-- [ ] a nice logo
 - [ ] a website with comprehensive documentation
 
 ## Bug reports
@@ -78,3 +92,4 @@ Copyright (c) 2016-present Zaiste. MIT Licensed, see LICENSE for details.
 [3]: https://gohugo.io/
 [4]: https://yarnpkg.com/
 [5]: https://www.youtube.com/watch?v=YnsfCcxMydU
+[6]: https://en.wikipedia.org/wiki/JavaScript

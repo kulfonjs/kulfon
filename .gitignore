@@ -4,7 +4,3 @@ public
 node_modules
 yarn.lock
 .sass-cache/
-
-# Files created by build scripts
-test-es5
-lib

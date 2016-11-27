@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require("fs"));
+
 const path = require('upath')
 const open = require('open')
 const chalk = require('chalk')
 const pkg = require('./package.json')
+
 
 const initializer = require('./lib/initializer')
 const server = require('./lib/server')
@@ -23,7 +27,7 @@ process.env.KULFON_BASEDIR = args.basedir || args.b || '/'
 
 switch(command) {
   case 'init':
-    initializer.init();
+    initializer.init(args._[1] || '.');
     break
   case 'serve':
     server.serve();
@@ -41,8 +45,10 @@ switch(command) {
 }
 
 function usage() {
+  console.log(chalk.dim(`kulfon ${pkg.version} - Fast and simple static site generator written in JavaScript`))
   console.log(
 `
+  kulfon init <my-project-name>
   kulfon serve                         Serve the current directory
   kulfon serve <source>                Serve a specific directory
   kulfon serve --port 3456             Use a custom port. Default is 3000
@@ -50,11 +56,5 @@ function usage() {
   kulfon help                          Open kulfon.net in your browser
 `)
 
-  console.log(chalk.dim(`  version ${pkg.version}`))
-  process.exit()
-}
-
-function version() {
-  console.log(pkg.version)
   process.exit()
 }
