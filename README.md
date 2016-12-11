@@ -67,6 +67,8 @@ if not provided, the current directory is used):
 
 ## Roadmap
 
+Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
+
 - [ ] assets minification in production
 - [ ] fingerprinting assets in production
 - [ ] support for source maps
