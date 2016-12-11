@@ -1,7 +1,7 @@
 {
   "name": "kulfon",
   "description": "Kulfon is a modern static site generator written in JavaScript.",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "./lib/index.js",
   "devDependencies": {},
   "scripts": {},
@@ -32,10 +32,10 @@
     "fs-extra": "^1.0.0",
     "js-yaml": "^3.7.0",
     "minimist": "^1.2.0",
-    "mz": "^2.4.0",
     "node-sass": "^3.10.1",
     "nunjucks": "^2.5.2",
     "open": "^0.0.5",
+    "rollup": "^0.36.4",
     "tmp": "^0.0.29",
     "upath": "^0.2.0"
   },

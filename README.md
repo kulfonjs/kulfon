@@ -27,7 +27,9 @@ convince you to try **Kulfon**
 
 * *one command* tool, similar to [Hugo][3], but written in [JavaScript][6], so it's
 easier to integrate additional JavaScript libraries or stylesheets
+* solid foundation with carefully selected tools to produce smaller websites faster (*[The Average Webpage Is Now the Size of the Original Doom][8]*)
 * dependencies managed with [Yarn][4]
+* [Rollup][7] for bundling javascripts
 * [Sass][2] for stylesheets
 * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
 * written in ES6/ES2015
@@ -55,7 +57,9 @@ if not provided, the current directory is used):
 └── website
     ├── config.yml
     ├── images
+    │   └── logo.svg
     ├── javascripts
+    │   └── main.js
     ├── stylesheets
     │   └── styles.sass
     └── views
@@ -69,7 +73,6 @@ if not provided, the current directory is used):
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
 
-- [ ] assets minification in production
 - [ ] fingerprinting assets in production
 - [ ] support for source maps
 - [ ] out-of-the-box integration of modules from `npm` repository
@@ -95,3 +98,5 @@ Copyright (c) 2016-present Zaiste. MIT Licensed, see LICENSE for details.
 [4]: https://yarnpkg.com/
 [5]: https://www.youtube.com/watch?v=YnsfCcxMydU
 [6]: https://en.wikipedia.org/wiki/JavaScript
+[7]: http://rollupjs.org/
+[8]: https://www.wired.com/2016/04/average-webpage-now-size-original-doom/
