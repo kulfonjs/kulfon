@@ -33,6 +33,7 @@ easier to integrate additional JavaScript libraries or stylesheets
  * [Sass][2] for stylesheets
  * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
 * written in ES6/ES2015
+* markdown support 
 
 ## Installation
 
@@ -91,7 +92,6 @@ For more commands, just type
 kulfon
 ```
 
-
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
@@ -110,10 +110,6 @@ https://github.com/zaiste/kulfon/issues
 
 Detailed bug reports are always great; it's event better if you are able to
 include test cases.
-
-## License
-
-Copyright (c) 2016-present Zaiste. MIT Licensed, see LICENSE for details.
 
 [1]: https://mozilla.github.io/nunjucks/
 [2]: http://sass-lang.com/

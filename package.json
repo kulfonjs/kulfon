@@ -19,7 +19,7 @@
     "name": "Zaiste",
     "url": "https://github.com/zaiste"
   },
-  "license": "MIT",
+  "license": "Apache 2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/zaiste/kulfon"
