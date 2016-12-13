@@ -69,6 +69,27 @@ if not provided, the current directory is used):
             └── base.html
 ```
 
+Now enter the directory 
+
+```
+cd <my-project-name>
+```
+
+and run `kulfon`'s server
+
+```
+kulfon serve
+```
+
+Go to `http://localhost:3000` to check your website.
+
+For more commands, just type
+
+```
+kulfon
+```
+
+
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
