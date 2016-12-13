@@ -3,8 +3,8 @@
 [![npm](https://img.shields.io/npm/v/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 [![npm](https://img.shields.io/npm/dm/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 
-**Kulfon** is a *one command* static site generator written entirely in
-JavaScript. It's bloody fast, modern and simple.
+**Kulfon** is a « one command », static site generator written entirely in
+JavaScript. It's fast, modern and simple.
 
 [![Kulfon: a 100% JavaScript static site generator](https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg)](https://kulfon.net)
 
@@ -25,13 +25,13 @@ While you're hesitating, listen to this wonderful [Kulfon song][5]!
 There is a ton of static site generators out there. Here are few points to
 convince you to try **Kulfon**
 
-* *one command* tool, similar to [Hugo][3], but written in [JavaScript][6], so it's
+* one-command tool, similar to [Hugo][3], but written in [JavaScript][6], so it's
 easier to integrate additional JavaScript libraries or stylesheets
-* solid foundation with carefully selected tools to produce smaller websites faster (*[The Average Webpage Is Now the Size of the Original Doom][8]*)
-* dependencies managed with [Yarn][4]
-* [Rollup][7] for bundling javascripts
-* [Sass][2] for stylesheets
-* [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
+* solid foundation with carefully selected tools to produce smaller websites faster as [The Average Webpage Is Now the Size of the Original Doom][8])
+ * dependencies managed with [Yarn][4]
+ * [Rollup][7] for bundling javascripts
+ * [Sass][2] for stylesheets
+ * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
 * written in ES6/ES2015
 
 ## Installation
