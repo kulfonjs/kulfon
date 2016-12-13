@@ -60,16 +60,18 @@ if not provided, the current directory is used):
     │   └── logo.svg
     ├── javascripts
     │   └── main.js
-    ├── stylesheets
-    │   └── styles.sass
-    └── views
-        ├── index.html
-        ├── partials
-        └── layouts
-            └── base.html
+    ├── layouts
+    │   └── base.html
+    ├── pages
+    │   ├── about.md
+    │   └── index.html
+    ├── partials
+    │   └── meta.html
+    └── stylesheets
+        └── styles.scss
 ```
 
-Now enter the directory 
+Now enter the directory
 
 ```
 cd <my-project-name>
