@@ -16,8 +16,8 @@ const compiler = require('./lib/compiler')
 const args = require('minimist')(process.argv.slice(2))
 const command = args._[0]
 
-if (args.v || args.version) version()
-if (!command) usage()
+if (args.v || args.version) version();
+if (!command) usage();
 
 if (args._[1]) var sourceDir = path.resolve(process.cwd(), args._[1])
 if (args._[2]) var targetDir = path.resolve(process.cwd(), args._[2])
@@ -56,5 +56,10 @@ function usage() {
   kulfon help                          Open kulfon.net in your browser
 `)
 
+  process.exit()
+}
+
+function version() {
+  console.log(`kulfon ${pkg.version}`);
   process.exit()
 }
