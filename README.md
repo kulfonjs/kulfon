@@ -33,7 +33,7 @@ easier to integrate additional JavaScript libraries or stylesheets
  * [Sass][2] for stylesheets
  * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
 * written in ES6/ES2015
-* markdown support 
+* markdown support
 
 ## Installation
 
@@ -84,13 +84,20 @@ and run `kulfon`'s server
 kulfon serve
 ```
 
-Go to `http://localhost:3000` to check your website.
+It creates `public` directory with compiled content (this directory should be
+ignored). Go to `http://localhost:3000` to check your website.
 
 For more commands, just type
 
 ```
 kulfon
 ```
+
+## Compiling the project
+
+You can quickly compile your website using `kulfon compile`. This will generate
+`public` directory which should be copied to your remote server to be handled by
+a web server such as Apache or Nginx.
 
 ## Roadmap
 
