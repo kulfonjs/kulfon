@@ -54,9 +54,10 @@ It creates the following directory structure (`<my-project-name>` is optional,
 if not provided, the current directory is used):
 
 ```
+├── config.yml
 ├── public
 └── website
-    ├── config.yml
+    ├── data.yml
     ├── images
     │   └── logo.svg
     ├── javascripts
