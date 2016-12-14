@@ -27,7 +27,7 @@ convince you to try **Kulfon**
 
 * one-command tool, similar to [Hugo][3], but written in [JavaScript][6], so it's
 easier to integrate additional JavaScript libraries or stylesheets
-* solid foundation with carefully selected tools to produce smaller websites faster as [The Average Webpage Is Now the Size of the Original Doom][8])
+* solid foundation with carefully selected tools to produce **smaller** websites **faster** as [The Average Webpage Is Now the Size of the Original Doom][8]
  * dependencies managed with [Yarn][4]
  * [Rollup][7] for bundling javascripts
  * [Sass][2] for stylesheets
