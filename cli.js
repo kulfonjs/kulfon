@@ -37,7 +37,7 @@ switch(command) {
     compiler.compileAll()
     break
   case 'help':
-    open('http://kulfon.org')
+    open('https://kulfon.net')
     break
   default:
     console.log(`Unrecognized command: ${command}\n`)
