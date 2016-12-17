@@ -100,6 +100,20 @@ You can quickly compile your website using `kulfon compile`. This will generate
 `public` directory which should be copied to your remote server to be handled by
 a web server such as Apache or Nginx.
 
+## Data files
+
+You can specify custom data that can be accessed in your views using data files.
+Those are YML files which can be either stored in `website/data` directory or
+using a single `data.yml` placed directly in `website`. By default `website/data.yml`
+is used; if set, `data` directory has higher priority.
+
+## Meta headers
+
+Kulfon comes with preconfigured `meta` headers, including [Facebook's Open Graph][9]
+and [Twitter Cards][10]. The values are set through `data` files using `meta.*` branch,
+e.g. `meta.description` to set `content` for `<meta name='description' />`.
+Check `website/partials/meta.html` for all available values.
+
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
@@ -127,3 +141,5 @@ include test cases.
 [6]: https://en.wikipedia.org/wiki/JavaScript
 [7]: http://rollupjs.org/
 [8]: https://www.wired.com/2016/04/average-webpage-now-size-original-doom/
+[9]: https://developers.facebook.com/docs/sharing/webmasters#markup
+[10]: https://dev.twitter.com/cards/overview
