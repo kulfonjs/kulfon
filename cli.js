@@ -6,9 +6,9 @@ const fs = Promise.promisifyAll(require("fs"));
 const path = require('upath')
 const open = require('open')
 const chalk = require('chalk')
+const rp = require('request-promise');
+
 const pkg = require('./package.json')
-
-
 const initializer = require('./lib/initializer')
 const server = require('./lib/server')
 const compiler = require('./lib/compiler')
@@ -31,6 +31,11 @@ switch(command) {
     break
   case 'serve':
     server.serve();
+    break
+  case 'search':
+    if (args._[1]) {
+      search(args._[1]);
+    }
     break
   case 'compile':
   case 'build':
@@ -62,4 +67,24 @@ function usage() {
 function version() {
   console.log(`kulfon ${pkg.version}`);
   process.exit()
+}
+
+function search(name) {
+  const options = {
+    uri: 'https://api.npms.io/v2/search',
+    qs: {
+      q: name
+    },
+    headers: {
+      'User-Agent': 'Kulfon'
+    },
+    json: true
+  };
+
+  rp(options)
+    .then(resp => {
+      console.log(resp.results
+        .map(_ => `${_.package.name} - ${chalk.dim(_.package.links.npm)} : ${chalk.dim(_.package.links.repository)}`).join('\n'));
+    })
+    .catch(err => console.log(err));
 }

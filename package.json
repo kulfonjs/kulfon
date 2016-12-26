@@ -37,6 +37,7 @@
     "nunjucks": "^2.5.2",
     "nunjucks-markdown": "^2.0.1",
     "open": "^0.0.5",
+    "request-promise": "^4.1.1",
     "rollup": "^0.36.4",
     "tmp": "^0.0.29",
     "upath": "^0.2.0"
