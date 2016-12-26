@@ -114,6 +114,12 @@ and [Twitter Cards][10]. The values are set through `data` files using `meta.*` 
 e.g. `meta.description` to set `content` for `<meta name='description' />`.
 Check `website/partials/meta.html` for all available values.
 
+## NPM Search
+
+Kulfon can search NPM registry using NPMS API, e.g.
+
+    kulfon search jquery
+
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
@@ -143,3 +149,5 @@ include test cases.
 [8]: https://www.wired.com/2016/04/average-webpage-now-size-original-doom/
 [9]: https://developers.facebook.com/docs/sharing/webmasters#markup
 [10]: https://dev.twitter.com/cards/overview
+[11]: https://www.npmjs.com/ 
+[12]: https://api-docs.npms.io/
