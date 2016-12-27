@@ -39,7 +39,10 @@
     "open": "^0.0.5",
     "request-promise": "^4.1.1",
     "rollup": "^0.36.4",
+    "rollup-plugin-uglify": "^1.0.1",
+    "sha1": "^1.1.1",
     "tmp": "^0.0.29",
+    "uglify-js": "^2.7.5",
     "upath": "^0.2.0"
   },
   "bin": {

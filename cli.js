@@ -3,27 +3,28 @@
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require("fs"));
 
-const path = require('upath')
-const open = require('open')
-const chalk = require('chalk')
+const path = require('upath');
+const open = require('open');
+const chalk = require('chalk');
 const rp = require('request-promise');
 
-const pkg = require('./package.json')
-const initializer = require('./lib/initializer')
-const server = require('./lib/server')
-const compiler = require('./lib/compiler')
+const pkg = require('./package.json');
+const initializer = require('./lib/initializer');
+const server = require('./lib/server');
+const compiler = require('./lib/compiler');
 
-const args = require('minimist')(process.argv.slice(2))
-const command = args._[0]
+const args = require('minimist')(process.argv.slice(2));
+const command = args._[0];
 
 if (args.v || args.version) version();
 if (!command) usage();
 
-if (args._[1]) var sourceDir = path.resolve(process.cwd(), args._[1])
-if (args._[2]) var targetDir = path.resolve(process.cwd(), args._[2])
+if (args._[1]) var sourceDir = path.resolve(process.cwd(), args._[1]);
+if (args._[2]) var targetDir = path.resolve(process.cwd(), args._[2]);
 
-process.env.KULFON_PORT = args.port || args.p || 3000
-process.env.KULFON_BASEDIR = args.basedir || args.b || '/'
+process.env.KULFON_PORT = args.port || args.p || 3000;
+process.env.KULFON_BASEDIR = args.basedir || args.b || '/';
+process.env.KULFON_ENV = args.environment || args.e || 'development';
 
 switch(command) {
   case 'init':
@@ -54,11 +55,12 @@ function usage() {
   console.log(
 `
   kulfon init <my-project-name>
-  kulfon serve                         Serve the current directory
-  kulfon serve <source>                Serve a specific directory
-  kulfon serve --port 3456             Use a custom port. Default is 3000
-  kulfon compile                       Build source files to static assets
-  kulfon help                          Open kulfon.net in your browser
+  kulfon serve                              Serve the current directory
+  kulfon serve <source>                     Serve a specific directory
+  kulfon serve --port 3456                  Use a custom port. Default is 3000
+  kulfon compile                            Build source files to static assets
+  kulfon compile --environment production   Build source files to static assets
+  kulfon help                               Open kulfon.net in your browser
 `)
 
   process.exit()
