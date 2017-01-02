@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include "partials/meta.html" %}
+
+  <title>{% block title %}{{ data.title }}{% endblock %}</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css"/>
+  <link href="/styles.css" rel="stylesheet">
+  {% block head %}{% endblock %}
+</head>
+<body class="w-100 sans-serif bg-white">
+  <header>
+    <nav class="db dt-l w-100 border-box pa3 ph5-l">
+      <a class="db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l" href="/" title="Home">
+        <img src="/assets/logo.png" class="dib w2 h2" alt="Site Name">
+      </a>
+      <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+        <a class="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="/" title="Home">Home</a>
+        <a class="link dim dark-gray f6 f5-l dib" href="/about/" title="About">About</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article class="pa3 pa5-ns">
+      {% block content %}{% endblock %}
+    </article>
+  </main>
+  <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
+    <small class="f6 db tc">© 2017 <b class="ttu">BY KULFON Inc</b>., All Rights Reserved</small>
+    <div class="tc mt3">
+      <a href="/about/" title="Language" class="f6 dib ph2 link mid-gray dim">About</a>
+    </div>
+  </footer>
+  {% for dependency in dependencies %}
+  <script type="text/javascript" src="{{ dependency }}"></script>
+  {% endfor %}
+  <script type="text/javascript" src="/assets/bundle.js"></script>
+</body>
+</html>
