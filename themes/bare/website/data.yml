@@ -1,0 +1,24 @@
+title: Your great website powered by Kulfon
+dummy: >
+  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+  tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+  vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+  no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+  Edit this text in 'data.yml'
+
+meta:
+  description: Dummy meta description
+  facebook:
+    site_name: Made by Kulfon
+    image:
+      url: https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg
+      width: 512
+      height: 512
+      type: img/jpg
+  twitter:
+    site: Made by Kulfon
+    creator: Kulfon
+    image:
+      url: https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg
+    domain: kulfon.net

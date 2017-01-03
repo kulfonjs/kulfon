@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include "partials/meta.html" %}
+  <title>{% block title %}{{ data.title }}{% endblock %}</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
+  <link href="/styles.css" rel="stylesheet">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <main>
+    <article>
+      {% block content %}{% endblock %}
+    </article>
+  </main>
+
+  {% for dependency in dependencies %}
+  <script type="text/javascript" src="{{ dependency }}"></script>
+  {% endfor %}
+  <script type="text/javascript" src="/assets/bundle.js"></script>
+</body>
+</html>

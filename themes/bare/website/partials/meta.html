@@ -1,0 +1,25 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="description" content="{{ data.meta.description }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="{{ data.meta.facebook.description or data.meta.description }}"/>
+<meta property="og:title" content="{{ data.meta.facebook.title or data.title }}"/>
+<meta property="og:site_name" content="{{ data.meta.facebook.site_name }}"/>
+<meta property="og:image" content="{{ data.meta.facebook.image.url }}" />
+<meta property="og:image:type" content="{{ data.meta.facebook.image.type }}" />
+<meta property="og:image:width" content="{{ data.meta.facebook.image.width }}" />
+<meta property="og:image:height" content="{{ data.meta.facebook.image.height }}" />
+<meta property="og:url" content="{{ data.meta.facebook.url }}">
+<meta property="og:locale" content="{{ data.meta.facebook.locale or 'en_US' }}">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="{{ data.meta.twitter.site }}">
+<meta name="twitter:title" content="{{ data.meta.twitter.title or data.title }}">
+<meta name="twitter:creator" content="{{ data.meta.twitter.creator }}">
+<meta name="twitter:description" content="{{ data.meta.twitter.description or data.meta.description }}">
+<meta name="twitter:image:src" content="{{ data.meta.twitter.image.url }}">
+<meta name="twitter:domain" content="{{ data.meta.twitter.domain }}">
