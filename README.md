@@ -25,15 +25,15 @@ While you're hesitating, listen to this wonderful [Kulfon song][5]!
 There is a ton of static site generators out there. Here are few points to
 convince you to try **Kulfon**
 
-* one-command tool, similar to [Hugo][3], but written in [JavaScript][6], so it's
-easier to integrate additional JavaScript libraries or stylesheets
+* one-command tool, similar to [Hugo][3], but written in [JavaScript][6], so it's easier to integrate additional JavaScript libraries or stylesheets
 * solid foundation with carefully selected tools to produce **smaller** websites **faster** as [The Average Webpage Is Now the Size of the Original Doom][8]
- * dependencies managed with [Yarn][4]
  * [Rollup][7] for bundling javascripts
  * [Sass][2] for stylesheets
  * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
 * written in ES6/ES2015
-* markdown support
+* [Markdown][15] support
+* unified approach to external dependencies management with either [unpkg][13] or [Yarn][4]
+* [HTTP/2][14] ready
 
 ## Installation
 
@@ -149,5 +149,8 @@ include test cases.
 [8]: https://www.wired.com/2016/04/average-webpage-now-size-original-doom/
 [9]: https://developers.facebook.com/docs/sharing/webmasters#markup
 [10]: https://dev.twitter.com/cards/overview
-[11]: https://www.npmjs.com/ 
+[11]: https://www.npmjs.com/
 [12]: https://api-docs.npms.io/
+[13]: https://unpkg.com/#/
+[14]: https://en.wikipedia.org/wiki/HTTP/2
+[15]: https://en.wikipedia.org/wiki/Markdown
