@@ -1,0 +1,28 @@
+# semi-auto generated from `package.json` `style`/`main` fields
+#
+# R U L E S
+#
+# 1. Try to find file `.css` or `.js` and add it via unpkg
+# 2. if fails,
+# 2.1 try to add directory - deduce type (css OR js) from the path
+# 2.2 create `package.json`
+# 2.3 install this package
+#
+# Don't list `min`, try to guess it.
+#
+# Add version to the external file e.g. bootstrap@3.3.7
+#
+# --
+tachyons:
+  - css/tachyons.css
+bootstrap:
+  - dist/css/bootstrap.css
+  - dist/js/npm
+  - less/bootstrap.less
+  - dist/js/bootstrap.js
+bootstrap-sass:
+  - assets/stylesheets/_bootstrap.scss
+  - assets/javascripts/bootstrap.js
+bourbon:
+  - app/assets/stylesheets/_bourbon.scss # 4.x
+  - core/_bourbon.scss                   # 5.x
