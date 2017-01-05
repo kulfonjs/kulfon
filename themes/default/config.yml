@@ -1,5 +1,4 @@
-stylesheet:
-  dependencies:
-
-javascript:
-  dependencies:
+includePaths: []
+stylesheets:
+  - https://unpkg.com/tachyons@4.6.1/css/tachyons.css
+javascripts: []

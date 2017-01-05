@@ -5,7 +5,9 @@
 
   <title>{% block title %}{{ data.title }}{% endblock %}</title>
   <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
-  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css"/>
+  {% for stylesheet in stylesheets %}
+  <link rel="stylesheet" href="{{ stylesheet }}"/>
+  {% endfor %}
   <link href="/styles.css" rel="stylesheet">
   {% block head %}{% endblock %}
 </head>
@@ -32,8 +34,8 @@
       <a href="/about/" title="Language" class="f6 dib ph2 link mid-gray dim">About</a>
     </div>
   </footer>
-  {% for dependency in dependencies %}
-  <script type="text/javascript" src="{{ dependency }}"></script>
+  {% for javascript in javascripts %}
+  <script type="text/javascript" src="{{ javascript }}"></script>
   {% endfor %}
   <script type="text/javascript" src="/assets/bundle.js"></script>
 </body>
