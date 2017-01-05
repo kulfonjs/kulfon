@@ -26,3 +26,5 @@ bootstrap-sass:
 bourbon:
   - app/assets/stylesheets/_bourbon.scss # 4.x
   - core/_bourbon.scss                   # 5.x
+bourbon-neat:
+  - app/assets/stylesheets/_neat.scss
