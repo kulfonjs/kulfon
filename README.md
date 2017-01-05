@@ -120,13 +120,22 @@ Kulfon can search NPM registry using NPMS API, e.g.
 
     kulfon search jquery
 
+## Themes
+
+Kulfon comes with several themes out-of-the-box. You can check the list of available theme at https://kulfon.net/themes/ or via `kulfon list themes`.
+
+By default when initialising a new website, Kulfon uses [default][16] theme. You can specify other theme to use with `--theme` option (or `-t` for short)
+
+    kulfon init new-website --theme bare
+
+It is very easy to create your own theme: you just need to create a website structure which will be used as the template at the initialisation stage. Feel free to contribute that theme to this repository.
+
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
 
 - [ ] fingerprinting assets in production
 - [ ] support for source maps
-- [ ] out-of-the-box integration of modules from `npm` repository
 - [ ] support for blogging
 - [ ] a website with comprehensive documentation
 
@@ -154,3 +163,4 @@ include test cases.
 [13]: https://unpkg.com/#/
 [14]: https://en.wikipedia.org/wiki/HTTP/2
 [15]: https://en.wikipedia.org/wiki/Markdown
+[16]: https://kulfon.net/themes/default/
