@@ -120,6 +120,8 @@ Kulfon can search NPM registry using NPMS API, e.g.
 
     kulfon search jquery
 
+By default it fetches the first `25` results that match the specified query. If there is more than `25` results, you can paginate that list using `--page` (or `-p`) parameter with default `1` for the first page i.e. the first 25 results and `2` for the next `25` results, etc.
+
 ## Themes
 
 Kulfon comes with several themes out-of-the-box. You can check the list of available theme at https://kulfon.net/themes/ or via `kulfon list themes`.
