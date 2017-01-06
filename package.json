@@ -11,9 +11,25 @@
     ]
   },
   "keywords": [
+    "kulfon",
     "static",
     "generator",
-    "es6"
+    "es6",
+    "es2015",
+    "markdown",
+    "HTML",
+    "frontmatter",
+    "nunjucks",
+    "sass",
+    "scss",
+    "css",
+    "directory",
+    "website",
+    "rollup",
+    "yaml",
+    "content",
+    "images",
+    "CMS"
   ],
   "author": {
     "name": "Zaiste",
