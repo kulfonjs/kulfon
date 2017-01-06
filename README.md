@@ -130,6 +130,62 @@ By default when initialising a new website, Kulfon uses [default][16] theme. You
 
 It is very easy to create your own theme: you just need to create a website structure which will be used as the template at the initialisation stage. Feel free to contribute that theme to this repository.
 
+## Asset Dependency Management
+
+Kulfon allows to easily add external asset dependencies such as stylesheets or javascripts. It uses NPM registry for that. There are two ways of adding assets to your website from NPM, i.e. via [unpkg][13] CDN service or by installing them locally with [Yarn][4] (or [npm][11]).
+
+### Using `unpkg` for managing asset dependencies
+
+[unpkg][13] approach is the most easy and convenient one, but it requires being online while developing your website. In a nutshell it adds either stylsheets or javascripts as separate `<link ...>` or `<script ...>` entries for each specified dependency and then it integrates it with your main JavaScript or CSS file. This method is also HTTP/2 friendly.
+
+### Using Yarn for managing asset dependencies
+
+For simple HTML/CSS/JS website using [Yarn][4] (or just [npm][11]) may be an overkill, but it allows a more fine-grained control over what is produced in the final CSS/JS bundle. When you use [Sass][2] libriaries this is also the only way to go.
+
+### Use cases
+
+Here are few use cases to help you develop a proper intuition when working with Kulfon.
+
+#### Adding tachyons
+
+[tachyons][17] is one of my favorite CSS libraries. It is small and powerful. Let's see how we can start using it in our project.
+
+First, let's check NPM registry by using `search` command
+
+```
+kulfon search tachyons
+```
+
+```
+tachyons - https://www.npmjs.com/package/tachyons : https://github.com/tachyons-css/tachyons
+tachyons-cli - https://www.npmjs.com/package/tachyons-cli : https://github.com/tachyons-css/tachyons-cli
+react-native-style-tachyons - https://www.npmjs.com/package/react-native-style-tachyons : https://github.com/tachyons-css/react-native-style-tachyons
+ember-cli-tachyons-shim - https://www.npmjs.com/package/ember-cli-tachyons-shim : https://github.com/wizvishak/ember-cli-tachyons-shim
+tachyons-sass - https://www.npmjs.com/package/tachyons-sass : https://github.com/tachyons-css/tachyons-sass
+tachyons-modules - https://www.npmjs.com/package/tachyons-modules : https://github.com/tachyons-css/tachyons-modules
+tachyons-validate-classnames - https://www.npmjs.com/package/tachyons-validate-classnames : https://github.com/yoshuawuyts/tachyons-validate-class
+ds-css-cli - https://www.npmjs.com/package/ds-css-cli : https://github.com/digitalsurgeons/ds-css-cli
+```
+
+There are several possibilities, but we will include the whole library at once.
+
+    kulfon add tachyons
+
+Restart the Kulfon server, open your website and *View Page Source*. There will be a new `<link ...>` entry added to the `<head>` just above your main stylesheet file.
+
+```
+<link rel="stylesheet" href="https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css"/>
+<link href="/styles.css" rel="stylesheet">
+```
+
+#### Adding bourbon
+
+TBD
+
+#### Adding bootstrap
+
+TBD
+
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
@@ -172,3 +228,4 @@ include test cases.
 [14]: https://en.wikipedia.org/wiki/HTTP/2
 [15]: https://en.wikipedia.org/wiki/Markdown
 [16]: https://kulfon.net/themes/default/
+[17]: http://tachyons.io/
