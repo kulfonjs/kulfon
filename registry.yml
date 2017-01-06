@@ -28,3 +28,5 @@ bourbon:
   - core/_bourbon.scss                   # 5.x
 bourbon-neat:
   - app/assets/stylesheets/_neat.scss
+jquery:
+  - dist/jquery.js
