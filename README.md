@@ -107,6 +107,21 @@ Those are YML files which can be either stored in `website/data` directory or
 using a single `data.yml` placed directly in `website`. By default `website/data.yml`
 is used; if set, `data` directory has higher priority.
 
+## Front matter
+
+Each `html` file can have a front matter with additional meta information which will be merged into `data` object available in the `pages` e.g.
+
+```
+---
+title: This is my title
+---
+{% extends "layouts/base.html" %}
+{% block content %}
+<h2>My Page: {{ data.title }}
+{% endblock %}
+```
+
+
 ## Meta headers
 
 Kulfon comes with preconfigured `meta` headers, including [Facebook's Open Graph][9]
