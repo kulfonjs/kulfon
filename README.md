@@ -121,7 +121,6 @@ title: This is my title
 {% endblock %}
 ```
 
-
 ## Meta headers
 
 Kulfon comes with preconfigured `meta` headers, including [Facebook's Open Graph][9]
@@ -146,6 +145,10 @@ By default when initialising a new website, Kulfon uses [default][16] theme. You
     kulfon init new-website --theme bare
 
 It is very easy to create your own theme: you just need to create a website structure which will be used as the template at the initialisation stage. Feel free to contribute that theme to this repository.
+
+## Blog support
+
+Kulfon supports simple blog management. Let's start by creating a `blog` directory inside `pages`. Each post would be just a `html` or `markdown` file inside that directory. Additionally, you can prefix your files with a date to include it in the generated URL e.g. `2016-12_here_goes_my_blog_post_title.md` would be generated as `/blog/2016/12/here_goes_my_blog_post_title`.
 
 ## Asset Dependency Management
 
