@@ -200,11 +200,33 @@ Restart the Kulfon server, open your website and *View Page Source*. There will 
 
 #### Adding bourbon
 
-TBD
+[Bourbon][18] is a lightweight Sass library that helps you write more effective stylesheets.
+
+Let's add `bourbon` as a dependency which will be included during Sass compilation.
+
+    kulfon add bourbon
+
+Now you can include it at the top of `stylesheets/styles.scss`
+
+    @import 'bourbon';
 
 #### Adding bootstrap
 
-TBD
+[Bootstrap][19] is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
+
+There are two ways of integrating `bootstrap` using Kulfon. You can either include it as whole through `unpkg` CDN, or you can integrate it during Sass compilation; the latter solution allows you to easily customize the library e.g. by including only the modules you need.
+
+In the first case you have to just add `bootstrap` package
+
+    kulfon add bootstrap
+
+To use a Sass version you need to use `bootstrap-sass` NPM package.
+
+    kulfon add bootstrap-sass
+
+and then you need to include `bootstrap` at the top of `stylesheets/styles.scss`
+
+    @import 'bootstrap'
 
 ## Roadmap
 
@@ -249,3 +271,5 @@ include test cases.
 [15]: https://en.wikipedia.org/wiki/Markdown
 [16]: https://kulfon.net/themes/default/
 [17]: http://tachyons.io/
+[18]: http://bourbon.io/
+[19]: http://getbootstrap.com/
