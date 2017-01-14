@@ -1,18 +1,19 @@
-# [Kulfon](https://kulfon.net)
+# [Kulfon](https://kulfon.net) (pre-alpha)
 
 [![npm](https://img.shields.io/npm/v/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 [![npm](https://img.shields.io/npm/dm/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 
-**Kulfon** is a « one command », static site generator written entirely in
-JavaScript. It's fast, modern and simple.
+**Kulfon** is a « one command », static site generator written entirely in JavaScript. It's fast, modern and simple.
+
+_This software is still under **active development** and not feature complete or ready for consumption by anyone other than software developers._
 
 [![Kulfon: a 100% JavaScript static site generator](https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg)](https://kulfon.net)
 
 [Website](https://kulfon.net) |
-[Documentation](https://kulfon.net/overview/introduction/) |
-[Installation Guide](https://kulfon.net/overview/installing/) |
+[Documentation](https://kulfon.net/docs/install/) |
+[Installation Guide](https://kulfon.net/docs/install/) |
 [Contribution Guide](CONTRIBUTING.md) |
-[Twitter](http://twitter.com/kufonapp)
+[Twitter](http://twitter.com/kulfonjs)
 
 > \- Kulfon, Kulfon, co z Ciebie wyrośnie ?! martwię się już od tygodnia!
 >
@@ -231,11 +232,6 @@ and then you need to include `bootstrap` at the top of `stylesheets/styles.scss`
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
-
-- [ ] fingerprinting assets in production
-- [ ] support for source maps
-- [ ] support for blogging
-- [ ] a website with comprehensive documentation
 
 ## Websites that use Kulfon
 
