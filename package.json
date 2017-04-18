@@ -8,13 +8,11 @@
     "debug": "^2.6.3",
     "nixt": "^0.5.0"
   },
+  "engines": {
+    "node": ">= 7.6.0"
+  },
   "scripts": {
     "test": "ava"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
   },
   "keywords": [
     "kulfon",
