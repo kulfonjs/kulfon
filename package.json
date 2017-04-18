@@ -45,6 +45,7 @@
     "url": "https://github.com/zaiste/kulfon"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "bluebird": "^3.5.0",
     "chokidar": "^1.6.1",
     "colors": "^1.1.2",
@@ -62,8 +63,6 @@
     "nunjucks": "^3.0.0",
     "nunjucks-markdown": "^2.0.1",
     "open": "^0.0.5",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.0",
     "rollup": "^0.41.6",
     "rollup-plugin-uglify": "^1.0.1",
     "sha1": "^1.1.1",
