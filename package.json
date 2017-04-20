@@ -66,6 +66,7 @@
     "rollup": "^0.41.6",
     "rollup-plugin-uglify": "^1.0.1",
     "sha1": "^1.1.1",
+    "sugar-date": "^2.0.4",
     "tmp": "^0.0.31",
     "uglify-js": "^2.8.22",
     "upath": "^1.0.0",
