@@ -36,6 +36,34 @@ convince you to try **Kulfon**
 * unified approach to external dependencies management with either [unpkg][13] or [Yarn][4]
 * [HTTP/2][14] ready
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  
+
+- [Why Kulfon?](#why-kulfon)
+- [Installation](#installation)
+- [Getting started](#getting-started)
+- [Compiling the project](#compiling-the-project)
+- [Data files](#data-files)
+- [Front matter](#front-matter)
+- [Meta headers](#meta-headers)
+- [NPM Search](#npm-search)
+- [Themes](#themes)
+- [Blog support](#blog-support)
+- [Asset Dependency Management](#asset-dependency-management)
+  - [Using `unpkg` for managing asset dependencies](#using-unpkg-for-managing-asset-dependencies)
+  - [Using Yarn for managing asset dependencies](#using-yarn-for-managing-asset-dependencies)
+  - [Use cases](#use-cases)
+    - [Adding tachyons](#adding-tachyons)
+    - [Adding bourbon](#adding-bourbon)
+    - [Adding bootstrap](#adding-bootstrap)
+- [Roadmap](#roadmap)
+- [Websites that use Kulfon](#websites-that-use-kulfon)
+- [Bug reports](#bug-reports)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## Installation
 
     yarn global add kulfon
