@@ -11,9 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const koa = require('koa');
-const static = require('koa-static');
-const error = require('koa-error');
+const Huncwot = require('huncwot');
 const chokidar = require('chokidar');
 const { compile, transform, compileAll } = require('./compiler');
 const path = require('path');
@@ -34,32 +32,27 @@ function recompile(file) {
   }
 }
 
-function serve({ port, dir }) {
-  compileAll({ dir })
-    .then(() => {
-      const watcher = chokidar.watch(dir, {
-        ignored: /[\/\\]\./,
-        persistent: true,
-        cwd: 'website'
-      });
+async function serve({ port, dir }) {
+  await compileAll({ dir })
 
-      watcher
-        .on('change', recompile)
+  const watcher = chokidar.watch(dir, {
+    ignored: /[\/\\]\./,
+    persistent: true,
+    cwd: 'website'
+  });
 
-      const app = new koa();
-      // app.use(error({
-      //   engine: 'nunjucks',
-      //   template: path.join(__dirname, '..', 'views', 'error.html')
-      // }));
-      app.use(static('public'));
+  watcher
+    .on('change', recompile)
 
-      app.on('error', err => {
-        console.log('Error: '.red + err.message);
-      });
+  const app = new Huncwot({ staticDir: './public' });
 
-      app.listen(port);
-    })
-    .then(() => console.log(`---\nServer running at http://localhost:${port}`))
+  app.on('error', err => {
+    console.log('Error: '.red + err.message);
+  });
+
+  app.listen(port);
+  
+  console.log(`---\nServer running at http://localhost:${port}`)
 }
 
 module.exports = {
