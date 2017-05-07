@@ -69,7 +69,7 @@
     "rollup-plugin-uglify": "^1.0.2",
     "sha1": "^1.1.1",
     "sugar-date": "^2.0.4",
-    "svgo": "^0.7.2",
+    "svgo": "svg/svgo",
     "tmp": "^0.0.31",
     "uglify-js": "^3.0.0",
     "upath": "^1.0.0",

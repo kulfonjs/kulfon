@@ -123,13 +123,13 @@ function compile(prefix) {
       compiler = async file => {
         switch (path.extname(file)) {
           case '.svg':
-            const data = await fs.readFileAsync(__current('images', file));
-            console.log(data);
-            const result = await svgOptimizer.optimize(data);
-            console.log("Found SVG", result);
+            const data = await fs.readFileAsync(__current('images', file), 'utf8');
+            const result = await svgOptimizer.optimize(data)
+            fs.writeFileSync(__public(file, 'images'), result.data);
+            break;
           default:
+            fs.copyAsync(__current('images', file), __public(file, 'images'));
         }
-        fs.copyAsync(__current('images', file), __public(file, 'images'));
       }
       break;
     case 'javascripts':
