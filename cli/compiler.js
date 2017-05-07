@@ -216,7 +216,10 @@ function compile(prefix) {
           let data = merge({ page: isEmpty(__pages[file].data) ? false : __pages[file].data }, __data);
 
           if (path.extname(file) === '.md') {
-            output = nunjucks.render('layouts/post.html', {
+            const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0]
+            const layout = (await fs.pathExists(parentDir)) ? parentDir : 'base';
+
+            output = nunjucks.render(`layouts/${layout}.html`, {
               config,
               content,
               data,
