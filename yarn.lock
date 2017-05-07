@@ -1987,9 +1987,9 @@ hullabaloo-config-manager@^1.0.0:
     pkg-dir "^1.0.0"
     resolve-from "^2.0.0"
 
-huncwot@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/huncwot/-/huncwot-0.6.0.tgz#6d4ac88e7934ff317c3ea8cfaffd81e01332a036"
+huncwot@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/huncwot/-/huncwot-0.6.1.tgz#560200c2193e53fa2f42e875258e3e854bb5767c"
   dependencies:
     basic-auth "^1.1.0"
     bluebird "^3.5.0"

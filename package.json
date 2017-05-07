@@ -54,7 +54,7 @@
     "global": "^4.3.2",
     "gray-matter": "^2.1.1",
     "highlight.js": "^9.11.0",
-    "huncwot": "^0.6.0",
+    "huncwot": "^0.6.1",
     "js-yaml": "^3.8.3",
     "koa": "^2.2.0",
     "koa-error": "^3.0.0",
