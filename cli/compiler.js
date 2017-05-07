@@ -203,43 +203,48 @@ function compile(prefix) {
           return Date.create(date).format(format || '{yyyy}-{MM}-{dd}');
         });
 
-        markdown.register(env, md.render.bind(md));
+        try {
 
-        let m = matter.read(__current(prefix, file));
+          markdown.register(env, md.render.bind(md));
 
-        // remove `pages` segment from the path
-        __pages[file] = { data: m.data, content: m.content };
+          let m = matter.read(__current(prefix, file));
 
-        const content = md.render(m.content)
-        let data = merge({ page: isEmpty(__pages[file].data) ? false : __pages[file].data }, __data);
+          // remove `pages` segment from the path
+          __pages[file] = { data: m.data, content: m.content };
 
-        if (path.extname(file) === '.md') {
-          output = nunjucks.render('layouts/post.html', {
-            config,
-            content,
-            data,
-            javascripts,
-            stylesheets,
-            javascriptBundleFingerprint,
-            pages: filterBy(__pages)
-          });
-        } else {
-          output = nunjucks.renderString(__pages[file].content, {
-            config,
-            data,
-            javascripts,
-            stylesheets,
-            javascriptBundleFingerprint,
-            pages: filterBy(__pages)
-          });
-        }
+          const content = md.render(m.content)
+          let data = merge({ page: isEmpty(__pages[file].data) ? false : __pages[file].data }, __data);
 
-        filename = pathname(file);
+          if (path.extname(file) === '.md') {
+            output = nunjucks.render('layouts/post.html', {
+              config,
+              content,
+              data,
+              javascripts,
+              stylesheets,
+              javascriptBundleFingerprint,
+              pages: filterBy(__pages)
+            });
+          } else {
+            output = nunjucks.renderString(__pages[file].content, {
+              config,
+              data,
+              javascripts,
+              stylesheets,
+              javascriptBundleFingerprint,
+              pages: filterBy(__pages)
+            });
+          }
 
-        if (filename === 'index/') {
-          fs.outputFileSync(__public('index.html'), output);
-        } else {
-          fs.outputFileSync(__public('index.html', filename), output);
+          filename = pathname(file);
+
+          if (filename === 'index/') {
+            fs.outputFileSync(__public('index.html'), output);
+          } else {
+            fs.outputFileSync(__public('index.html', filename), output);
+          }
+        } catch (error) {
+          console.log(error.message);
         }
       }
       break;
