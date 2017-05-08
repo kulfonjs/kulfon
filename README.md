@@ -21,6 +21,12 @@ _This software is still under **active development** and not feature complete or
 
 While you're hesitating, listen to this wonderful [Kulfon song][5]!
 
+## Demo
+
+Kulfon does live reloading by default in development mode.
+
+[![Kulfon: Hot Reloading](https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-intro.gif)](https://kulfon.net)
+
 ## Why Kulfon?
 
 There is a ton of static site generators out there. Here are few points to
