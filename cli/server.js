@@ -26,7 +26,7 @@ function recompile(file) {
 
   debug(`file to recompile: ${file}`);
   if (prefix.match(/layouts|partials|data/)) {
-    transform('pages');
+    transform('pages')();
   } else {
     compile(prefix)(file);
   }
