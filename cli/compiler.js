@@ -39,7 +39,7 @@ const Sugar = require('sugar-date');
 const livereload = require('rollup-plugin-livereload');
 const svgo = require('svgo');
 
-const { unique, concat, merge, isEmpty, slugify } = require('./util');
+const { unique, concat, merge, isEmpty, slugify, exists } = require('./util');
 
 const currentDirectory = process.cwd();
 Sugar.Date.extend();
@@ -121,6 +121,9 @@ function compile(prefix) {
   switch (prefix) {
     case 'images':
       compiler = async file => {
+        const imageExists = await exists(__public(file, 'images'));
+        if (imageExists) return;
+
         switch (path.extname(file)) {
           case '.svg':
             const data = await fs.readFileAsync(__current('images', file), 'utf8');

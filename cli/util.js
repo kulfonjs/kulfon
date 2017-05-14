@@ -11,6 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require('fs-extra'));
+
 let unique = _ => [...new Set(_)];
 
 let concat = (a, b) => a.concat(b);
@@ -43,6 +46,15 @@ function slugify(text) {
     .replace(/[\s\W-]+/g, '-')
 }
 
+async function exists(pathname) {
+  try {
+    let stats = await fs.statAsync(pathname);
+    return true
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   unique,
   concat,
@@ -50,4 +62,5 @@ module.exports = {
   isEmpty,
   isObject,
   slugify,
+  exists,
 };
