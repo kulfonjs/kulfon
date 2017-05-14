@@ -192,7 +192,7 @@ function compile(prefix) {
           output = result.css;
           filename = `${path.basename(file, path.extname(file))}.css`;
 
-          fs.writeFileSync(__public(filename), output);
+          await fs.writeFileAsync(__public(filename), output);
         } catch (error) {
           console.log(error.formatted);
         }
@@ -245,9 +245,9 @@ function compile(prefix) {
           filename = pathname(file);
 
           if (filename === 'index/') {
-            fs.outputFileSync(__public('index.html'), output);
+            await fs.outputFileAsync(__public('index.html'), output);
           } else {
-            fs.outputFileSync(__public('index.html', filename), output);
+            await fs.outputFileAsync(__public('index.html', filename), output);
           }
         } catch (error) {
           console.log(error.message);
@@ -285,10 +285,9 @@ function pathname(file) {
   }
 }
 
-function loadConfig() {
-  config = yaml.safeLoad(
-    fs.readFileSync(path.join(currentDirectory, 'config.yml'), 'utf8')
-  );
+async function loadConfig() {
+  const yamlContent = await fs.readFileAsync(path.join(currentDirectory, 'config.yml'), 'utf8')
+  config = yaml.safeLoad(yamlContent);
 }
 
 async function loadData() {
@@ -365,24 +364,25 @@ function transform(prefix) {
   }
 }
 
-function compileAll({ dir, env }) {
+async function compileAll({ dir, env }) {
   process.env.KULFON_ENV = env;
 
-  return Promise.resolve(['website'])
-    .then(() => fs.ensureDirAsync('public/images'))
-    .then(loadConfig)
-    .then(loadData)
-    .then(transform('stylesheets'))
-    .then(transform('images'))
-    .then(transform('javascripts'))
-    .then(transform('pages'))
-    .catch(error => {
-      console.log(
-        'Error: '.red + 'it seems you are not in `kulfon` compatible directory'
-      );
-      console.error(error.message);
-      process.exit();
-    });
+  try {
+    await fs.ensureDirAsync('public/images');
+    await loadConfig();
+    await loadData();
+
+    await transform('stylesheets')();
+    await transform('images')();
+    await transform('javascripts')();
+    await transform('pages')();
+  } catch (error) {
+    console.log(
+      'Error: '.red + 'it seems you are not in `kulfon` compatible directory'
+    );
+    console.error(error.message);
+    process.exit();
+  }
 }
 
 module.exports = {
