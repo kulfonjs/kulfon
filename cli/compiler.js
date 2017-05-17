@@ -39,14 +39,14 @@ const Sugar = require('sugar-date');
 const livereload = require('rollup-plugin-livereload');
 const svgo = require('svgo');
 
-const { unique, concat, merge, isEmpty, slugify, exists } = require('./util');
+const { 
+  unique, concat, merge, isEmpty, slugify, exists,
+  print, println,
+} = require('./util');
 
 const currentDirectory = process.cwd();
 Sugar.Date.extend();
 const svgOptimizer = new svgo({})
-
-function print(text) { process.stdout.write(text); }
-function println(text) { process.stdout.write(text + '\n'); }
 
 EXTENSIONS = {
   'images': ['.jpg', '.png', '.jpeg', '.svg'],
@@ -172,7 +172,7 @@ function compile(prefix) {
           }
           return bundle.write(options);
         } catch (error) {
-          console.log(error.message);
+          println(error.message);
         }
       }
       break;
@@ -194,7 +194,7 @@ function compile(prefix) {
 
           await fs.writeFileAsync(__public(filename), output);
         } catch (error) {
-          console.log(error.formatted);
+          println(error.formatted);
         }
       }
       break;
@@ -250,7 +250,7 @@ function compile(prefix) {
             await fs.outputFileAsync(__public('index.html', filename), output);
           }
         } catch (error) {
-          console.log(error.message);
+          println(error.message);
         }
       }
       break;
@@ -377,7 +377,7 @@ async function compileAll({ dir, env }) {
     await transform('javascripts')();
     await transform('pages')();
   } catch (error) {
-    console.log(
+    println(
       'Error: '.red + 'it seems you are not in `kulfon` compatible directory'
     );
     console.error(error.message);

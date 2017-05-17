@@ -14,6 +14,8 @@
 const axios = require('axios');
 const chalk = require('chalk');
 
+const { println } = require('./util');
+
 async function search({ name, page }) {
   const options = {
     url: 'https://api.npms.io/v2/search',
@@ -29,12 +31,12 @@ async function search({ name, page }) {
   try {
     let response = await axios(options);
     response.data.results.map(_ =>
-      console.log(
+      println(
         `${_.package.name} - ${chalk.dim(_.package.links.npm)} : ${chalk.dim(_.package.links.repository)}`
       )
     );
   } catch (error) {
-    console.log(error.message);
+    println(error.message);
   }
 }
 

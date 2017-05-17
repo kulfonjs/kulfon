@@ -55,6 +55,9 @@ async function exists(pathname) {
   }
 }
 
+function print(text) { process.stdout.write(text); }
+function println(text) { process.stdout.write(text + '\n'); }
+
 module.exports = {
   unique,
   concat,
@@ -63,4 +66,6 @@ module.exports = {
   isObject,
   slugify,
   exists,
+  print,
+  println,
 };

@@ -17,6 +17,10 @@ const yaml = require('js-yaml');
 const { join } = require('path');
 const Rsync = require('rsync');
 
+const {
+  println
+} = require('./util');
+
 const cwd = process.cwd();
 
 async function deploy() {
@@ -24,21 +28,21 @@ async function deploy() {
   const { server, path } = config.deploy;
 
   if (!server || !path) { 
-    console.log('Error: `server` or `path` not defined');
+    println('Error: `server` or `path` not defined');
     process.exit();
   }
 
-  console.log(`Deploying on ${server} to ${path} ...`)
+  println(`Deploying on ${server} to ${path} ...`)
 
   const sync = new Rsync()
     .flags('azP')
     .source(join(cwd, 'public/'))
     .destination(`${server}:${path}`);
 
-  console.log(sync.command());
+  println(sync.command());
 
   sync.execute((error, code) => {
-    console.log('done', code);
+    println('done', code);
   })
 }
 

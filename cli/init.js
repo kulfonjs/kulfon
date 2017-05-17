@@ -15,6 +15,8 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs-extra'));
 const path = require('path');
 
+const { println } = require('./util');
+
 const currentDirectory = process.cwd();
 
 async function init({ dir, theme }) {
@@ -31,12 +33,12 @@ async function init({ dir, theme }) {
 
     await fs.copyAsync(themeDir, path.join(currentDirectory, dir));
 
-    console.log('done'.green);
+    println('done'.green);
   } catch (error) {
     if (error.code === 'ENOENT') {
-      console.log('Error: '.red + `There is no theme named ${theme.yellow}. Here's the list of themes: https://kulfon.net/themes/`)
+      println('Error: '.red + `There is no theme named ${theme.yellow}. Here's the list of themes: https://kulfon.net/themes/`)
     } else {
-      console.log('error: '.red + error.message);
+      println('error: '.red + error.message);
     }
   }
 

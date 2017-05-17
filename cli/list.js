@@ -16,6 +16,8 @@ const path = require('path');
 const fs = Promise.promisifyAll(require('fs-extra'));
 const yaml = require('js-yaml');
 
+const { println } = require('./util');
+
 const currentDirectory = process.cwd();
 const registryPath = path.join(__dirname, '..', 'registry.yml');
 const websiteConfigPath = path.join(currentDirectory, 'config.yml');
@@ -24,8 +26,8 @@ const themesDir = path.join(path.resolve(__dirname, '..'), 'themes');
 function list({ name }) {
   switch (name) {
     case 'themes':
-      console.log(`Available themes to use with ${'init'.yellow} command`);
-      fs.readdirAsync(themesDir).map(_ => console.log(`- ${_}`));
+      println(`Available themes to use with ${'init'.yellow} command`);
+      fs.readdirAsync(themesDir).map(_ => println(`- ${_}`));
       break;
     case 'deps':
     case 'assets':

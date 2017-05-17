@@ -17,6 +17,8 @@ const { compile, transform, compileAll } = require('./compiler');
 const path = require('path');
 const colors = require('colors');
 
+const { println } = require('./util');
+
 const debug = require('debug')('server');
 
 function recompile(file) {
@@ -47,12 +49,12 @@ async function serve({ port, dir }) {
   const app = new Huncwot({ staticDir: './public' });
 
   app.on('error', err => {
-    console.log('Error: '.red + err.message);
+    println('Error: '.red + err.message);
   });
 
   app.listen(port);
   
-  console.log(`---\nServer running at http://localhost:${port}`)
+  println(`---\nServer running at http://localhost:${port}`)
 }
 
 module.exports = {

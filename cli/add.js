@@ -17,6 +17,8 @@ const path = require('path');
 const yaml = require('js-yaml');
 const merge = require('deepmerge');
 
+const { println } = require('./util');
+
 const exec = Promise.promisify(require('child_process').exec);
 
 const currentDirectory = process.cwd();
@@ -44,7 +46,7 @@ async function add({ asset }) {
   let seen = false; // XXX Ugly
 
   if (!registry[name]) {
-    console.log(
+    println(
       `${'Error'.red}: ${name.yellow} is not yet supported. \n
       If you know how to integrate that module manually,
       please contribute your solution to https://github.com/zaiste/kulfon/blob/master/registry.yml`
@@ -65,14 +67,14 @@ async function add({ asset }) {
         if (!seen) {
           if (packages.includes(name)) {
             // already installed
-            console.log(`${name.yellow} is already installed`);
+            println(`${name.yellow} is already installed`);
             seen = true;
           } else {
             exec(`yarn add ${name}`)
               .then((stdout, stderr) => {
-                console.log(stdout);
+                println(stdout);
               })
-              .catch(console.log);
+              .catch(println);
             // XXX install the package via NPM
             includePaths.push(`node_modules/${name}/${path.dirname(item)}`); // just get the dir
           }
@@ -94,9 +96,9 @@ async function add({ asset }) {
       path.join(currentDirectory, 'config.yml'),
       yaml.safeDump(updatedConfig)
     );
-    console.log(`Updating configuration... ${'done'.green}`);
+    println(`Updating configuration... ${'done'.green}`);
   } catch (error) {
-    console.log(err.message);
+    println(err.message);
   }
 }
 
