@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "devDependencies": {
     "ava": "^0.19.1",
-    "debug": "^2.6.6",
+    "debug": "^2.6.8",
     "nixt": "^0.5.0"
   },
   "engines": {
@@ -54,25 +54,25 @@
     "global": "^4.3.2",
     "gray-matter": "^2.1.1",
     "highlight.js": "^9.11.0",
-    "huncwot": "^0.6.2",
+    "huncwot": "^0.7.0",
     "js-yaml": "^3.8.4",
     "markdown-it": "^8.3.1",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.5.3",
     "nunjucks": "^3.0.0",
     "nunjucks-markdown": "^2.0.1",
     "open": "^0.0.5",
     "rollup": "^0.41.6",
     "rollup-plugin-livereload": "^0.4.0",
-    "rollup-plugin-uglify": "^1.0.2",
+    "rollup-plugin-uglify": "^2.0.0",
     "rsync": "^0.6.1",
     "sha1": "^1.1.1",
     "sugar-date": "^2.0.4",
     "svgo": "svg/svgo",
     "tmp": "^0.0.31",
-    "uglify-js": "^3.0.4",
+    "uglify-js": "^3.0.9",
     "upath": "^1.0.0",
     "yargs": "^8.0.1",
-    "yarn": "^0.23.4"
+    "yarn": "^0.24.4"
   },
   "bin": {
     "kulfon": "cli.js"
