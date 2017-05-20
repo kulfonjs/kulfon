@@ -42,14 +42,13 @@ convince you to try **Kulfon**
 * unified approach to external dependencies management with either [unpkg][13] or [Yarn][4]
 * [HTTP/2][14] ready
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  
 
 - [Why Kulfon?](#why-kulfon)
 - [Installation](#installation)
 - [Getting started](#getting-started)
 - [Compiling the project](#compiling-the-project)
+- [Deploying](#deploying)
 - [Data files](#data-files)
 - [Front matter](#front-matter)
 - [Meta headers](#meta-headers)
@@ -66,8 +65,6 @@ convince you to try **Kulfon**
 - [Roadmap](#roadmap)
 - [Websites that use Kulfon](#websites-that-use-kulfon)
 - [Bug reports](#bug-reports)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 ## Installation
@@ -134,6 +131,18 @@ kulfon
 You can quickly compile your website using `kulfon compile`. This will generate
 `public` directory which should be copied to your remote server to be handled by
 a web server such as Apache or Nginx.
+
+## Deploying
+
+Kulfon can deploy your website to a remote location using [rsync][20]. You need to specify the server as IP or alias from `.ssh/config`, the the path in your `config.yml`.
+
+```
+deploy:
+  server: nu02
+  path: /srv/www/17.polyconf.com
+```
+
+Once configured, you can issue `kulfon deploy` to upload your website to the specified location.
 
 ## Data files
 
