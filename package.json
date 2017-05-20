@@ -1,7 +1,7 @@
 {
   "name": "kulfon",
   "description": "Kulfon is a modern static site generator written in JavaScript.",
-  "version": "0.11.2",
+  "version": "0.12.0",
   "main": "./lib/index.js",
   "devDependencies": {
     "ava": "^0.19.1",
