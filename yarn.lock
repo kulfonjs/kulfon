@@ -1286,13 +1286,7 @@ death@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/death/-/death-1.1.0.tgz#01aa9c401edd92750514470b8266390c66c67318"
 
-debug@^2.1.1, debug@^2.2.0, debug@^2.4.5:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.6.tgz#a9fa6fbe9ca43cf1e79f73b75c0189cbb7d6db5a"
-  dependencies:
-    ms "0.7.3"
-
-debug@^2.6.7, debug@^2.6.8:
+debug@^2.1.1, debug@^2.2.0, debug@^2.4.5, debug@^2.6.8:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -1950,18 +1944,18 @@ hullabaloo-config-manager@^1.0.0:
     pkg-dir "^1.0.0"
     resolve-from "^2.0.0"
 
-huncwot@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/huncwot/-/huncwot-0.7.0.tgz#8e3d8ba8a3012d449bc197d5d128f1f6d9ba5e99"
+huncwot@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/huncwot/-/huncwot-0.8.0.tgz#bd3667c88533ab2adba15f6b3c26f0681ef90570"
   dependencies:
     basic-auth "^1.1.0"
     bluebird "^3.5.0"
     chokidar "^1.7.0"
-    debug "^2.6.7"
+    debug "^2.6.8"
     fs-extra "^3.0.1"
     lasso "^2.11.11"
     lasso-marko "^2.3.0"
-    marko "^4.3.1"
+    marko "^4.4.2"
     marko-path-router "^0.3.0"
     mime-types "^2.1.15"
     path-to-regexp "^1.7.0"
@@ -2755,7 +2749,7 @@ marko@^4.2.8:
     try-require "^1.2.1"
     warp10 "^1.0.0"
 
-marko@^4.3.1:
+marko@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/marko/-/marko-4.4.2.tgz#bf19679673ed2ca2432616e3278fb353fe887407"
   dependencies:
@@ -2917,13 +2911,13 @@ ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
-ms@0.7.3, ms@^0.7.1:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
-
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+
+ms@^0.7.1:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
 
 multimatch@^2.1.0:
   version "2.1.0"
@@ -4296,6 +4290,13 @@ uglify-js@^2.7.3:
     yargs "~3.10.0"
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
+
+uglify-js@^3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.10.tgz#e220e7dbc05ce1f9bb08268b221aa0cf152fb4e2"
+  dependencies:
+    commander "~2.9.0"
+    source-map "~0.5.1"
 
 uglify-js@^3.0.9:
   version "3.0.9"
