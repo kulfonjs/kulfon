@@ -1,4 +1,7 @@
 includePaths: []
 stylesheets:
-  - https://unpkg.com/tachyons@4.6.1/css/tachyons.css
+  - https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css
 javascripts: []
+deploy:
+  server:
+  path:

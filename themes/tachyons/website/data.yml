@@ -1,5 +1,5 @@
-title: Kulfon
-dummy: Edit texts in `data.yml` and the structure of this section in `partials/navigation.html`
+title: Your great website powered by Kulfon
+dummy: Edit this text in 'data.yml'
 
 meta:
   description: Dummy meta description
@@ -16,4 +16,3 @@ meta:
     image:
       url: https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg
     domain: kulfon.net
-
