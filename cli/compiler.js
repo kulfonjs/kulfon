@@ -39,12 +39,15 @@ const Sugar = require('sugar-date');
 const livereload = require('rollup-plugin-livereload');
 const svgo = require('svgo');
 
+const spawn = require( 'child_process' ).spawnSync;
+
 const { 
   unique, concat, merge, isEmpty, slugify, exists,
   print, println,
 } = require('./util');
 
 const currentDirectory = process.cwd();
+const cwd = process.cwd();
 Sugar.Date.extend();
 const svgOptimizer = new svgo({})
 
@@ -364,11 +367,52 @@ function transform(prefix) {
   }
 }
 
+async function checkDirectoryStructure() {
+  const paths = [
+    'website/images',
+    'website/javascripts',
+    'website/layouts',
+    'website/pages',
+    'website/partials',
+    'website/stylesheets',
+  ].map(el => path.join(cwd, el));
+
+  const result = await Promise.resolve(paths)
+    .map(fs.pathExists)
+    .all()
+
+  if (! result.every(_ => _))  {
+    const tree = spawn('tree', ['-d', `.`]).stdout;
+    throw new WrongDirectoryError(`It seems you are not in 'kulfon' compatible directory. Here's the proper structure:
+
+. (your project root)
+└── website
+  ├── images
+  ├── javascripts
+  ├── layouts
+  ├── pages
+  ├── partials
+  └── stylesheets
+
+but your current directory at '${cwd}' looks like this:
+
+${tree}
+    `);
+  }
+}
+
+class WrongDirectoryError extends Error {
+  constructor(message) {
+    super(message);
+  }
+}
+
 async function compileAll({ dir, env }) {
   process.env.KULFON_ENV = env;
 
   try {
     await fs.ensureDirAsync('public/images');
+    await checkDirectoryStructure()
     await loadConfig();
     await loadData();
 
@@ -377,10 +421,7 @@ async function compileAll({ dir, env }) {
     await transform('javascripts')();
     await transform('pages')();
   } catch (error) {
-    println(
-      'Error: '.red + 'it seems you are not in `kulfon` compatible directory'
-    );
-    console.error(error.message);
+    println('Error: '.red + error.message); 
     process.exit();
   }
 }
