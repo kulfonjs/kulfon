@@ -21,9 +21,9 @@ const { println } = require('./util');
 
 const exec = Promise.promisify(require('child_process').exec);
 
-const currentDirectory = process.cwd();
+const cwd = process.cwd();
 const registryPath = path.join(__dirname, '..', 'registry.yml');
-const websiteConfigPath = path.join(currentDirectory, 'config.yml');
+const websiteConfigPath = path.join(cwd, 'config.yml');
 
 const { unique, concat } = require('./util');
 
@@ -70,11 +70,13 @@ async function add({ asset }) {
             println(`${name.yellow} is already installed`);
             seen = true;
           } else {
-            exec(`yarn add ${name}`)
-              .then((stdout, stderr) => {
-                println(stdout);
-              })
-              .catch(println);
+            try { 
+              let { stdout, stderr } = await exec(`yarn add ${name}`)
+              println(stdout);
+            } catch (error) {
+              println(error.message);
+            }
+
             // XXX install the package via NPM
             includePaths.push(`node_modules/${name}/${path.dirname(item)}`); // just get the dir
           }
@@ -93,7 +95,7 @@ async function add({ asset }) {
 
   try {
     await fs.outputFileAsync(
-      path.join(currentDirectory, 'config.yml'),
+      path.join(cwd, 'config.yml'),
       yaml.safeDump(updatedConfig)
     );
     println(`Updating configuration... ${'done'.green}`);
