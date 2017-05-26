@@ -13,7 +13,7 @@
 
 const Huncwot = require('huncwot');
 const chokidar = require('chokidar');
-const { compile, transform, compileAll } = require('./compiler');
+const { compile, transform, compileAll, loadData } = require('./compiler');
 const path = require('path');
 const colors = require('colors');
 
@@ -21,14 +21,15 @@ const { println } = require('./util');
 
 const debug = require('debug')('server');
 
-function recompile(file) {
+async function recompile(file) {
   let fileSegments = file.split(path.sep);
   const prefix = fileSegments.shift();
   file = path.join(...fileSegments);
 
   debug(`file to recompile: ${file}`);
   if (prefix.match(/layouts|partials|data/)) {
-    transform('pages')();
+    await loadData()
+    await transform('pages')();
   } else {
     compile(prefix)(file);
   }

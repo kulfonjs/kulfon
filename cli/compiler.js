@@ -430,6 +430,7 @@ module.exports = {
   compile,
   transform,
   compileAll,
+  loadData,
   handler: compileAll,
   builder: _ =>
     _.option('environment', { alias: ['e', 'env'], default: 'production' }).default(
