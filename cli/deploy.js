@@ -23,7 +23,7 @@ const {
 
 const cwd = process.cwd();
 
-async function deploy() {
+async function deploy({ dry }) {
   const config = yaml.safeLoad(fs.readFileSync(join(cwd, 'config.yml'), 'utf8'));
   const { server, path } = config.deploy;
 
@@ -34,10 +34,15 @@ async function deploy() {
 
   println(`Deploying on ${server} to ${path} ...`)
 
-  const sync = new Rsync()
+  let sync = new Rsync()
     .flags('azP')
     .source(join(cwd, 'public/'))
     .destination(`${server}:${path}`);
+
+  if (dry) { 
+    println('Dry run...')
+    sync.dry()
+  }
 
   println(sync.command());
 
@@ -49,4 +54,5 @@ async function deploy() {
 module.exports = {
   handler: deploy,
   builder: _ => _
+    .option('dry', { alias: 'n', describe: 'Dry run for deploy with rsync', default: false })
 };
