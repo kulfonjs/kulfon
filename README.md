@@ -180,16 +180,6 @@ Kulfon can search NPM registry using NPMS API, e.g.
 
 By default it fetches the first `25` results that match the specified query. If there is more than `25` results, you can paginate that list using `--page` (or `-p`) parameter with default `1` for the first page i.e. the first 25 results and `2` for the next `25` results, etc.
 
-## Themes
-
-Kulfon comes with several themes out-of-the-box. You can check the list of available theme at https://kulfon.net/themes/ or via `kulfon list themes`.
-
-By default when initialising a new website, Kulfon uses [default][16] theme. You can specify another theme to use with `--theme` option (or `-t` for short)
-
-    kulfon init new-website --theme bare
-
-It is very easy to create your own theme: you just need to create a website structure which will be used as the template at the initialisation stage. Feel free to contribute that theme to this repository.
-
 ## Blog support
 
 Kulfon supports simple blog management. Let's start by creating a `blog` directory inside `pages`. Each post would be just a `html` or `markdown` file inside that directory. Additionally, you can prefix your files with a date to include it in the generated URL e.g. `2016-12_here_goes_my_blog_post_title.md` would be generated as `/blog/2016/12/here_goes_my_blog_post_title`.
@@ -275,6 +265,24 @@ and then you need to include `bootstrap` at the top of `stylesheets/styles.scss`
 ## Roadmap
 
 Kulfon keeps track of the upcoming fixes and features on GitHub Projects: [Kulfon Roadmap](https://github.com/zaiste/kulfon/projects/1)
+
+## Themes
+
+Kulfon comes with several themes out-of-the-box. You can check the list of available theme at https://kulfon.net/themes/ or via `kulfon list themes`.
+
+By default when initialising a new website, Kulfon uses [default][16] theme. You can specify another theme to use with `--theme` option (or `-t` for short)
+
+    kulfon init new-website --theme bare
+
+It is very easy to create your own theme: you just need to create a website structure which will be used as the template at the initialisation stage. Feel free to contribute that theme to this repository.
+
+### `bare`
+
+### `default`
+
+### `3column`
+
+### `tachyons`
 
 ## Websites that use Kulfon
 
