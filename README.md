@@ -278,11 +278,24 @@ It is very easy to create your own theme: you just need to create a website stru
 
 ### `bare`
 
+This is the most basic theme that provides a minimal directory structure that can be transformed by Kulfon. There is no styling nor additional scripts.
+
+![Kulfon Theme: Bare](https://raw.githubusercontent.com/zaiste/kulfon/master/themes/theme-bare.png)]
+
 ### `default`
 
-### `3column`
+Default theme comes with a preconfigured CSS framework called Bulma. It provides basic views and components such as navigation, landing and footer.
+
+![Kulfon Theme: Default](https://raw.githubusercontent.com/zaiste/kulfon/master/themes/theme-default.png)]
+
+### `3columns`
+
+This is a more elaborated page structure with 3 columns.
+
 
 ### `tachyons`
+
+![Kulfon Theme: Tachyons](https://raw.githubusercontent.com/zaiste/kulfon/master/themes/theme-tachyons.png)]
 
 ## Websites that use Kulfon
 
