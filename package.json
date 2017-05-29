@@ -69,7 +69,7 @@
     "sugar-date": "^2.0.4",
     "svgo": "svg/svgo",
     "tmp": "^0.0.31",
-    "uglify-js": "^3.0.12",
+    "uglify-js": "^3.0.13",
     "upath": "^1.0.0",
     "yargs": "^8.0.1",
     "yarn": "^0.24.5"
