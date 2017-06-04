@@ -45,7 +45,7 @@
     "url": "https://github.com/zaiste/kulfon"
   },
   "dependencies": {
-    "axios": "^0.16.1",
+    "axios": "^0.16.2",
     "bluebird": "^3.5.0",
     "chokidar": "^1.7.0",
     "colors": "^1.1.2",
@@ -54,7 +54,7 @@
     "global": "^4.3.2",
     "gray-matter": "^2.1.1",
     "highlight.js": "^9.12.0",
-    "huncwot": "^0.9.0",
+    "huncwot": "^0.10.0",
     "js-yaml": "^3.8.4",
     "markdown-it": "^8.3.1",
     "marko": "^4.4.9",
@@ -62,7 +62,7 @@
     "nunjucks": "^3.0.1",
     "nunjucks-markdown": "^2.0.1",
     "open": "^0.0.5",
-    "rollup": "^0.41.6",
+    "rollup": "^0.42.0",
     "rollup-plugin-livereload": "^0.4.0",
     "rollup-plugin-uglify": "^2.0.1",
     "rsync": "^0.6.1",
