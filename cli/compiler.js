@@ -421,7 +421,7 @@ async function compileAll({ dir, env }) {
     await transform('javascripts')();
     await transform('pages')();
   } catch (error) {
-    println('Error: '.red + error.message); 
+    console.error('Error: '.red + error.message); 
     process.exit();
   }
 }
