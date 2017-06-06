@@ -382,7 +382,7 @@ async function checkDirectoryStructure() {
     .all()
 
   if (! result.every(_ => _))  {
-    const tree = spawn('tree', ['-d', `.`]).stdout;
+    const tree = spawn('tree', ['-d', '-I', 'node_modules'], { cwd: '.' });
     throw new WrongDirectoryError(`It seems you are not in 'kulfon' compatible directory. Here's the proper structure:
 
 . (your project root)
@@ -396,7 +396,7 @@ async function checkDirectoryStructure() {
 
 but your current directory at '${cwd}' looks like this:
 
-${tree}
+${tree.stdout}
     `);
   }
 }
