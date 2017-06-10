@@ -57,7 +57,7 @@
     "huncwot": "^0.10.0",
     "js-yaml": "^3.8.4",
     "markdown-it": "^8.3.1",
-    "marko": "^4.4.9",
+    "marko": "^4.4.11",
     "node-sass": "^4.5.3",
     "nunjucks": "^3.0.1",
     "nunjucks-markdown": "^2.0.1",
