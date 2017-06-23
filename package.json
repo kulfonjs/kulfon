@@ -57,7 +57,7 @@
     "huncwot": "^0.10.0",
     "js-yaml": "^3.8.4",
     "markdown-it": "^8.3.1",
-    "marko": "^4.4.15",
+    "marko": "^4.4.16",
     "node-sass": "^4.5.3",
     "nunjucks": "^3.0.1",
     "nunjucks-markdown": "^2.0.1",
@@ -70,7 +70,7 @@
     "sugar-date": "^2.0.4",
     "svgo": "svg/svgo",
     "tmp": "^0.0.31",
-    "uglify-js": "^3.0.18",
+    "uglify-js": "^3.0.19",
     "upath": "^1.0.0",
     "yargs": "^8.0.2",
     "yarn": "^0.24.5"

@@ -2750,9 +2750,9 @@ marko@^4.2.8, marko@^4.4.9:
     try-require "^1.2.1"
     warp10 "^1.0.0"
 
-marko@^4.4.15:
-  version "4.4.15"
-  resolved "https://registry.yarnpkg.com/marko/-/marko-4.4.15.tgz#7fe0c08cbc24bc0a6e9c71bb3b99826917c55c40"
+marko@^4.4.16:
+  version "4.4.16"
+  resolved "https://registry.yarnpkg.com/marko/-/marko-4.4.16.tgz#bff9e175717cea8248864fcde7d725e45cd79963"
   dependencies:
     app-module-path "^2.2.0"
     argly "^1.0.0"
@@ -4291,7 +4291,14 @@ uglify-js@^2.7.3:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@^3.0.18, uglify-js@^3.0.9:
+uglify-js@^3.0.19:
+  version "3.0.19"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.19.tgz#ab1dfe2a171361b81fa9ffb3383461ea384557ed"
+  dependencies:
+    commander "~2.9.0"
+    source-map "~0.5.1"
+
+uglify-js@^3.0.9:
   version "3.0.18"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.18.tgz#d67a3e5a0a08356b787fb1c9bddf3a807630902e"
   dependencies:
