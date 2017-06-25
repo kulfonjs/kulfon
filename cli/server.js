@@ -30,6 +30,8 @@ async function recompile(file) {
   if (prefix.match(/layouts|partials|data/)) {
     await loadData()
     await transform('pages')();
+  } else if (prefix.match(/stylesheets/)) {
+    await transform('stylesheets')();
   } else {
     compile(prefix)(file);
   }
