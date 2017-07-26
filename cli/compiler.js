@@ -223,7 +223,7 @@ function compile(prefix) {
 
           if (path.extname(file) === '.md') {
             const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0]
-            const layout = (await fs.pathExists(parentDir)) ? parentDir : 'base';
+            const layout = (await fs.pathExists(__current('pages', parentDir))) ? parentDir : 'base';
 
             output = nunjucks.render(`layouts/${layout}.html`, {
               config,
