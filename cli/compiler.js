@@ -234,31 +234,33 @@ function compile(prefix) {
             __data
           );
 
-          if (false && path.extname(file) === ".md") {
-            const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
-            const layout = (await fs.pathExists(__current("pages", parentDir)))
-              ? parentDir
-              : "base";
+          let renderString = __pages[file].content;
+          let renderParams = {
+            config,
+            data,
+            javascripts,
+            stylesheets,
+            javascriptBundleFingerprint,
+            pages: filterBy(__pages)
+          };
 
-            output = nunjucks.render(`layouts/${layout}.html`, {
-              config,
-              content,
-              data,
-              javascripts,
-              stylesheets,
-              javascriptBundleFingerprint,
-              pages: filterBy(__pages)
-            });
-          } else {
-            output = nunjucks.renderString(__pages[file].content, {
-              config,
-              data,
-              javascripts,
-              stylesheets,
-              javascriptBundleFingerprint,
-              pages: filterBy(__pages)
-            });
+          if (path.extname(file) === ".md") {
+            const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
+            const layout =
+              parentDir && (await fs.pathExists(__current("pages", parentDir)))
+                ? parentDir
+                : "base";
+
+            renderString = `
+              {% extends "layouts/${layout}.html" %}
+              {% block content %}
+                {{ md_content|safe }}
+              {% endblock %}`;
+
+            renderParams.md_content = content;
           }
+
+          output = nunjucks.renderString(renderString, renderParams);
 
           filename = pathname(file);
 
