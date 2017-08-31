@@ -141,20 +141,15 @@ function compile(prefix) {
   switch (prefix) {
     case "images":
       compiler = async file => {
-        const imageExists = await exists(__public(file, "images"));
-        if (imageExists) return;
-
         switch (path.extname(file)) {
           case ".svg":
-            const data = await fs.readFileAsync(
-              __current("images", file),
-              "utf8"
-            );
+            const data = fs.readFileSync(__current("images", file), "utf8");
             const result = await svgOptimizer.optimize(data);
             fs.writeFileSync(__public(file, "images"), result.data);
             break;
           default:
-            fs.copyAsync(__current("images", file), __public(file, "images"));
+            fs.copySync(__current("images", file), __public(file, "images"));
+            break;
         }
       };
       break;
@@ -213,7 +208,7 @@ function compile(prefix) {
         const filePath = __current(prefix, file);
         const outputFilePathWOExt = __public(
           path.join(
-            "stylesheets",
+            "stylesheets", // compile scss to subfolder
             path.dirname(file),
             path.basename(file, ".scss")
           )
@@ -287,7 +282,10 @@ function compile(prefix) {
           };
 
           if (path.extname(file) === ".md") {
-            const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
+            const parentDir = path
+              .parse(file)
+              .dir.split(path.sep)
+              .slice(-1)[0];
             const layout =
               parentDir && (await fs.pathExists(__current("layout", parentDir)))
                 ? parentDir
@@ -447,7 +445,9 @@ async function checkDirectoryStructure() {
     "website/stylesheets"
   ].map(el => path.join(cwd, el));
 
-  const result = await Promise.resolve(paths).map(fs.pathExists).all();
+  const result = await Promise.resolve(paths)
+    .map(fs.pathExists)
+    .all();
 
   if (!result.every(_ => _)) {
     const tree = spawn("tree", ["-d", "-I", "node_modules"], { cwd: "." });

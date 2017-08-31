@@ -1,1 +1,20 @@
-LOGO
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="200.000000pt" height="200.000000pt" viewBox="0 0 200.000000 200.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.15, written by Peter Selinger 2001-2017
+</metadata>
+<g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M5 1988 c-3 -7 -4 -456 -3 -998 l3 -985 995 0 995 0 0 995 0 995
+-993 3 c-789 2 -994 0 -997 -10z m1905 -988 l0 -910 -910 0 -910 0 0 910 0
+910 910 0 910 0 0 -910z"/>
+<path d="M770 1020 l0 -350 45 0 45 0 0 138 0 138 38 36 37 37 110 -171 c61
+-93 115 -172 121 -175 6 -2 32 -3 58 -1 l46 3 -135 199 c-74 110 -135 204
+-135 209 0 5 59 70 130 145 l130 137 -52 3 c-51 3 -54 2 -92 -40 -22 -24 -89
+-94 -148 -156 l-108 -113 0 155 0 156 -45 0 -45 0 0 -350z"/>
+</g>
+</svg>
