@@ -38,6 +38,10 @@ const matter = require("gray-matter");
 const Sugar = require("sugar-date");
 const livereload = require("rollup-plugin-livereload");
 const svgo = require("svgo");
+const postcss = require("postcss");
+const postcssSCSS = require("postcss-scss");
+const autoprefixer = require("autoprefixer");
+const filendir = require("filendir");
 
 const spawn = require("child_process").spawnSync;
 
@@ -163,7 +167,14 @@ function compile(prefix) {
           Object.assign(options, { plugins: [uglify({}, minify)] });
         } else {
           Object.assign(options, {
-            plugins: [livereload({ watch: "public", verbose: false })]
+            plugins: [
+              livereload({
+                watch: "public",
+                verbose: false,
+                applyCSSLive: false, // = workaround, because it kills livereload
+                applyImgLive: false
+              })
+            ]
           });
         }
 
@@ -192,23 +203,47 @@ function compile(prefix) {
       break;
     case "stylesheets":
       compiler = async file => {
-        let filePath = __current(prefix, file);
-
+        const filePath = __current(prefix, file);
+        const outputFilePathWOExt = __public(
+          path.join(
+            "stylesheets",
+            path.dirname(file),
+            path.basename(file, ".scss")
+          )
+        );
         try {
-          let result = await sass.renderAsync({
-            file: filePath,
-            includePaths: includePaths || [],
-            outputStyle: "compressed",
-            sourceMap: true,
-            outFile: __public("styles.css")
+          fs.readFile(filePath, (err, scss) => {
+            postcss([
+              autoprefixer({
+                browsers: [
+                  ">1%",
+                  "last 4 versions",
+                  "Firefox ESR",
+                  "not ie < 9"
+                ]
+              })
+            ])
+              .process(scss, {
+                from: filePath,
+                to: `${outputFilePathWOExt}.css`,
+                syntax: postcssSCSS,
+                map: true // = inline source maps
+              })
+              .then(
+                result => {
+                  // filendir is fs wrapper - it can create directories
+                  filendir.writeFileSync(
+                    `${outputFilePathWOExt}.css`,
+                    result.content
+                  );
+                },
+                error => {
+                  println(error);
+                }
+              );
           });
-
-          output = result.css;
-          filename = `${path.basename(file, path.extname(file))}.css`;
-
-          await fs.writeFileAsync(__public(filename), output);
         } catch (error) {
-          println(error.formatted);
+          println(error);
         }
       };
       break;
