@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
+@import "extra/extra.css";
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
   min-height: 100%;
   font-size: 18px;
-  font-family: 'Lato';
+  font-family: "Lato";
 }
 
 body {
@@ -18,12 +20,17 @@ body {
   flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
 }
 
 header {
-  background: #FEFEFE;
+  background: #fefefe;
   border-bottom: 1px solid #d9d9d9;
 }
 
