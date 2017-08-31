@@ -33,7 +33,8 @@
     "yaml",
     "content",
     "images",
-    "CMS"
+    "CMS",
+    "PostCSS"
   ],
   "author": {
     "name": "Zaiste",
@@ -45,6 +46,7 @@
     "url": "https://github.com/zaiste/kulfon"
   },
   "dependencies": {
+    "autoprefixer": "^7.1.3",
     "axios": "^0.16.2",
     "bluebird": "^3.5.1",
     "chokidar": "^1.7.0",
