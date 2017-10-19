@@ -254,7 +254,7 @@ function compile(prefix) {
           if (path.extname(file) === ".md") {
             const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
             const layout =
-              parentDir && (await fs.pathExists(__current("pages", parentDir)))
+              parentDir && (await fs.pathExists(__current("layout", parentDir)))
                 ? parentDir
                 : "base";
 
