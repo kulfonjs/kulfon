@@ -18,6 +18,7 @@ const nunjucks = require("nunjucks");
 const markdown = require("nunjucks-markdown");
 const hljs = require("highlight.js");
 const md = require("markdown-it")({
+  html: true,
   highlight: (str, lang) => {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -27,6 +28,12 @@ const md = require("markdown-it")({
     return ""; // use external default escaping
   }
 });
+
+md.use(require('markdown-it-anchor'));
+md.use(require('markdown-it-table-of-contents'), {
+  includeLevel: [1,2,3,4,5,6]
+});
+
 const fs = Promise.promisifyAll(require("fs-extra"));
 const path = require("path");
 const yaml = require("js-yaml");
@@ -247,7 +254,7 @@ function compile(prefix) {
           if (path.extname(file) === ".md") {
             const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
             const layout =
-              parentDir && (await fs.pathExists(__current("pages", parentDir)))
+              parentDir && (await fs.pathExists(__current("layout", parentDir)))
                 ? parentDir
                 : "base";
 
