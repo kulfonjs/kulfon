@@ -45,6 +45,10 @@ const matter = require("gray-matter");
 const Sugar = require("sugar-date");
 const livereload = require("rollup-plugin-livereload");
 const svgo = require("svgo");
+const postcss = require("postcss");
+const postcssSCSS = require("postcss-scss");
+const autoprefixer = require("autoprefixer");
+const filendir = require("filendir");
 
 const spawn = require("child_process").spawnSync;
 
@@ -137,20 +141,15 @@ function compile(prefix) {
   switch (prefix) {
     case "images":
       compiler = async file => {
-        const imageExists = await exists(__public(file, "images"));
-        if (imageExists) return;
-
         switch (path.extname(file)) {
           case ".svg":
-            const data = await fs.readFileAsync(
-              __current("images", file),
-              "utf8"
-            );
+            const data = fs.readFileSync(__current("images", file), "utf8");
             const result = await svgOptimizer.optimize(data);
             fs.writeFileSync(__public(file, "images"), result.data);
             break;
           default:
-            fs.copyAsync(__current("images", file), __public(file, "images"));
+            fs.copySync(__current("images", file), __public(file, "images"));
+            break;
         }
       };
       break;
@@ -170,7 +169,14 @@ function compile(prefix) {
           Object.assign(options, { plugins: [uglify({}, minify)] });
         } else {
           Object.assign(options, {
-            plugins: [livereload({ watch: "public", verbose: false })]
+            plugins: [
+              livereload({
+                watch: "public",
+                verbose: false,
+                applyCSSLive: false, // = workaround, because it kills livereload
+                applyImgLive: false
+              })
+            ]
           });
         }
 
@@ -199,23 +205,47 @@ function compile(prefix) {
       break;
     case "stylesheets":
       compiler = async file => {
-        let filePath = __current(prefix, file);
-
+        const filePath = __current(prefix, file);
+        const outputFilePathWOExt = __public(
+          path.join(
+            "stylesheets", // compile scss to subfolder
+            path.dirname(file),
+            path.basename(file, ".scss")
+          )
+        );
         try {
-          let result = await sass.renderAsync({
-            file: filePath,
-            includePaths: includePaths || [],
-            outputStyle: "compressed",
-            sourceMap: true,
-            outFile: __public("styles.css")
+          fs.readFile(filePath, (err, scss) => {
+            postcss([
+              autoprefixer({
+                browsers: [
+                  ">1%",
+                  "last 4 versions",
+                  "Firefox ESR",
+                  "not ie < 9"
+                ]
+              })
+            ])
+              .process(scss, {
+                from: filePath,
+                to: `${outputFilePathWOExt}.css`,
+                syntax: postcssSCSS,
+                map: true // = inline source maps
+              })
+              .then(
+                result => {
+                  // filendir is fs wrapper - it can create directories
+                  filendir.writeFileSync(
+                    `${outputFilePathWOExt}.css`,
+                    result.content
+                  );
+                },
+                error => {
+                  println(error);
+                }
+              );
           });
-
-          output = result.css;
-          filename = `${path.basename(file, path.extname(file))}.css`;
-
-          await fs.writeFileAsync(__public(filename), output);
         } catch (error) {
-          println(error.formatted);
+          println(error);
         }
       };
       break;
@@ -252,7 +282,10 @@ function compile(prefix) {
           };
 
           if (path.extname(file) === ".md") {
-            const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
+            const parentDir = path
+              .parse(file)
+              .dir.split(path.sep)
+              .slice(-1)[0];
             const layout =
               parentDir && (await fs.pathExists(__current("layout", parentDir)))
                 ? parentDir
@@ -412,7 +445,9 @@ async function checkDirectoryStructure() {
     "website/stylesheets"
   ].map(el => path.join(cwd, el));
 
-  const result = await Promise.resolve(paths).map(fs.pathExists).all();
+  const result = await Promise.resolve(paths)
+    .map(fs.pathExists)
+    .all();
 
   if (!result.every(_ => _)) {
     const tree = spawn("tree", ["-d", "-I", "node_modules"], { cwd: "." });
