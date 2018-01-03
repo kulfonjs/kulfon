@@ -253,18 +253,18 @@ function compile(prefix) {
 
           if (path.extname(file) === ".md") {
             const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
+
+            const foo = await fs.pathExists(__current("layouts", path.format({ name: parentDir, ext: '.html' })));
+
             const layout =
-              parentDir && (await fs.pathExists(__current("layout", parentDir)))
+              parentDir && foo
                 ? parentDir
                 : "base";
 
             renderString = `
-              {% extends "layouts/${layout}.html" %}
-              {% block content %}
-                {{ md_content|safe }}
-              {% endblock %}`;
+              {% extends "layouts/${layout}.html" %}`;
 
-            renderParams.md_content = content;
+            renderParams.content = content;
           }
 
           output = nunjucks.renderString(renderString, renderParams);
