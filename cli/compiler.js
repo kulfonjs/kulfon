@@ -296,6 +296,8 @@ function pathname(file) {
   const segments = name.split("_");
   let d = Date.parse(segments[0]);
 
+  const prefix = config.blog ? config.blog.prefix === true : false;
+
   if (d) {
     d = new Date(d);
 
@@ -304,7 +306,11 @@ function pathname(file) {
     const day = String(d.getDate());
     const rest = segments.slice(1).join("_");
 
-    return path.join(dir, year, month, rest, "/");
+    if (prefix) {
+      return path.join(dir, year, month, rest, "/");
+    } else {
+      return path.join(dir, rest, "/");
+    }
   } else if (name === "index") {
     return "";
   } else {
