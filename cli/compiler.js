@@ -161,7 +161,7 @@ function compile(prefix) {
           .reduce((acc, name) => Object.assign(acc, { [name]: name }), {});
 
         let options = {
-          entry: path.join(currentDirectory, "website/javascripts", "main.js"),
+          input: path.join(currentDirectory, "website/javascripts", "main.js"),
           cache: cache,
           external: Object.keys(dependencies)
         };
@@ -185,7 +185,7 @@ function compile(prefix) {
 
           options = {
             format: "iife",
-            dest: __public(
+            file: __public(
               ENV === "production"
                 ? `bundle.${javascriptBundleFingerprint}.js`
                 : "bundle.js"
