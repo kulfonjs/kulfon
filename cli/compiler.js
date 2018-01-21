@@ -52,6 +52,7 @@ const {
   unique,
   concat,
   merge,
+  flatten,
   isEmpty,
   slugify,
   exists,
@@ -296,7 +297,7 @@ function pathname(file) {
   const segments = name.split("_");
   let d = Date.parse(segments[0]);
 
-  const prefix = config.blog ? config.blog.prefix === true : false;
+  const prefix = config.blog ? config.blog.prefix : false;
 
   if (d) {
     d = new Date(d);
@@ -306,8 +307,10 @@ function pathname(file) {
     const day = String(d.getDate());
     const rest = segments.slice(1).join("_");
 
-    if (prefix) {
+    if (prefix === 'blog') {
       return path.join(dir, year, month, rest, "/");
+    } else if (prefix === 'none') {
+      return path.join(rest, "/");
     } else {
       return path.join(dir, rest, "/");
     }
@@ -358,7 +361,13 @@ async function loadData() {
 function preprocess(prefix) {
   switch (prefix) {
     case "pages":
-      return files => {
+      return async files => {
+        const env = nunjucks.configure("website", { autoescape: true });
+        env.addFilter("date", (date, format) => {
+          return Date.create(date).format(format || "{yyyy}-{MM}-{dd}");
+        });
+        const { stylesheets, javascripts, includePaths } = config;
+
         for (let file of files) {
           let m = matter.read(__current(prefix, file));
           let { data, content } = m;
@@ -370,9 +379,28 @@ function preprocess(prefix) {
             let t = slugify(tag);
             (__tags[t] = __tags[t] || []).push({
               path: pathname(file),
-              title: data.title
+              title: data.title,
+              created_at: data.created_at,
+              tags: data.tags
             });
           }
+        }
+
+        const tagsPage = await fs.readFileAsync(
+          __current('pages', 'tags.html'),
+          "utf8"
+        );
+
+        for (let tag in __tags) {
+          let output = nunjucks.renderString(tagsPage, { 
+            tag, 
+            posts: __tags[tag], 
+            pages: filterBy({}), 
+            config, 
+            javascripts, 
+            stylesheets 
+          });
+          await fs.outputFileAsync(__public("index.html", `tags/${tag}`), output);
         }
 
         return files;

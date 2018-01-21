@@ -21,6 +21,10 @@ let concat = (a, b) => a.concat(b);
 let isObject = _ =>
   _ && typeof _ === 'object' && !Array.isArray(_) && _ !== null;
 
+function flatten(arr) {
+  return Array.prototype.concat(...arr);
+}
+
 function isEmpty(_) {
    for (var x in _) { return false; }
    return true;
@@ -62,6 +66,7 @@ module.exports = {
   unique,
   concat,
   merge,
+  flatten,
   isEmpty,
   isObject,
   slugify,

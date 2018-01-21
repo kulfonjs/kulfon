@@ -1313,6 +1313,14 @@ cliui@^3.0.3, cliui@^3.2.0:
     strip-ansi "^3.0.1"
     wrap-ansi "^2.0.0"
 
+cliui@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/cliui/-/cliui-4.0.0.tgz#743d4650e05f36d1ed2575b59638d87322bfbbcc"
+  dependencies:
+    string-width "^2.1.1"
+    strip-ansi "^4.0.0"
+    wrap-ansi "^2.0.0"
+
 clone@^0.1.19:
   version "0.1.19"
   resolved "https://registry.yarnpkg.com/clone/-/clone-0.1.19.tgz#613fb68639b26a494ac53253e15b1a6bd88ada85"
@@ -1374,15 +1382,13 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.9.0, commander@~2.12.1:
+commander@^2.9.0:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
-commander@~2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+commander@~2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
 
 common-path-prefix@^1.0.0:
   version "1.0.0"
@@ -2174,10 +2180,6 @@ got@^6.7.1:
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
-
-"graceful-readlink@>= 1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
 graphql-extensions@^0.0.x:
   version "0.0.5"
@@ -3299,9 +3301,45 @@ marko@^4.2.8, marko@^4.4.5:
     try-require "^1.2.1"
     warp10 "^1.0.0"
 
-marko@^4.6.0, marko@^4.7.4:
+marko@^4.6.0:
   version "4.7.4"
   resolved "https://registry.yarnpkg.com/marko/-/marko-4.7.4.tgz#7f6ed200cb0934dc6bd8b345093d91846dd13133"
+  dependencies:
+    app-module-path "^2.2.0"
+    argly "^1.0.0"
+    browser-refresh-client "^1.0.0"
+    char-props "~0.1.5"
+    complain "^1.2.0"
+    deresolve "^1.1.2"
+    escodegen "^1.8.1"
+    esprima "^4.0.0"
+    estraverse "^4.2.0"
+    events "^1.0.2"
+    events-light "^1.0.0"
+    he "^1.1.0"
+    htmljs-parser "^2.3.2"
+    lasso-caching-fs "^1.0.1"
+    lasso-modules-client "^2.0.4"
+    lasso-package-root "^1.0.1"
+    listener-tracker "^2.0.0"
+    minimatch "^3.0.2"
+    object-assign "^4.1.0"
+    property-handlers "^1.0.0"
+    raptor-json "^1.0.1"
+    raptor-polyfill "^1.0.0"
+    raptor-promises "^1.0.1"
+    raptor-regexp "^1.0.0"
+    raptor-util "^3.2.0"
+    resolve-from "^2.0.0"
+    shorthash "0.0.2"
+    simple-sha1 "^2.1.0"
+    strip-json-comments "^2.0.1"
+    try-require "^1.2.1"
+    warp10 "^1.0.0"
+
+marko@^4.7.5:
+  version "4.7.5"
+  resolved "https://registry.yarnpkg.com/marko/-/marko-4.7.5.tgz#4e934952516e9cbb1ebc3f007a1fd1fa3db4f5e9"
   dependencies:
     app-module-path "^2.2.0"
     argly "^1.0.0"
@@ -4391,15 +4429,15 @@ rollup-plugin-livereload@^0.6.0:
   dependencies:
     livereload "^0.6.0"
 
-rollup-plugin-uglify@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-uglify/-/rollup-plugin-uglify-2.0.1.tgz#67b37ad1efdafbd83af4c36b40c189ee4866c969"
+rollup-plugin-uglify@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-uglify/-/rollup-plugin-uglify-3.0.0.tgz#a34eca24617709c6bf1778e9653baafa06099b86"
   dependencies:
-    uglify-js "^3.0.9"
+    uglify-es "^3.3.7"
 
-rollup@^0.53.3:
-  version "0.53.3"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.53.3.tgz#e7b6777623df912bd0ca30dc24be791d6ebc8e5a"
+rollup@^0.54.1:
+  version "0.54.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.54.1.tgz#415a5d999421502646cf54b873fc4ce1a7393970"
 
 rsync@^0.6.1:
   version "0.6.1"
@@ -5009,6 +5047,13 @@ uc.micro@^1.0.1, uc.micro@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.3.tgz#7ed50d5e0f9a9fb0a573379259f2a77458d50192"
 
+uglify-es@^3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.3.7.tgz#d1249af668666aba7cb1163e277455be9eb393cf"
+  dependencies:
+    commander "~2.13.0"
+    source-map "~0.6.1"
+
 uglify-js@^2.7.3:
   version "2.8.23"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.23.tgz#8230dd9783371232d62a7821e2cf9a817270a8a0"
@@ -5018,18 +5063,11 @@ uglify-js@^2.7.3:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@^3.0.9:
-  version "3.0.18"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.18.tgz#d67a3e5a0a08356b787fb1c9bddf3a807630902e"
+uglify-js@^3.3.8:
+  version "3.3.8"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.8.tgz#51e9a5db73afb53ac98603d08224edcd0be45fd8"
   dependencies:
-    commander "~2.9.0"
-    source-map "~0.5.1"
-
-uglify-js@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.4.tgz#d8ebb76f201a3798ac2f0b6519642fcca4a99834"
-  dependencies:
-    commander "~2.12.1"
+    commander "~2.13.0"
     source-map "~0.6.1"
 
 uglify-to-browserify@~1.0.0:
@@ -5302,6 +5340,12 @@ yargs-parser@^8.0.0:
   dependencies:
     camelcase "^4.1.0"
 
+yargs-parser@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-8.1.0.tgz#f1376a33b6629a5d063782944da732631e966950"
+  dependencies:
+    camelcase "^4.1.0"
+
 yargs@^10.0.3:
   version "10.0.3"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-10.0.3.tgz#6542debd9080ad517ec5048fb454efe9e4d4aaae"
@@ -5318,6 +5362,23 @@ yargs@^10.0.3:
     which-module "^2.0.0"
     y18n "^3.2.1"
     yargs-parser "^8.0.0"
+
+yargs@^10.1.1:
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-10.1.1.tgz#5fe1ea306985a099b33492001fa19a1e61efe285"
+  dependencies:
+    cliui "^4.0.0"
+    decamelize "^1.1.1"
+    find-up "^2.1.0"
+    get-caller-file "^1.0.1"
+    os-locale "^2.0.0"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^2.0.0"
+    which-module "^2.0.0"
+    y18n "^3.2.1"
+    yargs-parser "^8.1.0"
 
 yargs@^3.32.0:
   version "3.32.0"
