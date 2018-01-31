@@ -130,6 +130,7 @@ function compile(prefix) {
   const { stylesheets, javascripts, includePaths } = config;
 
   let javascriptBundleFingerprint;
+  let javascriptBundleName;
   let output;
   let filename;
 
@@ -184,13 +185,13 @@ function compile(prefix) {
             javascriptBundleFingerprint = sha1(bundle.modules[0].code);
           }
 
+          javascriptBundleName = ENV === "production"
+            ? `bundle.${javascriptBundleFingerprint}.js`
+            : "bundle.js";
+
           options = {
             format: "iife",
-            file: __public(
-              ENV === "production"
-                ? `bundle.${javascriptBundleFingerprint}.js`
-                : "bundle.js"
-            )
+            file: __public(javascriptBundleName)
           };
           return bundle.write(options);
         } catch (error) {
@@ -248,7 +249,7 @@ function compile(prefix) {
             data,
             javascripts,
             stylesheets,
-            javascriptBundleFingerprint,
+            javascriptBundleName,
             pages: filterBy(__pages)
           };
 
@@ -257,13 +258,16 @@ function compile(prefix) {
 
             const foo = await fs.pathExists(__current("layouts", path.format({ name: parentDir, ext: '.html' })));
 
-            const layout =
-              parentDir && foo
-                ? parentDir
-                : "base";
-
-            renderString = `
-              {% extends "layouts/${layout}.html" %}`;
+            if (parentDir && foo) {
+              renderString = `
+                {% extends "layouts/${parentDir}.html" %}`;
+            } else {
+              renderString = `
+                {% extends "layouts/base.html" %}
+                {% block content %}
+                  {{ content | safe }}
+                {% endblock %}`;
+            }
 
             renderParams.content = content;
           }
