@@ -119,7 +119,7 @@ function filterBy(entities) {
         ([p, meta]) => (prefix ? p.split(path.sep).includes(prefix) : true)
       )
       .map(([path, meta]) =>
-        Object.assign({}, meta.data, { path: pathname(path) })
+        Object.assign({}, meta.data, { content: meta.content }, { path: pathname(path) })
       )
       .sort((a, b) => b.created_at - a.created_at);
   };
@@ -235,7 +235,10 @@ function compile(prefix) {
           let m = matter.read(__current(prefix, file));
 
           // remove `pages` segment from the path
-          __pages[file] = { data: m.data, content: m.content };
+          __pages[file] = {
+            data: m.data,
+            content: m.content
+          };
 
           const content = md.render(m.content);
           let data = merge(
@@ -376,7 +379,7 @@ function preprocess(prefix) {
           let m = matter.read(__current(prefix, file));
           let { data, content } = m;
 
-          __pages[file] = { data, content };
+          __pages[file] = { data: merge(data, { slug: data.title ? slugify(data.title) : '' }), content };
 
           const tags = data.tags || [];
           for (let tag of tags) {
@@ -396,13 +399,13 @@ function preprocess(prefix) {
         );
 
         for (let tag in __tags) {
-          let output = nunjucks.renderString(tagsPage, { 
-            tag, 
-            posts: __tags[tag], 
-            pages: filterBy({}), 
-            config, 
-            javascripts, 
-            stylesheets 
+          let output = nunjucks.renderString(tagsPage, {
+            tag,
+            posts: __tags[tag],
+            pages: filterBy({}),
+            config,
+            javascripts,
+            stylesheets
           });
           await fs.outputFileAsync(__public("index.html", `tags/${tag}`), output);
         }
