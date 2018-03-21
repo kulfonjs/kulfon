@@ -34,6 +34,7 @@ async function recompile(file) {
     await transform('stylesheets')();
   } else {
     compile(prefix)(file);
+    compile(prefix)('index.html');
   }
 }
 
