@@ -69,6 +69,7 @@
     "rollup-plugin-uglify": "^3.0.0",
     "rsync": "^0.6.1",
     "sha1": "^1.1.1",
+    "sitemap": "^1.13.0",
     "sugar-date": "^2.0.4",
     "svgo": "svg/svgo",
     "tmp": "^0.0.33",

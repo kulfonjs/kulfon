@@ -45,6 +45,7 @@ const matter = require("gray-matter");
 const Sugar = require("sugar-date");
 const livereload = require("rollup-plugin-livereload");
 const svgo = require("svgo");
+const { createSitemap } = require('sitemap');
 
 const spawn = require("child_process").spawnSync;
 
@@ -279,6 +280,8 @@ function compile(prefix) {
 
           filename = pathname(file);
 
+          __pages[file] = Object.assign({}, __pages[file], { path: filename })
+
           if (filename === "index/") {
             await fs.outputFileAsync(__public("index.html"), output);
           } else {
@@ -481,6 +484,21 @@ class WrongDirectoryError extends Error {
   }
 }
 
+async function generateSitemap() {
+  const sitemap = createSitemap({
+    hostname: config.base_url,
+    urls: Object.values(__pages).map(({
+      data: { sitemap },
+      path
+    }) => ({
+      url: path,
+      priority: sitemap ? sitemap.priority : 0.5
+    }))
+  });
+
+  await fs.outputFileAsync(__public("sitemap.xml"), sitemap.toString());
+}
+
 async function compileAll({ dir, env }) {
   process.env.KULFON_ENV = env;
 
@@ -494,6 +512,8 @@ async function compileAll({ dir, env }) {
     await transform("images")();
     await transform("javascripts")();
     await transform("pages")();
+
+    await generateSitemap();
   } catch (error) {
     console.error("Error: ".red + error.message);
     process.exit();

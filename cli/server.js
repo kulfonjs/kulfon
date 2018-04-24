@@ -57,7 +57,7 @@ async function serve({ port, dir }) {
   });
 
   app.listen(port);
-  
+
   println(`---\nServer running at http://localhost:${port}`)
 }
 
