@@ -233,15 +233,16 @@ function compile(prefix) {
         try {
           markdown.register(env, md.render.bind(md));
 
-          let m = matter.read(__current(prefix, file));
+          const m = matter.read(__current(prefix, file));
+          const content = md.render(m.content);
 
           // remove `pages` segment from the path
           __pages[file] = {
             data: m.data,
-            content: m.content
+            content: m.content,
+            compiled: content
           };
 
-          const content = md.render(m.content);
           let data = merge(
             { page: isEmpty(__pages[file].data) ? false : __pages[file].data },
             __data
@@ -382,7 +383,7 @@ function preprocess(prefix) {
           let m = matter.read(__current(prefix, file));
           let { data, content } = m;
 
-          __pages[file] = { data: merge(data, { slug: data.title ? slugify(data.title) : '' }), content };
+          __pages[file] = { data: merge(data, { slug: data.title ? slugify(data.title) : '' }), content: md.render(content) };
 
           const tags = data.tags || [];
           for (let tag of tags) {
