@@ -46,6 +46,7 @@ const Sugar = require("sugar-date");
 const livereload = require("rollup-plugin-livereload");
 const svgo = require("svgo");
 const { createSitemap } = require('sitemap');
+const minifyHTML = require('html-minifier').minify;
 
 const spawn = require("child_process").spawnSync;
 
@@ -70,8 +71,15 @@ EXTENSIONS = {
   images: [".jpg", ".png", ".jpeg", ".svg"]
 };
 
+let env = nunjucks.configure("website", { autoescape: true });
+env.addFilter("date", (date, format) => {
+  return Date.create(date).format(format || "{yyyy}-{MM}-{dd}");
+});
+markdown.register(env, md.render.bind(md));
+
 let cache;
 let config;
+let bundles = { js: '', css: '' };
 
 let __data = {};
 let __pages = {};
@@ -106,7 +114,6 @@ function __current(prefix, f = "") {
 
 function profile(func, prefix, allowedExtensions) {
   return async file => {
-    println(`-> ${file.yellow}`);
     const result = await func(file);
 
     return result;
@@ -119,9 +126,7 @@ function filterBy(entities) {
       .filter(
         ([p, meta]) => (prefix ? p.split(path.sep).includes(prefix) : true)
       )
-      .map(([path, meta]) =>
-        Object.assign({}, meta.data, { content: meta.content }, { path: pathname(path) })
-      )
+      .map(([path, meta]) => meta)
       .sort((a, b) => b.created_at - a.created_at);
   };
 }
@@ -130,8 +135,7 @@ function compile(prefix) {
   const ENV = process.env.KULFON_ENV;
   const { stylesheets, javascripts, includePaths } = config;
 
-  let javascriptBundleFingerprint;
-  let javascriptBundleName;
+
   let output;
   let filename;
 
@@ -170,7 +174,7 @@ function compile(prefix) {
         };
 
         if (ENV === "production") {
-          Object.assign(options, { plugins: [uglify({}, minify)] });
+          Object.assign(options, { plugins: [ uglify({}, minify) ] });
         } else {
           Object.assign(options, {
             plugins: [livereload({ watch: "public", verbose: false })]
@@ -181,20 +185,13 @@ function compile(prefix) {
           let bundle = await rollup(options);
           cache = bundle;
 
-          if (ENV === "production") {
-            // XXX Ugly, only for `main.js`
-            javascriptBundleFingerprint = sha1(bundle.modules[0].code);
-          }
+          let hash = sha1(bundle.modules[0].code);
+          bundles.js = `main.${hash}.js`;
 
-          javascriptBundleName = ENV === "production"
-            ? `bundle.${javascriptBundleFingerprint}.js`
-            : "bundle.js";
-
-          options = {
+          return bundle.write({
             format: "iife",
-            file: __public(javascriptBundleName)
-          };
-          return bundle.write(options);
+            file: __public(bundles.js)
+          });
         } catch (error) {
           println(error.message);
         }
@@ -216,6 +213,8 @@ function compile(prefix) {
           output = result.css;
           filename = `${path.basename(file, path.extname(file))}.css`;
 
+          bundles.css = filename;
+
           await fs.writeFileAsync(__public(filename), output);
         } catch (error) {
           println(error.formatted);
@@ -224,37 +223,27 @@ function compile(prefix) {
       break;
     case "pages":
       compiler = async file => {
-        const env = nunjucks.configure("website", { autoescape: true });
-
-        env.addFilter("date", (date, format) => {
-          return Date.create(date).format(format || "{yyyy}-{MM}-{dd}");
-        });
+        const filename = pathname(file);
 
         try {
-          markdown.register(env, md.render.bind(md));
+          const { data, content } = matter.read(__current(prefix, file));
 
-          const m = matter.read(__current(prefix, file));
-          const content = md.render(m.content);
+          let page = {
+            ...data,
+            content,
+            path: filename
+          }
 
-          // remove `pages` segment from the path
-          __pages[file] = {
-            data: m.data,
-            content: m.content,
-            compiled: content
-          };
-
-          let data = merge(
-            { page: isEmpty(__pages[file].data) ? false : __pages[file].data },
-            __data
-          );
+          __pages[file] = page;
 
           let renderString = __pages[file].content;
           let renderParams = {
             config,
-            data,
+            page,
+            website: __data,
             javascripts,
             stylesheets,
-            javascriptBundleName,
+            bundles,
             pages: filterBy(__pages)
           };
 
@@ -274,14 +263,14 @@ function compile(prefix) {
                 {% endblock %}`;
             }
 
-            renderParams.content = content;
+            renderParams.content = md.render(content);
           }
 
+
+          // output = minifyHTML(nunjucks.renderString(renderString, renderParams), {
+          //   collapseWhitespace: true
+          // });
           output = nunjucks.renderString(renderString, renderParams);
-
-          filename = pathname(file);
-
-          __pages[file] = Object.assign({}, __pages[file], { path: filename })
 
           if (filename === "index/") {
             await fs.outputFileAsync(__public("index.html"), output);
@@ -373,17 +362,13 @@ function preprocess(prefix) {
   switch (prefix) {
     case "pages":
       return async files => {
-        const env = nunjucks.configure("website", { autoescape: true });
-        env.addFilter("date", (date, format) => {
-          return Date.create(date).format(format || "{yyyy}-{MM}-{dd}");
-        });
         const { stylesheets, javascripts, includePaths } = config;
 
         for (let file of files) {
           let m = matter.read(__current(prefix, file));
           let { data, content } = m;
 
-          __pages[file] = { data: merge(data, { slug: data.title ? slugify(data.title) : '' }), content: md.render(content) };
+          __pages[file] = { ...data };
 
           const tags = data.tags || [];
           for (let tag of tags) {
@@ -431,17 +416,13 @@ function preprocess(prefix) {
 function transform(prefix) {
   return () => {
     let startTime = new Date();
-    println(`${startTime.toISOString().grey} - in ${prefix.blue} compiling:`);
 
     return scan(path.join("website", prefix))
       .then(preprocess(prefix))
       .map(compile(prefix))
       .then(() => {
         let endTime = new Date();
-        println(
-          `${endTime.toISOString().grey} - ${"done".green} (${endTime -
-            startTime}ms)`
-        );
+        println(`\\__ ${prefix.padEnd(12).blue}: ${(endTime - startTime).toString().padStart(5)}ms ${"done".green}`);
       })
       .catch(_ => console.error(_.message));
   };
