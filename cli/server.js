@@ -11,13 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Huncwot = require('huncwot');
+const Szelmostwo = require('szelmostwo');
+const { serve } = require('szelmostwo/middleware');
 const chokidar = require('chokidar');
 const { compile, transform, compileAll, loadData } = require('./compiler');
 const path = require('path');
 const colors = require('colors');
 
 const { println } = require('./util');
+const { version } = require('../package.json')
 
 const debug = require('debug')('server');
 
@@ -38,7 +40,10 @@ async function recompile(file) {
   }
 }
 
-async function serve({ port, dir }) {
+async function server({ port, dir }) {
+  const kulfon = `Kulfon`.red;
+  println(`${kulfon}: ${version}`);
+
   await compileAll({ dir })
 
   const watcher = chokidar.watch(dir, {
@@ -50,7 +55,8 @@ async function serve({ port, dir }) {
   watcher
     .on('change', recompile)
 
-  const app = new Huncwot({ staticDir: './public' });
+  const app = new Szelmostwo();
+  app.use(serve('./public' ));
 
   app.on('error', err => {
     println('Error: '.red + err.message);
@@ -58,12 +64,14 @@ async function serve({ port, dir }) {
 
   app.listen(port);
 
-  println(`---\nServer running at http://localhost:${port}`)
+  const url = `http://localhost:${port}`.bold;
+
+  println(`Your website is ready at ${url}`);
 }
 
 module.exports = {
   builder: _ => _
     .option('port', { alias: 'p', default: 3000 })
     .default('dir', '.'),
-  handler: serve
+  handler: server
 };
