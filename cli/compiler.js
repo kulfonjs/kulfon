@@ -16,23 +16,15 @@ const sass = Promise.promisifyAll(require("node-sass"));
 
 const nunjucks = require("nunjucks");
 const markdown = require("nunjucks-markdown");
-const hljs = require("highlight.js");
 const md = require("markdown-it")({
-  html: true,
-  highlight: (str, lang) => {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(lang, str).value;
-      } catch (_) {}
-    }
-    return ""; // use external default escaping
-  }
+  html: true
 });
 
 md.use(require('markdown-it-anchor'));
 md.use(require('markdown-it-table-of-contents'), {
-  includeLevel: [1,2,3,4,5,6]
+  includeLevel: [1, 2, 3, 4, 5, 6]
 });
+md.use(require('markdown-it-prism'));
 
 const fs = Promise.promisifyAll(require("fs-extra"));
 const path = require("path");
