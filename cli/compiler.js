@@ -260,9 +260,11 @@ function compile(prefix) {
                 {% endblock %}`;
             }
 
+            const tokens = md.parse(content, {});
+            const toc = buildTableOfContents(0, tokens);
+            renderParams.toc = toc ? toc[1] : false;
             renderParams.content = md.render(content);
           }
-
 
           // output = minifyHTML(nunjucks.renderString(renderString, renderParams), {
           //   collapseWhitespace: true
