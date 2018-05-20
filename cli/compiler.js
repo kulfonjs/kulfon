@@ -63,7 +63,7 @@ EXTENSIONS = {
   images: [".jpg", ".png", ".jpeg", ".svg"]
 };
 
-let env = nunjucks.configure("website", { autoescape: true });
+let env = nunjucks.configure("website", { autoescape: true, watch: true });
 env.addFilter("date", (date, format) => {
   return Date.create(date).format(format || "{yyyy}-{MM}-{dd}");
 });
