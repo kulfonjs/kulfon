@@ -199,11 +199,15 @@ function compile(prefix) {
             includePaths: includePaths || [],
             outputStyle: "compressed",
             sourceMap: true,
-            outFile: __public("styles.css")
+            sourceMapEmbed: ENV != "production"
           });
 
           output = result.css;
-          filename = `${path.basename(file, path.extname(file))}.css`;
+
+          let hash = sha1(output);
+          let name = path.basename(file, path.extname(file));
+
+          filename = ENV != "production" ? `${name}.css` : `${name}.${hash}.css`;
 
           bundles.css = filename;
 
