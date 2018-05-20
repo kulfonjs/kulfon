@@ -51,7 +51,8 @@ const {
   slugify,
   exists,
   print,
-  println
+  println,
+  buildTableOfContents
 } = require("./util");
 
 const currentDirectory = process.cwd();

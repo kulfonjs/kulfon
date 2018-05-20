@@ -62,6 +62,51 @@ async function exists(pathname) {
 function print(text) { process.stdout.write(text); }
 function println(text) { process.stdout.write(text + '\n'); }
 
+function buildTableOfContents(pos, tokens) {
+  var headings = [],
+    buffer = '',
+    currentLevel,
+    subHeadings,
+    size = tokens.length,
+    i = pos;
+  while (i < size) {
+    var token = tokens[i];
+    var heading = tokens[i - 1];
+    var level = token.tag && parseInt(token.tag.substr(1, 1));
+    if (token.type !== "heading_close" || [1,2].indexOf(level) == -1 || heading.type !== "inline") {
+      i++; continue;
+    }
+    if (!currentLevel) {
+      currentLevel = level;
+    } else {
+      if (level > currentLevel) {
+        subHeadings = buildTableOfContents(i, tokens);
+        buffer += subHeadings[1];
+        i = subHeadings[0];
+        continue;
+      }
+      if (level < currentLevel) {
+        // Finishing the sub headings
+        buffer += "</li>";
+        headings.push(buffer);
+        return [i, "<ul>" + headings.join("") + "</ul>"];
+      }
+      if (level == currentLevel) {
+        // Finishing the sub headings
+        buffer += "</li>";
+        headings.push(buffer);
+      }
+    }
+    buffer = "<li><a href=\"#" + slugify(heading.content) + "\">";
+    buffer += heading.content;
+    buffer += "</a>";
+    i++;
+  }
+  buffer += buffer === "" ? "" : "</li>";
+  headings.push(buffer);
+  return [i, "<ul class='menu-list'>" + headings.join("") + "</ul>"];
+}
+
 module.exports = {
   unique,
   concat,
@@ -73,4 +118,5 @@ module.exports = {
   exists,
   print,
   println,
+  buildTableOfContents
 };
