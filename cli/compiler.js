@@ -89,8 +89,8 @@ function scan(directory, recursive = true) {
           return !recursive
             ? []
             : scan(path.join(directory, el))
-                .reduce(concat, [])
-                .map(_ => path.join(el, _));
+              .reduce(concat, [])
+              .map(_ => path.join(el, _));
         }
       })
     )
@@ -167,7 +167,7 @@ function compile(prefix) {
         };
 
         if (ENV === "production") {
-          Object.assign(options, { plugins: [ uglify({}, minify) ] });
+          Object.assign(options, { plugins: [uglify({}, minify)] });
         } else {
           Object.assign(options, {
             plugins: [livereload({ watch: "public", verbose: false })]
@@ -271,11 +271,7 @@ function compile(prefix) {
           // });
           output = nunjucks.renderString(renderString, renderParams);
 
-          if (filename === "index/") {
-            await fs.outputFileAsync(__public("index.html"), output);
-          } else {
-            await fs.outputFileAsync(__public("index.html", filename), output);
-          }
+          await fs.outputFileAsync(__public("index.html", filename), output);
         } catch (error) {
           println(error.message);
         }
