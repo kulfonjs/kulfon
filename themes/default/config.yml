@@ -1,7 +1,8 @@
 includePaths: []
 stylesheets:
-  - https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css
+  - "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"
 javascripts: []
 deploy:
   server:
   path:
+base_url: http://change-me-in-config-yml.com
