@@ -27,7 +27,7 @@ async function deploy({ dry }) {
   const config = yaml.safeLoad(fs.readFileSync(join(cwd, 'config.yml'), 'utf8'));
   const { server, path } = config.deploy;
 
-  if (!server || !path) { 
+  if (!server || !path) {
     println('Error: `server` or `path` not defined');
     process.exit();
   }
@@ -35,11 +35,12 @@ async function deploy({ dry }) {
   println(`Deploying on ${server} to ${path} ...`)
 
   let sync = new Rsync()
+    .shell('ssh')
     .flags('azP')
     .source(join(cwd, 'public/'))
     .destination(`${server}:${path}`);
 
-  if (dry) { 
+  if (dry) {
     println('Dry run...')
     sync.dry()
   }

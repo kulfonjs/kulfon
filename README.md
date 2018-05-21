@@ -42,7 +42,7 @@ convince you to try **Kulfon**
 * unified approach to external dependencies management with either [unpkg][13] or [Yarn][4]
 * [HTTP/2][14] ready
 
-**Table of Contents**  
+**Table of Contents**
 
 - [Why Kulfon?](#why-kulfon)
 - [Installation](#installation)
@@ -80,7 +80,7 @@ or
 Once **Kulfon** is installed, you will have access to the `kulfon` command.
 First, let's create a new project:
 
-    kulfon init <my-project-name>
+    kulfon new <my-project-name>
 
 It creates the following directory structure (`<my-project-name>` is optional,
 if not provided, the current directory is used):
