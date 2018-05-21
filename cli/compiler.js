@@ -463,11 +463,8 @@ class WrongDirectoryError extends Error {
 
 async function generateSitemap() {
   const sitemap = createSitemap({
-    hostname: config.base_url,
-    urls: Object.values(__pages).map(({
-      data: { sitemap },
-      path
-    }) => ({
+    hostname: config.base_url || 'https://localhost',
+    urls: Object.values(__pages).map(({ sitemap, path }) => ({
       url: path,
       priority: sitemap ? sitemap.priority : 0.5
     }))
@@ -485,8 +482,8 @@ async function compileAll({ dir, env }) {
     await loadConfig();
     await loadData();
 
-    await transform("stylesheets")();
     await transform("images")();
+    await transform("stylesheets")();
     await transform("javascripts")();
     await transform("pages")();
 
