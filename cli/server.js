@@ -29,10 +29,12 @@ async function recompile(file) {
   file = path.join(...fileSegments);
 
   debug(`file to recompile: ${file}`);
+
+  await loadData();
+
   if (prefix.match(/pages/)) {
     await compile(prefix)(file);
   } else {
-    await loadData()
     await transform('pages')();
     await transform('stylesheets')();
     await transform('javascripts')();
