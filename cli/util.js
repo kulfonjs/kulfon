@@ -26,8 +26,10 @@ function flatten(arr) {
 }
 
 function isEmpty(_) {
-   for (var x in _) { return false; }
-   return true;
+  for (var x in _) {
+    return false;
+  }
+  return true;
 }
 
 function merge(target, source) {
@@ -45,22 +47,29 @@ function merge(target, source) {
 }
 
 function slugify(text) {
-  return text.toString().toLowerCase().trim()
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
     .replace(/\./g, '')
-    .replace(/[\s\W-]+/g, '-')
+    .replace(/[\s\W-]+/g, '-');
 }
 
 async function exists(pathname) {
   try {
     let stats = await fs.statAsync(pathname);
-    return true
+    return true;
   } catch (error) {
     return false;
   }
 }
 
-function print(text) { process.stdout.write(text); }
-function println(text) { process.stdout.write(text + '\n'); }
+function print(text) {
+  process.stdout.write(text);
+}
+function println(text) {
+  process.stdout.write(text + '\n');
+}
 
 function buildTableOfContents(pos, tokens) {
   var headings = [],
@@ -73,8 +82,13 @@ function buildTableOfContents(pos, tokens) {
     var token = tokens[i];
     var heading = tokens[i - 1];
     var level = token.tag && parseInt(token.tag.substr(1, 1));
-    if (token.type !== "heading_close" || [1,2].indexOf(level) == -1 || heading.type !== "inline") {
-      i++; continue;
+    if (
+      token.type !== 'heading_close' ||
+      [1, 2].indexOf(level) == -1 ||
+      heading.type !== 'inline'
+    ) {
+      i++;
+      continue;
     }
     if (!currentLevel) {
       currentLevel = level;
@@ -87,24 +101,26 @@ function buildTableOfContents(pos, tokens) {
       }
       if (level < currentLevel) {
         // Finishing the sub headings
-        buffer += "</li>";
+        buffer += '</li>';
         headings.push(buffer);
-        return [i, "<ul>" + headings.join("") + "</ul>"];
+        return [i, '<ul>' + headings.join('') + '</ul>'];
       }
       if (level == currentLevel) {
         // Finishing the sub headings
-        buffer += "</li>";
+        buffer += '</li>';
         headings.push(buffer);
       }
     }
-    buffer = "<li><a href=\"#" + slugify(heading.content) + "\">";
+    buffer = `<li class="toc-item"><a href="#${slugify(
+      heading.content
+    )}" class="toc-link">`;
     buffer += heading.content;
-    buffer += "</a>";
+    buffer += '</a>';
     i++;
   }
-  buffer += buffer === "" ? "" : "</li>";
+  buffer += buffer === '' ? '' : '</li>';
   headings.push(buffer);
-  return [i, "<ul class='menu-list'>" + headings.join("") + "</ul>"];
+  return [i, headings.join('')];
 }
 
 module.exports = {

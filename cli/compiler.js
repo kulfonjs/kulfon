@@ -11,12 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require("bluebird");
-const sass = Promise.promisifyAll(require("node-sass"));
+const Promise = require('bluebird');
+const sass = Promise.promisifyAll(require('node-sass'));
 
-const nunjucks = require("nunjucks");
-const markdown = require("nunjucks-markdown");
-const md = require("markdown-it")({
+const nunjucks = require('nunjucks');
+const markdown = require('nunjucks-markdown');
+const md = require('markdown-it')({
   html: true
 });
 
@@ -26,21 +26,21 @@ md.use(require('markdown-it-table-of-contents'), {
 });
 md.use(require('markdown-it-prism'));
 
-const fs = Promise.promisifyAll(require("fs-extra"));
-const path = require("path");
-const yaml = require("js-yaml");
-const rollup = require("rollup").rollup;
-const { uglify } = require("rollup-plugin-uglify");
-const minify = require("uglify-es").minify;
-const sha1 = require("sha1");
-const matter = require("gray-matter");
-const Sugar = require("sugar-date");
-const livereload = require("rollup-plugin-livereload");
-const svgo = require("svgo");
+const fs = Promise.promisifyAll(require('fs-extra'));
+const path = require('path');
+const yaml = require('js-yaml');
+const rollup = require('rollup').rollup;
+const { uglify } = require('rollup-plugin-uglify');
+const minify = require('uglify-es').minify;
+const sha1 = require('sha1');
+const matter = require('gray-matter');
+const Sugar = require('sugar-date');
+const Livereload = require('rollup-plugin-livereload');
+const svgo = require('svgo');
 const { createSitemap } = require('sitemap');
 const minifyHTML = require('html-minifier').minify;
 
-const spawn = require("child_process").spawnSync;
+const spawn = require('child_process').spawnSync;
 
 const {
   unique,
@@ -53,20 +53,26 @@ const {
   print,
   println,
   buildTableOfContents
-} = require("./util");
+} = require('./util');
 
 const currentDirectory = process.cwd();
 const cwd = process.cwd();
 Sugar.Date.extend();
 const svgOptimizer = new svgo({});
 
+const livereload = Livereload({ watch: 'public', verbose: false });
+
 EXTENSIONS = {
-  images: [".jpg", ".png", ".jpeg", ".svg"]
+  images: ['.jpg', '.png', '.jpeg', '.svg']
 };
 
-let env = nunjucks.configure("website", { autoescape: true, watch: false, noCache: true });
-env.addFilter("date", (date, format) => {
-  return Date.create(date).format(format || "{yyyy}-{MM}-{dd}");
+let env = nunjucks.configure('website', {
+  autoescape: true,
+  watch: false,
+  noCache: true
+});
+env.addFilter('date', (date, format) => {
+  return Date.create(date).format(format || '{yyyy}-{MM}-{dd}');
 });
 markdown.register(env, md.render.bind(md));
 
@@ -89,20 +95,20 @@ function scan(directory, recursive = true) {
           return !recursive
             ? []
             : scan(path.join(directory, el))
-              .reduce(concat, [])
-              .map(_ => path.join(el, _));
+                .reduce(concat, [])
+                .map(_ => path.join(el, _));
         }
       })
     )
     .reduce(concat, []);
 }
 
-function __public(filename, inside = "") {
-  return path.join(currentDirectory, "public", inside, filename);
+function __public(filename, inside = '') {
+  return path.join(currentDirectory, 'public', inside, filename);
 }
 
-function __current(prefix, f = "") {
-  return path.join(currentDirectory, "website", prefix, f);
+function __current(prefix, f = '') {
+  return path.join(currentDirectory, 'website', prefix, f);
 }
 
 function profile(func, prefix, allowedExtensions) {
@@ -128,50 +134,49 @@ function compile(prefix) {
   const ENV = process.env.KULFON_ENV;
   const { stylesheets, javascripts, includePaths } = config;
 
-
   let output;
   let filename;
 
   let compiler;
 
   switch (prefix) {
-    case "images":
+    case 'images':
       compiler = async file => {
-        const imageExists = await exists(__public(file, "images"));
+        const imageExists = await exists(__public(file, 'images'));
         if (imageExists) return;
 
         switch (path.extname(file)) {
-          case ".svg":
+          case '.svg':
             // const data = await fs.readFileAsync(
             //   __current("images", file),
             //   "utf8"
             // );
             // const result = await svgOptimizer.optimize(data);
             // fs.writeFileSync(__public(file, "images"), result.data);
-            fs.copyAsync(__current("images", file), __public(file, "images"));
+            fs.copyAsync(__current('images', file), __public(file, 'images'));
             break;
           default:
-            fs.copyAsync(__current("images", file), __public(file, "images"));
+            fs.copyAsync(__current('images', file), __public(file, 'images'));
         }
       };
       break;
-    case "javascripts":
+    case 'javascripts':
       compiler = async file => {
         const dependencies = (javascripts || [])
-          .map(name => name.split("/")[3].split("@")[0])
+          .map(name => name.split('/')[3].split('@')[0])
           .reduce((acc, name) => Object.assign(acc, { [name]: name }), {});
 
         let options = {
-          input: path.join(currentDirectory, "website/javascripts", "main.js"),
+          input: path.join(currentDirectory, 'website/javascripts', 'main.js'),
           cache: cache,
           external: Object.keys(dependencies)
         };
 
-        if (ENV === "production") {
+        if (ENV === 'production') {
           Object.assign(options, { plugins: [uglify({}, minify)] });
         } else {
           Object.assign(options, {
-            plugins: [livereload({ watch: "public", verbose: false })]
+            plugins: [livereload]
           });
         }
 
@@ -183,7 +188,7 @@ function compile(prefix) {
           bundles.js = `main.${hash}.js`;
 
           return bundle.write({
-            format: "iife",
+            format: 'iife',
             file: __public(bundles.js)
           });
         } catch (error) {
@@ -191,7 +196,7 @@ function compile(prefix) {
         }
       };
       break;
-    case "stylesheets":
+    case 'stylesheets':
       compiler = async file => {
         let filePath = __current(prefix, file);
 
@@ -199,9 +204,9 @@ function compile(prefix) {
           let result = await sass.renderAsync({
             file: filePath,
             includePaths: includePaths || [],
-            outputStyle: "compressed",
+            outputStyle: 'compressed',
             sourceMap: true,
-            sourceMapEmbed: ENV != "production"
+            sourceMapEmbed: ENV != 'production'
           });
 
           output = result.css;
@@ -209,7 +214,8 @@ function compile(prefix) {
           let hash = sha1(output);
           let name = path.basename(file, path.extname(file));
 
-          filename = ENV != "production" ? `${name}.css` : `${name}.${hash}.css`;
+          filename =
+            ENV != 'production' ? `${name}.css` : `${name}.${hash}.css`;
 
           bundles.css = filename;
 
@@ -219,7 +225,7 @@ function compile(prefix) {
         }
       };
       break;
-    case "pages":
+    case 'pages':
       compiler = async file => {
         const filename = pathname(file);
 
@@ -230,7 +236,7 @@ function compile(prefix) {
             ...data,
             content,
             path: filename
-          }
+          };
 
           __pages[file] = page;
 
@@ -245,14 +251,28 @@ function compile(prefix) {
             pages: filterBy(__pages)
           };
 
-          if (path.extname(file) === ".md") {
-            const parentDir = path.parse(file).dir.split(path.sep).slice(-1)[0];
+          if (path.extname(file) === '.md') {
+            const parentDir = path
+              .parse(file)
+              .dir.split(path.sep)
+              .slice(-1)[0];
 
-            const foo = await fs.pathExists(__current("layouts", path.format({ name: parentDir, ext: '.html' })));
+            const foo = await fs.pathExists(
+              __current(
+                'layouts',
+                path.format({ name: parentDir, ext: '.html' })
+              )
+            );
+
+            const itself = path.parse(file).name;
+            const itselfExists = await fs.pathExists(
+              __current('layouts', path.format({ name: itself, ext: '.html' }))
+            );
 
             if (parentDir && foo) {
-              renderString = `
-                {% extends "layouts/${parentDir}.html" %}`;
+              renderString = `{% extends "layouts/${parentDir}.html" %}`;
+            } else if (itselfExists) {
+              renderString = `{% extends "layouts/${itself}.html" %}`;
             } else {
               renderString = `
                 {% extends "layouts/base.html" %}
@@ -272,7 +292,7 @@ function compile(prefix) {
           // });
           output = nunjucks.renderString(renderString, renderParams);
 
-          await fs.outputFileAsync(__public("index.html", filename), output);
+          await fs.outputFileAsync(__public('index.html', filename), output);
         } catch (error) {
           println(error.message);
         }
@@ -290,7 +310,7 @@ function pathname(file) {
 
   // detect if date in the `name`
   // XXX ugly
-  const segments = name.split("_");
+  const segments = name.split('_');
   let d = Date.parse(segments[0]);
 
   const prefix = config.blog ? config.blog.prefix : false;
@@ -299,42 +319,42 @@ function pathname(file) {
     d = new Date(d);
 
     const year = String(d.getFullYear());
-    const month = ("0" + (d.getMonth() + 1)).slice(-2);
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
     const day = String(d.getDate());
-    const rest = segments.slice(1).join("_");
+    const rest = segments.slice(1).join('_');
 
     if (prefix === 'blog') {
-      return path.join(dir, year, month, rest, "/");
+      return path.join(dir, year, month, rest, '/');
     } else if (prefix === 'none') {
-      return path.join(rest, "/");
+      return path.join(rest, '/');
     } else {
-      return path.join(dir, rest, "/");
+      return path.join(dir, rest, '/');
     }
-  } else if (name === "index") {
-    return "";
+  } else if (name === 'index') {
+    return '';
   } else {
-    return path.join(dir, name, "/");
+    return path.join(dir, name, '/');
   }
 }
 
 async function loadConfig() {
   const yamlContent = await fs.readFileAsync(
-    path.join(currentDirectory, "config.yml"),
-    "utf8"
+    path.join(currentDirectory, 'config.yml'),
+    'utf8'
   );
   config = yaml.safeLoad(yamlContent);
 }
 
 async function loadData() {
-  let dataPath = path.join(currentDirectory, "website");
+  let dataPath = path.join(currentDirectory, 'website');
 
-  let entries = ["data.yml"]; // by default parse `data.yml`
+  let entries = ['data.yml']; // by default parse `data.yml`
 
   try {
-    let stats = await fs.statAsync(path.join(dataPath, "data"));
+    let stats = await fs.statAsync(path.join(dataPath, 'data'));
 
     if (stats.isDirectory()) {
-      dataPath = path.join(dataPath, "data");
+      dataPath = path.join(dataPath, 'data');
       entries = fs.readdirAsync(dataPath);
     }
   } catch (error) {
@@ -345,8 +365,8 @@ async function loadData() {
 
   const content = files.reduce(
     (acc, _) =>
-      [acc, fs.readFileSync(path.join(dataPath, _), "utf8")].join("---\n"),
-    ""
+      [acc, fs.readFileSync(path.join(dataPath, _), 'utf8')].join('---\n'),
+    ''
   );
 
   yaml.safeLoadAll(content, doc => {
@@ -356,7 +376,7 @@ async function loadData() {
 
 function preprocess(prefix) {
   switch (prefix) {
-    case "pages":
+    case 'pages':
       return async files => {
         const { stylesheets, javascripts, includePaths } = config;
 
@@ -380,7 +400,7 @@ function preprocess(prefix) {
 
         const tagsPage = await fs.readFileAsync(
           __current('pages', 'tags.html'),
-          "utf8"
+          'utf8'
         );
 
         for (let tag in __tags) {
@@ -392,19 +412,22 @@ function preprocess(prefix) {
             javascripts,
             stylesheets
           });
-          await fs.outputFileAsync(__public("index.html", `tags/${tag}`), output);
+          await fs.outputFileAsync(
+            __public('index.html', `tags/${tag}`),
+            output
+          );
         }
 
         return files;
       };
-    case "images":
+    case 'images':
       return files =>
         files.filter(f =>
-          [".jpg", ".png", ".jpeg", ".svg"].includes(path.extname(f))
+          ['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(f))
         );
-    case "stylesheets":
-      return files => files.filter(f => f[0] !== "_");
-    case "javascripts":
+    case 'stylesheets':
+      return files => files.filter(f => f[0] !== '_');
+    case 'javascripts':
       return files => files;
   }
 }
@@ -413,12 +436,16 @@ function transform(prefix) {
   return () => {
     let startTime = new Date();
 
-    return scan(path.join("website", prefix))
+    return scan(path.join('website', prefix))
       .then(preprocess(prefix))
       .map(compile(prefix))
       .then(() => {
         let endTime = new Date();
-        println(`\\__ ${prefix.padEnd(12).blue}: ${(endTime - startTime).toString().padStart(5)}ms ${"done".green}`);
+        println(
+          `\\__ ${prefix.padEnd(12).blue}: ${(endTime - startTime)
+            .toString()
+            .padStart(5)}ms ${'done'.green}`
+        );
       })
       .catch(_ => console.error(_.message));
   };
@@ -426,18 +453,20 @@ function transform(prefix) {
 
 async function checkDirectoryStructure() {
   const paths = [
-    "website/images",
-    "website/javascripts",
-    "website/layouts",
-    "website/pages",
-    "website/partials",
-    "website/stylesheets"
+    'website/images',
+    'website/javascripts',
+    'website/layouts',
+    'website/pages',
+    'website/partials',
+    'website/stylesheets'
   ].map(el => path.join(cwd, el));
 
-  const result = await Promise.resolve(paths).map(fs.pathExists).all();
+  const result = await Promise.resolve(paths)
+    .map(fs.pathExists)
+    .all();
 
   if (!result.every(_ => _)) {
-    const tree = spawn("tree", ["-d", "-I", "node_modules"], { cwd: "." });
+    const tree = spawn('tree', ['-d', '-I', 'node_modules'], { cwd: '.' });
     throw new WrongDirectoryError(`It seems you are not in 'kulfon' compatible directory. Here's the proper structure:
 
 . (your project root)
@@ -471,26 +500,26 @@ async function generateSitemap() {
     }))
   });
 
-  await fs.outputFileAsync(__public("sitemap.xml"), sitemap.toString());
+  await fs.outputFileAsync(__public('sitemap.xml'), sitemap.toString());
 }
 
 async function compileAll({ dir, env }) {
   process.env.KULFON_ENV = env;
 
   try {
-    await fs.ensureDirAsync("public/images");
+    await fs.ensureDirAsync('public/images');
     await checkDirectoryStructure();
     await loadConfig();
     await loadData();
 
-    await transform("images")();
-    await transform("stylesheets")();
-    await transform("javascripts")();
-    await transform("pages")();
+    await transform('images')();
+    await transform('stylesheets')();
+    await transform('javascripts')();
+    await transform('pages')();
 
     await generateSitemap();
   } catch (error) {
-    console.error("Error: ".red + error.message);
+    console.error('Error: '.red + error.message);
     process.exit();
   }
 }
@@ -502,8 +531,8 @@ module.exports = {
   loadData,
   handler: compileAll,
   builder: _ =>
-    _.option("environment", {
-      alias: ["e", "env"],
-      default: "production"
-    }).default("dir", ".")
+    _.option('environment', {
+      alias: ['e', 'env'],
+      default: 'production'
+    }).default('dir', '.')
 };

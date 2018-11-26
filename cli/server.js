@@ -19,7 +19,7 @@ const path = require('path');
 const colors = require('colors');
 
 const { println } = require('./util');
-const { version } = require('../package.json')
+const { version } = require('../package.json');
 
 const debug = require('debug')('server');
 
@@ -35,9 +35,9 @@ async function recompile(file) {
   if (prefix.match(/pages/)) {
     await compile(prefix)(file);
   } else {
-    await transform('pages')();
     await transform('stylesheets')();
     await transform('javascripts')();
+    await transform('pages')();
   }
 }
 
@@ -45,7 +45,7 @@ async function server({ port, dir }) {
   const kulfon = `Kulfon`.red;
   println(`${kulfon}: ${version}`);
 
-  await compileAll({ dir })
+  await compileAll({ dir });
 
   const watcher = chokidar.watch(dir, {
     ignored: /[\/\\]\./,
@@ -53,11 +53,10 @@ async function server({ port, dir }) {
     cwd: 'website'
   });
 
-  watcher
-    .on('change', recompile)
+  watcher.on('change', recompile);
 
   const app = new Szelmostwo();
-  app.use(serve('./public' ));
+  app.use(serve('./public'));
 
   app.on('error', err => {
     println('Error: '.red + err.message);
@@ -71,8 +70,7 @@ async function server({ port, dir }) {
 }
 
 module.exports = {
-  builder: _ => _
-    .option('port', { alias: 'p', default: 3000 })
-    .default('dir', '.'),
+  builder: _ =>
+    _.option('port', { alias: 'p', default: 3000 }).default('dir', '.'),
   handler: server
 };
