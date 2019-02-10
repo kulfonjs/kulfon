@@ -26,6 +26,7 @@ md.use(require('markdown-it-table-of-contents'), {
 });
 md.use(require('markdown-it-prism'));
 md.use(require('markdown-it-highlight-lines'));
+md.use(require('markdown-it-container'), 'label');
 
 const fs = Promise.promisifyAll(require('fs-extra'));
 const path = require('path');
