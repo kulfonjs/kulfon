@@ -25,6 +25,7 @@ md.use(require('markdown-it-table-of-contents'), {
   includeLevel: [1, 2, 3, 4, 5, 6]
 });
 md.use(require('markdown-it-prism'));
+md.use(require('markdown-it-highlight-lines'));
 
 const fs = Promise.promisifyAll(require('fs-extra'));
 const path = require('path');
