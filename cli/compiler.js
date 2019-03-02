@@ -42,6 +42,11 @@ const svgo = require('svgo');
 const { createSitemap } = require('sitemap');
 const minifyHTML = require('html-minifier').minify;
 
+const unified = require('unified');
+const parse = require('orga-unified');
+const mutate = require('orga-rehype');
+const html = require('rehype-stringify');
+
 const spawn = require('child_process').spawnSync;
 
 const {
@@ -253,7 +258,9 @@ function compile(prefix) {
             pages: filterBy(__pages)
           };
 
-          if (path.extname(file) === '.md') {
+          const extension = path.extname(file);
+
+          if (['.md', '.org'].includes(extension)) {
             const parentDir = path
               .parse(file)
               .dir.split(path.sep)
@@ -283,10 +290,19 @@ function compile(prefix) {
                 {% endblock %}`;
             }
 
-            const tokens = md.parse(content, {});
-            const toc = buildTableOfContents(0, tokens);
-            renderParams.toc = toc ? toc[1] : false;
-            renderParams.content = md.render(content);
+            if (path.extname(file) === '.md') {
+              const tokens = md.parse(content, {});
+              const toc = buildTableOfContents(0, tokens);
+              renderParams.toc = toc ? toc[1] : false;
+              renderParams.content = md.render(content);
+            } else if (path.extname(file) === '.org') {
+              const processor = unified()
+                .use(parse)
+                .use(mutate)
+                .use(html);
+
+              renderParams.content = await processor.process(content);
+            }
           }
 
           // output = minifyHTML(nunjucks.renderString(renderString, renderParams), {
