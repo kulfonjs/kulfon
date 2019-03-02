@@ -191,7 +191,7 @@ function compile(prefix) {
           let bundle = await rollup(options);
           cache = bundle;
 
-          let hash = sha1(bundle.modules[0].code);
+          let hash = sha1(bundle.cache.modules[0].code);
           bundles.js = `main.${hash}.js`;
 
           return bundle.write({
