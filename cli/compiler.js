@@ -68,8 +68,6 @@ const cwd = process.cwd();
 Sugar.Date.extend();
 const svgOptimizer = new svgo({});
 
-const livereload = Livereload({ watch: 'public', verbose: false });
-
 EXTENSIONS = {
   images: ['.jpg', '.png', '.jpeg', '.svg']
 };
@@ -169,6 +167,7 @@ function compile(prefix) {
       };
       break;
     case 'javascripts':
+      const livereload = Livereload({ watch: 'public', verbose: false });
       compiler = async file => {
         const dependencies = (javascripts || [])
           .map(name => name.split('/')[3].split('@')[0])
