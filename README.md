@@ -3,7 +3,9 @@
 [![npm](https://img.shields.io/npm/v/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 [![npm](https://img.shields.io/npm/dm/kulfon.svg)](https://www.npmjs.com/package/kulfon)
 
-**Kulfon** is a « one command », static site generator written entirely in JavaScript. It's fast, modern and simple.
+**Kulfon** is a « one command », JavaScript static site generator. It supports
+both [Markdown](https://en.wikipedia.org/wiki/Markdown) and [Org
+Mode](https://orgmode.org/) out-of-the-box. It's fast, modern and simple. 
 
 _This software is still under **active development** and not feature complete or ready for consumption by anyone other than software developers._
 
@@ -38,6 +40,7 @@ convince you to try **Kulfon**
  * [Sass][2] for stylesheets
  * [Nunjucks][1] for views (a simple, designer friendly HTML-based syntax)
 * written in ES6/ES2015
+* [Org Mode](https://orgmode.org/) support
 * [Markdown][15] support
 * unified approach to external dependencies management with either [unpkg][13] or [Yarn][4]
 * [HTTP/2][14] ready
