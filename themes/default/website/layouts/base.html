@@ -12,31 +12,16 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <section class="hero">
-    <div class="hero-head">
-      {% include "partials/navigation.html" %}
-    </div>
-    <div class="hero-body">
-      <div class="container has-text-centered">
-        <h1 class="title">
-          {{ data.title }}
-        </h1>
-        <h2 class="subtitle">
-          {{ data.dummy }}
-        </h2>
-      </div>
-    </div>
-  </section>
+  {% include "partials/navigation.html" %}
 
+  <main class="container">
   {% block content %}
-  <section class="section">
-    <div class="content">{{ content | safe }}</div>
-  </section>
+    {{ content | safe }}
   {% endblock %}
+  </main>
 
   {% for javascript in javascripts %}
   <script type="text/javascript" src="{{ javascript }}"></script>
   {% endfor %}
-  <script type="text/javascript" src="/{{ bundles.js }}"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 includePaths: []
 stylesheets:
-  - "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"
+ - https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css
 javascripts: []
 deploy:
   server:

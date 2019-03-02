@@ -1,0 +1,27 @@
+#+TITLE: org-mode
+
+* First header
+
+Some text goes here.
+
+** Nested header with source code
+
+This snippet comes from [[https://github.com/hlissner/doom-emacs/blob/master/core/core-editor.el][Doom Emacs]].
+
+#+BEGIN_SRC elisp
+(defun doom|check-large-file ()
+  "Check if the buffer's file is large (see `doom-large-file-size'). If so, ask
+for confirmation to open it literally (read-only, disabled undo and in
+fundamental-mode) for performance sake."
+  (let* ((filename (buffer-file-name))
+         (size (nth 7 (file-attributes filename))))
+    (when (and (not (memq major-mode doom-large-file-modes-list))
+               size (> size (* 1024 1024 doom-large-file-size))
+               (y-or-n-p
+                (format (concat "%s is a large file, open literally to "
+                                "avoid performance issues?")
+                        (file-relative-name filename))))
+      (setq buffer-read-only t)
+      (buffer-disable-undo)
+(fundamental-mode))))
+#+END_SRC
