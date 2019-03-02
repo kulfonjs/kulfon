@@ -45,6 +45,7 @@ const minifyHTML = require('html-minifier').minify;
 const unified = require('unified');
 const parse = require('orga-unified');
 const mutate = require('orga-rehype');
+const highlight = require('@mapbox/rehype-prism');
 const html = require('rehype-stringify');
 
 const spawn = require('child_process').spawnSync;
@@ -299,6 +300,7 @@ function compile(prefix) {
               const processor = unified()
                 .use(parse)
                 .use(mutate)
+                .use(highlight)
                 .use(html);
 
               renderParams.content = await processor.process(content);
