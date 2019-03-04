@@ -1,10 +1,10 @@
 #+TITLE: org-mode
 
-* First header
+* Org Mode Example
 
-Some text goes here.
+This is a *short* page /written/ in [[https://orgmode.org/][Org Mode]]. Go to ~pages/org-mode.org~ to edit it.
 
-** Nested header with source code
+** Here is a nested header with some Emacs Lisp source code.
 
 This snippet comes from [[https://github.com/hlissner/doom-emacs/blob/master/core/core-editor.el][Doom Emacs]].
 

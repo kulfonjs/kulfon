@@ -70,7 +70,7 @@
     "orga-unified": "^1.1.0",
     "rehype-prism": "^0.1.0",
     "rehype-stringify": "^5.0.0",
-    "rollup": "^1.4.0",
+    "rollup": "^1.4.1",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.2",
     "rsync": "^0.6.1",
