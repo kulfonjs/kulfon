@@ -11,12 +11,6 @@ _This software is still under **active development** and not feature complete or
 
 [![Kulfon: a 100% JavaScript static site generator](https://raw.githubusercontent.com/zaiste/kulfon/master/kulfon-static-site-logo.jpg)](https://kulfon.net)
 
-[Website](https://kulfon.net) |
-[Documentation](https://kulfon.net/docs/install/) |
-[Installation Guide](https://kulfon.net/docs/install/) |
-[Contribution Guide](CONTRIBUTING.md) |
-[Twitter](http://twitter.com/kulfonjs)
-
 > \- Kulfon, Kulfon, co z Ciebie wyrośnie ?! martwię się już od tygodnia!
 >
 > \- Przestań!
