@@ -11,20 +11,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const { join } = require('path');
 const Rsync = require('rsync');
 
-const {
-  println
-} = require('./util');
+const { println } = require('./util');
 
 const cwd = process.cwd();
 
 async function deploy({ dry }) {
-  const config = yaml.safeLoad(fs.readFileSync(join(cwd, 'config.yml'), 'utf8'));
+  const config = yaml.safeLoad(
+    fs.readFileSync(join(cwd, 'config.yml'), 'utf8')
+  );
   const { server, path } = config.deploy;
 
   if (!server || !path) {
@@ -32,7 +31,7 @@ async function deploy({ dry }) {
     process.exit();
   }
 
-  println(`Deploying on ${server} to ${path} ...`)
+  println(`Deploying on ${server} to ${path} ...`);
 
   let sync = new Rsync()
     .shell('ssh')
@@ -41,19 +40,23 @@ async function deploy({ dry }) {
     .destination(`${server}:${path}`);
 
   if (dry) {
-    println('Dry run...')
-    sync.dry()
+    println('Dry run...');
+    sync.dry();
   }
 
   println(sync.command());
 
   sync.execute((error, code) => {
     println('done', code);
-  })
+  });
 }
 
 module.exports = {
   handler: deploy,
-  builder: _ => _
-    .option('dry', { alias: 'n', describe: 'Dry run for deploy with rsync', default: false })
+  builder: _ =>
+    _.option('dry', {
+      alias: 'n',
+      describe: 'Dry run for deploy with rsync',
+      default: false
+    })
 };

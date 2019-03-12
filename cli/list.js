@@ -11,9 +11,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require('bluebird');
 const path = require('path');
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
 const yaml = require('js-yaml');
 
 const { println } = require('./util');

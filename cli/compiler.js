@@ -28,7 +28,7 @@ md.use(require('markdown-it-prism'));
 md.use(require('markdown-it-highlight-lines'));
 md.use(require('markdown-it-container'), 'label');
 
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
 const path = require('path');
 const yaml = require('js-yaml');
 const rollup = require('rollup').rollup;

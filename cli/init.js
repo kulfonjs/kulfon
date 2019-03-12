@@ -11,8 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
 const path = require('path');
 
 const { println } = require('./util');
@@ -36,7 +35,12 @@ async function init({ dir, theme }) {
     println('done'.green);
   } catch (error) {
     if (error.code === 'ENOENT') {
-      println('Error: '.red + `There is no theme named ${theme.yellow}. Here's the list of themes: https://kulfon.net/themes/`)
+      println(
+        'Error: '.red +
+          `There is no theme named ${
+            theme.yellow
+          }. Here's the list of themes: https://kulfon.net/themes/`
+      );
     } else {
       println('error: '.red + error.message);
     }

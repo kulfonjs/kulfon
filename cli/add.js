@@ -12,7 +12,7 @@
 // limitations under the License.
 
 const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
 const path = require('path');
 const yaml = require('js-yaml');
 const merge = require('deepmerge');
@@ -70,8 +70,8 @@ async function add({ asset }) {
             println(`${name.yellow} is already installed`);
             seen = true;
           } else {
-            try { 
-              let { stdout, stderr } = await exec(`yarn add ${name}`)
+            try {
+              let { stdout, stderr } = await exec(`yarn add ${name}`);
               println(stdout);
             } catch (error) {
               println(error.message);
