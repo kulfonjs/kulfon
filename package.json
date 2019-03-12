@@ -4,7 +4,7 @@
   "version": "0.25.1",
   "main": "./lib/index.js",
   "devDependencies": {
-    "ava": "^1.2.1",
+    "ava": "^1.3.1",
     "debug": "^4.1.1",
     "nixt": "^0.5.1"
   },
@@ -63,14 +63,13 @@
     "markdown-it-prism": "^2.0.1",
     "markdown-it-table-of-contents": "^0.4.3",
     "node-sass": "^4.11.0",
-    "nunjucks": "^3.1.7",
+    "nunjucks": "^3.2.0",
     "nunjucks-markdown": "^2.0.1",
-    "open": "^0.0.5",
     "orga-rehype": "^1.0.0",
     "orga-unified": "^1.1.0",
-    "rehype-prism": "^0.1.0",
+    "rehype-prism": "^0.1.1",
     "rehype-stringify": "^5.0.0",
-    "rollup": "^1.4.1",
+    "rollup": "^1.6.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.2",
     "rsync": "^0.6.1",
@@ -83,8 +82,8 @@
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.4.9",
     "unified": "^7.1.0",
-    "upath": "^1.1.0",
-    "yargs": "^13.2.1",
+    "upath": "^1.1.2",
+    "yargs": "^13.2.2",
     "yarn": "^1.13.0"
   },
   "bin": {
