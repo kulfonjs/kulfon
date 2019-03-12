@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-const open = require('open');
-
 const argv = require('yargs')
   .env('KULFON')
   .version()
@@ -49,8 +47,9 @@ const argv = require('yargs')
     'List `themes` or installed `assets`',
     require('./cli/list')
   )
+  .commandDir('cli')
   .command(['docs'], 'Go to the documentation at https://kulfon.net', {}, _ =>
-    open('https://kulfon.net')
+    console.log('https://kulfon.net')
   )
   .command(
     ['deploy'],
