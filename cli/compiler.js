@@ -56,7 +56,7 @@ const {
   merge,
   flatten,
   isEmpty,
-  slugify,
+  anchorize,
   exists,
   print,
   println,
@@ -407,7 +407,7 @@ function preprocess(prefix) {
 
           const tags = data.tags || [];
           for (let tag of tags) {
-            let t = slugify(tag);
+            let t = anchorize(tag);
             (__tags[t] = __tags[t] || []).push({
               path: pathname(file),
               title: data.title,

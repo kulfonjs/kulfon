@@ -1,4 +1,4 @@
-// Copyright 2016 Zaiste & contributors. All rights reserved.
+// Copyright 2019 Zaiste & contributors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,8 +11,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
+const slug = require('slugify');
 
 let unique = _ => [...new Set(_)];
 
@@ -46,7 +46,7 @@ function merge(target, source) {
   return target;
 }
 
-function slugify(text) {
+function anchorize(text) {
   return text
     .toString()
     .toLowerCase()
@@ -111,7 +111,7 @@ function buildTableOfContents(pos, tokens) {
         headings.push(buffer);
       }
     }
-    buffer = `<li class="toc-item"><a href="#${slugify(
+    buffer = `<li class="toc-item"><a href="#${anchorize(
       heading.content
     )}" class="toc-link">`;
     buffer += heading.content;
@@ -123,6 +123,35 @@ function buildTableOfContents(pos, tokens) {
   return [i, headings.join('')];
 }
 
+const slugify = title => {
+  const options = {
+    remove: /[*+~.(){}'"!:@]/g
+  };
+
+  const stopwords = [
+    'of',
+    'and',
+    'or',
+    'the',
+    'a',
+    'an',
+    'to',
+    'in',
+    'into',
+    'do',
+    'have',
+    'has'
+  ];
+
+  const str = title
+    .toLowerCase()
+    .split(' ')
+    .filter(word => !stopwords.includes(word))
+    .join(' ');
+
+  return slug(str, options);
+};
+
 module.exports = {
   unique,
   concat,
@@ -130,9 +159,10 @@ module.exports = {
   flatten,
   isEmpty,
   isObject,
-  slugify,
+  anchorize,
   exists,
   print,
   println,
-  buildTableOfContents
+  buildTableOfContents,
+  slugify
 };
