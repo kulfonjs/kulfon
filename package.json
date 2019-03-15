@@ -81,7 +81,7 @@
     "szelmostwo": "^0.2.0",
     "tmp": "^0.0.33",
     "uglify-es": "^3.3.9",
-    "uglify-js": "^3.4.9",
+    "uglify-js": "^3.4.10",
     "unified": "^7.1.0",
     "upath": "^1.1.2",
     "yargs": "^13.2.2",

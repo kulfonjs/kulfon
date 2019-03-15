@@ -37,7 +37,6 @@ const minify = require('uglify-es').minify;
 const sha1 = require('sha1');
 const matter = require('gray-matter');
 const Sugar = require('sugar-date');
-const Livereload = require('rollup-plugin-livereload');
 const svgo = require('svgo');
 const { createSitemap } = require('sitemap');
 const minifyHTML = require('html-minifier').minify;
@@ -166,7 +165,6 @@ function compile(prefix) {
       };
       break;
     case 'javascripts':
-      const livereload = Livereload({ watch: 'public', verbose: false });
       compiler = async file => {
         const dependencies = (javascripts || [])
           .map(name => name.split('/')[3].split('@')[0])
@@ -180,10 +178,6 @@ function compile(prefix) {
 
         if (ENV === 'production') {
           Object.assign(options, { plugins: [uglify({}, minify)] });
-        } else {
-          Object.assign(options, {
-            plugins: [livereload]
-          });
         }
 
         try {
