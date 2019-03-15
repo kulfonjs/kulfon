@@ -1,7 +1,0 @@
-includePaths: []
-stylesheets:
-  - https://unpkg.com/tachyons@4.8.1/css/tachyons.css
-javascripts: []
-deploy:
-  server:
-  path:
