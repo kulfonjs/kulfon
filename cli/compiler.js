@@ -262,7 +262,7 @@ function compile(prefix) {
             const foo = await fs.pathExists(
               __current(
                 'components/layouts',
-                path.format({ name: parentDir, ext: '.html' })
+                path.format({ name: parentDir, ext: '.njk' })
               )
             );
 
@@ -270,14 +270,14 @@ function compile(prefix) {
             const itselfExists = await fs.pathExists(
               __current(
                 'components/layouts',
-                path.format({ name: itself, ext: '.html' })
+                path.format({ name: itself, ext: '.njk' })
               )
             );
 
             if (parentDir && foo) {
-              renderString = `{% extends "layouts/${parentDir}.html" %}`;
+              renderString = `{% extends "layouts/${parentDir}.njk" %}`;
             } else if (itselfExists) {
-              renderString = `{% extends "layouts/${itself}.html" %}`;
+              renderString = `{% extends "layouts/${itself}.njk" %}`;
             } else {
               renderString = `
                 {% extends "layouts/index.njk" %}
