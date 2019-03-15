@@ -156,7 +156,7 @@ Each `html` file can have a front matter with additional meta information which 
 ---
 title: This is my title
 ---
-{% extends "layouts/base.html" %}
+{% extends "layouts/index.njk" %}
 {% block content %}
 <h2>My Page: {{ data.title }}
 {% endblock %}

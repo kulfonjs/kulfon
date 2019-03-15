@@ -280,7 +280,7 @@ function compile(prefix) {
               renderString = `{% extends "layouts/${itself}.html" %}`;
             } else {
               renderString = `
-                {% extends "layouts/base.html" %}
+                {% extends "layouts/index.njk" %}
                 {% block content %}
                   {{ content | safe }}
                 {% endblock %}`;
@@ -414,7 +414,7 @@ function preprocess(prefix) {
         }
 
         const tagsPage = await fs.readFileAsync(
-          __current('pages', 'tags.html'),
+          __current('pages', 'tags.njk'),
           'utf8'
         );
 
