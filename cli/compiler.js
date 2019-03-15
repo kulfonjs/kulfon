@@ -72,9 +72,8 @@ EXTENSIONS = {
   images: ['.jpg', '.png', '.jpeg', '.svg']
 };
 
-let env = nunjucks.configure('website', {
+let env = nunjucks.configure(['website/pages', 'website/components'], {
   autoescape: true,
-  watch: false,
   noCache: true
 });
 env.addFilter('date', (date, format) => {
@@ -268,14 +267,17 @@ function compile(prefix) {
 
             const foo = await fs.pathExists(
               __current(
-                'layouts',
+                'components/layouts',
                 path.format({ name: parentDir, ext: '.html' })
               )
             );
 
             const itself = path.parse(file).name;
             const itselfExists = await fs.pathExists(
-              __current('layouts', path.format({ name: itself, ext: '.html' }))
+              __current(
+                'components/layouts',
+                path.format({ name: itself, ext: '.html' })
+              )
             );
 
             if (parentDir && foo) {
@@ -474,9 +476,8 @@ async function checkDirectoryStructure() {
   const paths = [
     'website/images',
     'website/javascripts',
-    'website/layouts',
+    'website/components',
     'website/pages',
-    'website/partials',
     'website/stylesheets'
   ].map(el => path.join(cwd, el));
 
@@ -490,11 +491,10 @@ async function checkDirectoryStructure() {
 
 . (your project root)
 └── website
+  ├── components
   ├── images
   ├── javascripts
-  ├── layouts
   ├── pages
-  ├── partials
   └── stylesheets
 
 but your current directory at '${cwd}' looks like this:
