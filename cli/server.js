@@ -42,8 +42,9 @@ async function recompile(file) {
 }
 
 async function server({ port, dir }) {
-  const kulfon = `Kulfon`.red;
-  println(`${kulfon}: ${version}`);
+  const kulfon = ` Kulfon `.bgRed.white.bold;
+  const v = ` ${version} `.bgWhite.black;
+  println(`${kulfon}${v}`);
 
   await compileAll({ dir });
 
