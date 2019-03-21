@@ -59,7 +59,8 @@ const {
   exists,
   print,
   println,
-  buildTableOfContents
+  buildTableOfContents,
+  unfold
 } = require('./util');
 
 const currentDirectory = process.cwd();
@@ -365,6 +366,8 @@ async function loadData() {
 
   let entries = ['data.yml']; // by default parse `data.yml`
 
+  let data = {};
+
   try {
     let stats = await fs.statAsync(path.join(dataPath, 'data'));
 
@@ -385,8 +388,12 @@ async function loadData() {
   );
 
   yaml.safeLoadAll(content, doc => {
-    __data = merge(__data, doc);
+    data = merge(data, doc);
   });
+
+  const unfolded = await unfold(data);
+
+  __data = merge(__data, unfolded);
 }
 
 function preprocess(prefix) {

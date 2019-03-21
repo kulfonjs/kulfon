@@ -13,6 +13,14 @@
 
 const fs = require('fs-extra');
 const slug = require('slugify');
+const axios = require('axios');
+
+const isNotScalar = obj => obj === Object(obj);
+const intersection = (a, b) => new Set([...a].filter(_ => b.has(_)));
+const isSetEmpty = a => a.size === 0;
+const isNumeric = num => !isNaN(num);
+const destruct = (keys, obj) =>
+  keys.reduce((a, c) => ({ ...a, [c]: obj[c] }), {});
 
 let unique = _ => [...new Set(_)];
 
@@ -152,6 +160,50 @@ const slugify = title => {
   return slug(str, options);
 };
 
+const operations = new Set(['__http', '__graphql']);
+const unfold = async data => {
+  let unfolded = {};
+
+  // TODO allow for more general approach where Objects & Arrays
+  // can me mixed together
+  if (Array.isArray(data)) {
+    return data;
+  }
+  for (let prop in data) {
+    let child = data[prop];
+    let childKeys = new Set(Object.keys(child));
+    let ops = intersection(operations, childKeys);
+
+    if (isNotScalar(child) && !isSetEmpty(ops)) {
+      let [operation, ...rest] = ops;
+
+      let result = {};
+      switch (operation) {
+        case '__http':
+          let requestParams = child['__http']['__request'];
+          let responseDataKeys = Object.keys(child['__http']['__response']);
+
+          let response = await axios(requestParams);
+
+          if (response.status === 200) {
+            result = destruct(responseDataKeys, response.data);
+          }
+
+          break;
+        default:
+          break;
+      }
+      Object.assign(unfolded, { [prop]: result });
+    } else if (isNotScalar(data[prop])) {
+      Object.assign(unfolded, { [prop]: await unfold(data[prop]) });
+    } else {
+      Object.assign(unfolded, { [prop]: data[prop] });
+    }
+  }
+
+  return unfolded;
+};
+
 module.exports = {
   unique,
   concat,
@@ -164,5 +216,11 @@ module.exports = {
   print,
   println,
   buildTableOfContents,
-  slugify
+  slugify,
+  isNotScalar,
+  intersection,
+  isSetEmpty,
+  isNumeric,
+  destruct,
+  unfold
 };
