@@ -1,4 +1,4 @@
-// Copyright 2016 Zaiste & contributors. All rights reserved.
+// Copyright 2019 Zaiste & contributors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,32 +14,15 @@
 const Szelmostwo = require('szelmostwo');
 const { serve } = require('szelmostwo/middleware');
 const chokidar = require('chokidar');
-const { compile, transform, compileAll, loadData } = require('./compiler');
 const path = require('path');
 const colors = require('colors');
+
+const { recompile, compileAll } = require('../core');
 
 const { println } = require('./util');
 const { version } = require('../package.json');
 
 const debug = require('debug')('server');
-
-async function recompile(file) {
-  let fileSegments = file.split(path.sep);
-  const prefix = fileSegments.shift();
-  file = path.join(...fileSegments);
-
-  debug(`file to recompile: ${file}`);
-
-  await loadData();
-
-  if (prefix.match(/pages/)) {
-    await compile(prefix)(file);
-  } else {
-    await transform('stylesheets')();
-    await transform('javascripts')();
-    await transform('pages')();
-  }
-}
 
 async function server({ port, dir }) {
   const kulfon = ` Kulfon `.bgRed.white.bold;
