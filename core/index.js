@@ -528,7 +528,7 @@ async function recompile(file) {
   const prefix = fileSegments.shift();
   file = path.join(...fileSegments);
 
-  debug(`file to recompile: ${file}`);
+  //debug(`file to recompile: ${file}`);
 
   await loadData();
 
