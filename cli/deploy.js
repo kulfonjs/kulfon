@@ -14,13 +14,30 @@
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const { join } = require('path');
-const Rsync = require('rsync');
+const rsyncwrapper = require('rsyncwrapper');
 
 const { println } = require('./util');
 
 const cwd = process.cwd();
 
-async function deploy({ dry }) {
+const rsync = async (options, showCommand = false) => {
+  return await new Promise((resolve, reject) => {
+    rsyncwrapper(
+      { ...options, recursive: true, ssh: true, args: ['-azP'] },
+      (error, stdout, stderr, cmd) => {
+        if (showCommand) console.log(cmd);
+
+        if (error) {
+          reject(error);
+        }
+
+        resolve(stdout);
+      }
+    );
+  });
+};
+
+const deploy = async ({ dry, showCommand }) => {
   const config = yaml.safeLoad(
     fs.readFileSync(join(cwd, 'config.yml'), 'utf8')
   );
@@ -33,23 +50,28 @@ async function deploy({ dry }) {
 
   println(`Deploying on ${server} to ${path} ...`);
 
-  let sync = new Rsync()
-    .shell('ssh')
-    .flags('azP')
-    .source(join(cwd, 'public/'))
-    .destination(`${server}:${path}`);
+  try {
+    const options = {
+      src: 'public/',
+      dest: `${server}:${path}`,
+      exclude: ['node_modules', '.git'],
+      dryRun: dry
+    };
 
-  if (dry) {
-    println('Dry run...');
-    sync.dry();
+    await rsync(options, showCommand);
+  } catch (error) {
+    switch (error.message) {
+      case 'rsync exited with code 3':
+        console.log(
+          "[rsync] Errors selecting input/output files, dirs: Probably these files/dirs don't exist"
+        );
+        break;
+      default:
+        console.log('[rsync] Unknown Error');
+        break;
+    }
   }
-
-  println(sync.command());
-
-  sync.execute((error, code) => {
-    println('done', code);
-  });
-}
+};
 
 module.exports = {
   handler: deploy,
