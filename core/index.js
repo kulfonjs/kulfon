@@ -63,6 +63,8 @@ const {
   unfold
 } = require('../cli/util');
 
+const LinkExt = require('./LinkExt');
+
 const currentDirectory = process.cwd();
 const cwd = process.cwd();
 Sugar.Date.extend();
@@ -76,9 +78,12 @@ let env = nunjucks.configure(['website/pages', 'website/components'], {
   autoescape: true,
   noCache: true
 });
-env.addFilter('date', (date, format) => {
-  return Date.create(date).format(format || '{yyyy}-{MM}-{dd}');
-});
+env.addFilter('date', (date, format) =>
+  Date.create(date).format(format || '{yyyy}-{MM}-{dd}')
+);
+
+env.addExtension('LinkExt', new LinkExt());
+
 markdown.register(env, md.render.bind(md));
 
 let cache;
