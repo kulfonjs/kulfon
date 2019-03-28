@@ -4,7 +4,7 @@
   "version": "0.28.1",
   "main": "./core/index.js",
   "devDependencies": {
-    "ava": "^1.4.0",
+    "ava": "^1.4.1",
     "debug": "^4.1.1",
     "nixt": "^0.5.1"
   },
@@ -70,8 +70,7 @@
     "orga-unified": "^1.1.0",
     "rehype-prism": "^0.1.1",
     "rehype-stringify": "^5.0.0",
-    "rollup": "^1.7.3",
-    "rollup-plugin-livereload": "^1.0.0",
+    "rollup": "^1.7.4",
     "rollup-plugin-uglify": "^6.0.2",
     "rsyncwrapper": "^3.0.1",
     "sha1": "^1.1.1",
@@ -85,8 +84,7 @@
     "uglify-js": "^3.5.2",
     "unified": "^7.1.0",
     "upath": "^1.1.2",
-    "yargs": "^13.2.2",
-    "yarn": "^1.13.0"
+    "yargs": "^13.2.2"
   },
   "bin": {
     "kulfon": "cli.js"
