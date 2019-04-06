@@ -68,7 +68,7 @@ const LinkExt = require('./LinkExt');
 
 const CWD = process.cwd();
 Sugar.Date.extend();
-const svgOptimizer = new svgo({});
+// const svgOptimizer = new svgo({});
 
 EXTENSIONS = {
   images: ['.jpg', '.png', '.jpeg', '.svg']
@@ -310,10 +310,10 @@ function compile(prefix) {
             }
           }
 
-          // output = minifyHTML(nunjucks.renderString(renderString, renderParams), {
-          //   collapseWhitespace: true
-          // });
           output = nunjucks.renderString(renderString, renderParams);
+
+          if (isProduction)
+            output = minifyHTML(output, { collapseWhitespace: true });
 
           await fs.outputFileAsync(__public('index.html', filename), output);
         } catch (error) {
