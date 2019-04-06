@@ -59,7 +59,7 @@ function anchorize(text) {
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\./g, '')
+    .replace(/[\.`]/g, '')
     .replace(/[\s\W-]+/g, '-');
 }
 
@@ -122,7 +122,7 @@ function buildTableOfContents(pos, tokens) {
     buffer = `<li class="toc-item"><a href="#${anchorize(
       heading.content
     )}" class="toc-link">`;
-    buffer += heading.content;
+    buffer += heading.content.replace(/`/g, '');
     buffer += '</a>';
     i++;
   }
