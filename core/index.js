@@ -141,7 +141,7 @@ function filterBy(entities) {
 }
 
 function compile(prefix) {
-  const ENV = process.env.KULFON_ENV;
+  const isProduction = process.env.KULFON_ENV === 'production';
   const { stylesheets, javascripts, includePaths } = config;
 
   let output;
@@ -215,7 +215,7 @@ function compile(prefix) {
             includePaths: includePaths || [],
             outputStyle: 'compressed',
             sourceMap: true,
-            sourceMapEmbed: ENV != 'production'
+            sourceMapEmbed: !isProduction
           });
 
           output = result.css;
@@ -223,8 +223,7 @@ function compile(prefix) {
           let hash = sha1(output);
           let name = path.basename(file, path.extname(file));
 
-          filename =
-            ENV != 'production' ? `${name}.css` : `${name}.${hash}.css`;
+          filename = !isProduction ? `${name}.css` : `${name}.${hash}.css`;
 
           bundles.css = filename;
 

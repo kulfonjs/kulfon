@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const argv = require('yargs')
-  .env('KULFON')
+  .env('KULFON_ENV')
   .version()
   .usage('Usage: kulfon <command> [options]')
   .command(
