@@ -188,7 +188,6 @@ function compile(prefix) {
           plugins: terser()
         };
 
-
         try {
           let bundle = await rollup(options);
           cache = bundle;
