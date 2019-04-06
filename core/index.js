@@ -66,8 +66,7 @@ const {
 
 const LinkExt = require('./LinkExt');
 
-const currentDirectory = process.cwd();
-const cwd = process.cwd();
+const CWD = process.cwd();
 Sugar.Date.extend();
 const svgOptimizer = new svgo({});
 
@@ -115,11 +114,11 @@ function scan(directory, recursive = true) {
 }
 
 function __public(filename, inside = '') {
-  return path.join(currentDirectory, 'public', inside, filename);
+  return path.join(CWD, 'public', inside, filename);
 }
 
 function __current(prefix, f = '') {
-  return path.join(currentDirectory, 'website', prefix, f);
+  return path.join(CWD, 'website', prefix, f);
 }
 
 function profile(func, prefix, allowedExtensions) {
@@ -183,7 +182,7 @@ function compile(prefix) {
           .reduce((acc, name) => Object.assign(acc, { [name]: name }), {});
 
         let options = {
-          input: path.join(currentDirectory, 'website/javascripts', 'main.js'),
+          input: path.join(CWD, 'website/javascripts', 'main.js'),
           cache: cache,
           external: Object.keys(dependencies),
           plugins: terser()
@@ -364,14 +363,14 @@ function pathname(file) {
 
 async function loadConfig() {
   const yamlContent = await fs.readFileAsync(
-    path.join(currentDirectory, 'config.yml'),
+    path.join(CWD, 'config.yml'),
     'utf8'
   );
   config = yaml.safeLoad(yamlContent);
 }
 
 async function loadData() {
-  let dataPath = path.join(currentDirectory, 'website');
+  let dataPath = path.join(CWD, 'website');
 
   let entries = ['data.yml']; // by default parse `data.yml`
 
@@ -489,7 +488,7 @@ async function checkDirectoryStructure() {
     'website/components',
     'website/pages',
     'website/stylesheets'
-  ].map(el => path.join(cwd, el));
+  ].map(el => path.join(CWD, el));
 
   const result = await Promise.resolve(paths)
     .map(fs.pathExists)
@@ -507,7 +506,7 @@ async function checkDirectoryStructure() {
   ├── pages
   └── stylesheets
 
-but your current directory at '${cwd}' looks like this:
+but your current directory at '${CWD}' looks like this:
 
 ${tree.stdout}
     `);
