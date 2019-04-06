@@ -37,6 +37,7 @@ const matter = require('gray-matter');
 const Sugar = require('sugar-date');
 const svgo = require('svgo');
 const { createSitemap } = require('sitemap');
+const sharp = require('sharp');
 const minifyHTML = require('html-minifier').minify;
 
 const { terser } = require('rollup-plugin-terser');
@@ -153,7 +154,7 @@ function compile(prefix) {
     case 'images':
       compiler = async file => {
         const imageExists = await exists(__public(file, 'images'));
-        if (imageExists) return;
+        if (imageExists) return; // poor's man optimizaion
 
         switch (path.extname(file)) {
           case '.svg':
@@ -165,8 +166,13 @@ function compile(prefix) {
             // fs.writeFileSync(__public(file, "images"), result.data);
             fs.copyAsync(__current('images', file), __public(file, 'images'));
             break;
-          default:
+          case '.gif':
             fs.copyAsync(__current('images', file), __public(file, 'images'));
+            break;
+          default:
+            await sharp(__current('images', file)).toFile(
+              __public(file, 'images')
+            );
         }
       };
       break;
