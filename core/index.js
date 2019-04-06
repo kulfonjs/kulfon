@@ -32,14 +32,14 @@ const fs = Promise.promisifyAll(require('fs-extra'));
 const path = require('path');
 const yaml = require('js-yaml');
 const rollup = require('rollup').rollup;
-const { uglify } = require('rollup-plugin-uglify');
-const minify = require('uglify-es').minify;
 const sha1 = require('sha1');
 const matter = require('gray-matter');
 const Sugar = require('sugar-date');
 const svgo = require('svgo');
 const { createSitemap } = require('sitemap');
 const minifyHTML = require('html-minifier').minify;
+
+const { terser } = require('rollup-plugin-terser');
 
 const unified = require('unified');
 const parse = require('orga-unified');
@@ -179,12 +179,10 @@ function compile(prefix) {
         let options = {
           input: path.join(currentDirectory, 'website/javascripts', 'main.js'),
           cache: cache,
-          external: Object.keys(dependencies)
+          external: Object.keys(dependencies),
+          plugins: terser()
         };
 
-        if (ENV === 'production') {
-          Object.assign(options, { plugins: [uglify({}, minify)] });
-        }
 
         try {
           let bundle = await rollup(options);
