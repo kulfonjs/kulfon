@@ -245,6 +245,18 @@ function compile(prefix) {
 
           __pages[file] = page;
 
+          // update tags
+          const tags = (data && data.tags) || [];
+          for (let tag of tags) {
+            let t = anchorize(tag);
+            (__tags[t] = __tags[t] || []).push({
+              path: pathname(file),
+              title: data.title,
+              created_at: data.created_at,
+              tags: data.tags
+            });
+          }
+
           let renderString = __pages[file].content;
           let renderParams = {
             config,
@@ -313,12 +325,15 @@ function compile(prefix) {
             output = minifyHTML(output, { collapseWhitespace: true });
 
           await fs.outputFileAsync(__public('index.html', filename), output);
+
+          return page;
         } catch (error) {
           println(error.message);
         }
       };
       break;
     default:
+      compiler = async file => file;
       break;
   }
 
@@ -526,6 +541,8 @@ async function compileAll({ dir, env }) {
     await loadData();
 
     await transform('pages')();
+
+    await buildTagsPages();
 
     await generateSitemap();
   } catch (error) {
