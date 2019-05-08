@@ -39,16 +39,14 @@ const svgo = require('svgo');
 const { createSitemap } = require('sitemap');
 const sharp = require('sharp');
 const minifyHTML = require('html-minifier').minify;
-
 const { terser } = require('rollup-plugin-terser');
-
 const unified = require('unified');
 const parse = require('orga-unified');
 const mutate = require('orga-rehype');
 const highlight = require('@mapbox/rehype-prism');
 const html = require('rehype-stringify');
-
 const spawn = require('child_process').spawnSync;
+const fg = require('fast-glob');
 
 const {
   unique,
@@ -324,7 +322,7 @@ function compile(prefix) {
       break;
   }
 
-  return profile(compiler, prefix, EXTENSIONS[prefix]);
+  return compiler;
 }
 
 function pathname(file) {
@@ -402,80 +400,53 @@ async function loadData() {
   __data = merge(__data, unfolded);
 }
 
-function preprocess(prefix) {
-  switch (prefix) {
-    case 'pages':
-      return async files => {
-        const { stylesheets, javascripts, includePaths } = config;
+const buildTagsPages = async () => {
+  const { stylesheets, javascripts, includePaths } = config;
 
-        for (let file of files) {
-          let m = matter.read(__current(prefix, file));
-          let { data, content } = m;
+  const tagsPage = await fs.readFileAsync(
+    __current('pages', 'tags.njk'),
+    'utf8'
+  );
 
-          __pages[file] = { ...data };
-
-          const tags = data.tags || [];
-          for (let tag of tags) {
-            let t = anchorize(tag);
-            (__tags[t] = __tags[t] || []).push({
-              path: pathname(file),
-              title: data.title,
-              created_at: data.created_at,
-              tags: data.tags
-            });
-          }
-        }
-
-        const tagsPage = await fs.readFileAsync(
-          __current('pages', 'tags.njk'),
-          'utf8'
-        );
-
-        for (let tag in __tags) {
-          let output = nunjucks.renderString(tagsPage, {
-            tag,
-            posts: __tags[tag],
-            pages: filterBy({}),
-            config,
-            javascripts,
-            stylesheets
-          });
-          await fs.outputFileAsync(
-            __public('index.html', `tags/${tag}`),
-            output
-          );
-        }
-
-        return files;
-      };
-    case 'images':
-      return files =>
-        files.filter(f =>
-          ['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(f))
-        );
-    case 'stylesheets':
-      return files => files.filter(f => f[0] !== '_');
-    case 'javascripts':
-      return files => files;
+  for (let tag in __tags) {
+    let output = nunjucks.renderString(tagsPage, {
+      tag,
+      posts: __tags[tag],
+      pages: filterBy({}),
+      config,
+      javascripts,
+      stylesheets
+    });
+    await fs.outputFileAsync(__public('index.html', `tags/${tag}`), output);
   }
-}
+};
 
 function transform(prefix) {
-  return () => {
+  return async () => {
     let startTime = new Date();
 
-    return scan(path.join('website', prefix))
-      .then(preprocess(prefix))
-      .map(compile(prefix))
-      .then(() => {
-        let endTime = new Date();
-        println(
-          `\\__ ${prefix.padEnd(12).blue}: ${(endTime - startTime)
-            .toString()
-            .padStart(5)}ms ${'done'.green}`
-        );
-      })
-      .catch(_ => console.error(_.message));
+    const stream = fg.stream('**', {
+      cwd: `website`
+    });
+
+    for await (let entry of stream) {
+      const { dir: prefix, base: file } = path.parse(entry);
+      try {
+        switch (prefix) {
+          case 'images':
+            if (!['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(file)))
+              continue;
+        }
+        let page = await compile(prefix)(file);
+      } catch (error) {
+        console.log('ERROR: ', error.message);
+      }
+    }
+    let endTime = new Date();
+    const timeAsString = `${endTime - startTime}ms`.underline;
+    println(
+      `\\__ ${'compiling...'.padEnd(12)} ${timeAsString} ${'done'.green}`
+    );
   };
 }
 
@@ -541,8 +512,6 @@ async function recompile(file) {
   if (prefix.match(/pages/)) {
     await compile(prefix)(file);
   } else {
-    await transform('stylesheets')();
-    await transform('javascripts')();
     await transform('pages')();
   }
 }
@@ -556,9 +525,6 @@ async function compileAll({ dir, env }) {
     await loadConfig();
     await loadData();
 
-    await transform('images')();
-    await transform('stylesheets')();
-    await transform('javascripts')();
     await transform('pages')();
 
     await generateSitemap();
