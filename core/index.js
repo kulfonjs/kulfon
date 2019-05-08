@@ -134,6 +134,7 @@ function filterBy(entities) {
         ([p, meta]) => (prefix ? p.split(path.sep).includes(prefix) : true)
       )
       .map(([path, meta]) => meta)
+      .filter(_ => _.publish === undefined || _.publish === true)
       .sort((a, b) => b.created_at - a.created_at);
   };
 }
