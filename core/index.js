@@ -45,6 +45,7 @@ const parse = require('orga-unified');
 const mutate = require('orga-rehype');
 const highlight = require('@mapbox/rehype-prism');
 const html = require('rehype-stringify');
+const unistMap = require('unist-util-map');
 const spawn = require('child_process').spawnSync;
 const fg = require('fast-glob');
 
@@ -83,6 +84,18 @@ env.addFilter('date', (date, format) =>
 env.addExtension('LinkExt', new LinkExt());
 
 markdown.register(env, md.render.bind(md));
+
+const linkify = () => tree =>
+  unistMap(tree, node => {
+    const { type, uri: { protocol = '', location = '/' } = '' } = node;
+
+    if (type === 'link' && protocol === 'file') {
+      const { dir, name } = path.parse(location);
+      node.uri.raw = path.join('/', dir, name);
+    }
+
+    return node;
+  });
 
 let cache;
 let config;
@@ -312,6 +325,7 @@ function compile(prefix) {
             } else if (path.extname(file) === '.org') {
               const processor = unified()
                 .use(parse)
+                .use(linkify)
                 .use(mutate)
                 .use(highlight)
                 .use(html);
