@@ -536,7 +536,11 @@ async function compileAll({ dir, env }) {
     await loadConfig();
     await loadData();
 
-    await transform('pages')();
+    // order is important
+    await transform('images');
+    await transform('stylesheets');
+    await transform('javascripts');
+    await transform('pages');
 
     await buildTagsPages();
 
