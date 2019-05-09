@@ -230,29 +230,21 @@ function compile(prefix) {
         const filename = pathname(file);
 
         try {
-          const { data, content } = matter.read(__current(prefix, file));
-
-          let page = {
-            ...data,
-            content,
-            path: filename
-          };
-
-          __pages[file] = page;
+          const page = __pages[file];
+          const { title, created_at, tags = [], filepath, content } = page;
 
           // update tags
-          const tags = (data && data.tags) || [];
-          for (let tag of tags) {
+          for (let tag of tags || []) {
             let t = anchorize(tag);
             (__tags[t] = __tags[t] || []).push({
-              path: pathname(file),
-              title: data.title,
-              created_at: data.created_at,
-              tags: data.tags
+              filepath,
+              title,
+              created_at,
+              tags
             });
           }
 
-          let renderString = __pages[file].content;
+          let renderString = content;
           let renderParams = {
             config,
             page,
@@ -440,6 +432,18 @@ async function transform(prefix) {
   });
 
   print(`${'●'.red}  ${prefix.padEnd(12).blue} : `);
+
+  // preprocessing for `pages` so to make references between them
+  if (prefix === 'pages') {
+    for (let file of entries) {
+      const filepath = pathname(file);
+
+      const { data, content } = matter.read(__current(prefix, file));
+
+      __pages[file] = { ...data, content, filepath };
+    }
+  }
+
   for (let file of entries) {
     try {
       switch (prefix) {
@@ -498,8 +502,8 @@ class WrongDirectoryError extends Error {
 async function generateSitemap() {
   const sitemap = createSitemap({
     hostname: config.base_url || 'https://localhost',
-    urls: Object.values(__pages).map(({ sitemap, path }) => ({
-      url: path,
+    urls: Object.values(__pages).map(({ sitemap, filepath }) => ({
+      url: filepath,
       priority: sitemap ? sitemap.priority : 0.5
     }))
   });
@@ -519,7 +523,7 @@ async function recompile(file) {
   if (prefix.match(/pages/)) {
     await compile(prefix)(file);
   } else {
-    await transform('pages')();
+    await transform('pages');
   }
 }
 
