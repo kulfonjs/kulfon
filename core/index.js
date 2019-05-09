@@ -105,25 +105,6 @@ let __data = {};
 let __pages = {};
 let __tags = {};
 
-function scan(directory, recursive = true) {
-  return fs
-    .readdirAsync(directory)
-    .map(el =>
-      fs.statAsync(path.join(directory, el)).then(stat => {
-        if (stat.isFile()) {
-          return el;
-        } else {
-          return !recursive
-            ? []
-            : scan(path.join(directory, el))
-                .reduce(concat, [])
-                .map(_ => path.join(el, _));
-        }
-      })
-    )
-    .reduce(concat, []);
-}
-
 function __public(filename, inside = '') {
   return path.join(CWD, 'public', inside, filename);
 }
