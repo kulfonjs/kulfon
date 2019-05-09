@@ -437,33 +437,29 @@ const buildTagsPages = async () => {
   }
 };
 
-function transform(prefix) {
-  return async () => {
-    let startTime = new Date();
+async function transform(prefix) {
+  let startTime = new Date();
 
-    const stream = fg.stream('**', {
-      cwd: `website`
-    });
+  const entries = await fg('**', {
+    cwd: `website/${prefix}`
+  });
 
-    for await (let entry of stream) {
-      const { dir: prefix, base: file } = path.parse(entry);
-      try {
-        switch (prefix) {
-          case 'images':
-            if (!['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(file)))
-              continue;
-        }
-        let page = await compile(prefix)(file);
-      } catch (error) {
-        console.log('ERROR: ', error.message);
+  print(`${'●'.red}  ${prefix.padEnd(12).blue} : `);
+  for (let file of entries) {
+    try {
+      switch (prefix) {
+        case 'images':
+          if (!['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(file)))
+            continue;
       }
+      let page = await compile(prefix)(file);
+    } catch (error) {
+      console.log('ERROR: ', error.message);
     }
-    let endTime = new Date();
-    const timeAsString = `${endTime - startTime}ms`.underline;
-    println(
-      `\\__ ${'compiling...'.padEnd(12)} ${timeAsString} ${'done'.green}`
-    );
-  };
+  }
+  let endTime = new Date();
+  const timeAsString = `${endTime - startTime}ms`.underline;
+  println(`${timeAsString.padStart(18)} ${'done'.green}`);
 }
 
 async function checkDirectoryStructure() {

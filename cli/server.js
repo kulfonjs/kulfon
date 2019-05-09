@@ -27,7 +27,7 @@ const debug = require('debug')('server');
 async function server({ port, dir }) {
   const kulfon = ` Kulfon `.bgRed.white.bold;
   const v = ` ${version} `.bgWhite.black;
-  println(`${kulfon}${v}`);
+  println(`${kulfon}${v}\n`);
 
   await compileAll({ dir });
 
@@ -50,7 +50,7 @@ async function server({ port, dir }) {
 
   const url = `http://localhost:${port}`.bold;
 
-  println(`Your website is ready at ${url}`);
+  println(`\nYour website is ready at ${url}`);
 }
 
 module.exports = {
