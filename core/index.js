@@ -239,22 +239,24 @@ function compile(prefix) {
       break;
     case 'pages':
       compiler = async file => {
-        const filename = pathname(file);
-
         try {
           const page = __pages[file];
-          const { title, created_at, tags = [], filepath, content } = page;
 
-          // update tags
-          for (let tag of tags || []) {
-            let t = anchorize(tag);
-            (__tags[t] = __tags[t] || []).push({
-              filepath,
-              title,
-              created_at,
-              tags
-            });
+          const { data, content } = matter.read(__current(prefix, file));
+
+          const isOrg = path.extname(file) === '.org';
+          const lacksFrontMatter = isEmpty(data);
+
+          if (isOrg) {
+            const processor = unified().use(parse);
+            const ast = await processor.parse(content);
+            data.ast = ast;
           }
+
+          const { title, created_at, categories = [], tags = [] } =
+            isOrg && lacksFrontMatter ? data.ast.meta : data;
+
+          const { filepath } = page;
 
           let renderString = content;
           let renderParams = {
@@ -308,7 +310,7 @@ function compile(prefix) {
               renderParams.toc = toc ? toc[1] : false;
               renderParams.content = md.render(content);
             } else if (path.extname(file) === '.org') {
-              const processor = unified()
+              const processor = await unified()
                 .use(parse)
                 .use(linkify(filepath))
                 .use(mutate)
@@ -324,6 +326,7 @@ function compile(prefix) {
           if (isProduction)
             output = minifyHTML(output, { collapseWhitespace: true });
 
+          const filename = pathname(file);
           await fs.outputFileAsync(__public('index.html', filename), output);
 
           return page;
@@ -447,13 +450,63 @@ async function transform(prefix) {
 
   // preprocessing for `pages` so to make references between them
   if (prefix === 'pages') {
+    const __categories = {};
+
     for (let file of entries) {
       const filepath = pathname(file);
 
       const { data, content } = matter.read(__current(prefix, file));
 
-      __pages[file] = { ...data, content, filepath };
+      const isOrg = path.extname(file) === '.org';
+      const lacksFrontMatter = isEmpty(data);
+
+      if (isOrg) {
+        const processor = unified().use(parse);
+        const ast = await processor.parse(content);
+        data.ast = ast;
+      }
+
+      const { title, created_at, categories = [], tags = [] } =
+        isOrg && lacksFrontMatter ? data.ast.meta : data;
+
+      // update categories
+      for (let category of categories || []) {
+        let c = anchorize(category);
+        (__categories[c] = __categories[c] || []).push({
+          filepath,
+          title,
+          created_at,
+          tags,
+          categories
+        });
+      }
+
+      // update tags
+      for (let tag of tags || []) {
+        let t = anchorize(tag);
+        (__tags[t] = __tags[t] || []).push({
+          filepath,
+          title,
+          created_at,
+          tags,
+          categories
+        });
+      }
+
+      __pages[file] = {
+        ...data,
+        content,
+        filepath,
+        title,
+        categories,
+        tags,
+        created_at
+      };
     }
+
+    // all categories & tags from all pages to be available globally
+    __data.categories = Object.keys(__categories);
+    __data.tags = Object.keys(__tags);
   }
 
   for (let file of entries) {
