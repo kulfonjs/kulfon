@@ -446,7 +446,7 @@ async function transform(prefix) {
     cwd: `website/${prefix}`
   });
 
-  print(`${'●'.red}  ${prefix.padEnd(12).blue} : `);
+  print(`${'●'.red}  ${prefix.padEnd(11).blue} : `);
 
   // preprocessing for `pages` so to make references between them
   if (prefix === 'pages') {

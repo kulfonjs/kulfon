@@ -48,7 +48,7 @@ async function server({ port, dir }) {
 
   app.listen(port);
 
-  const url = `http://localhost:${port}`.bold;
+  const url = `http://localhost:${port}`.bold.underline;
 
   println(`\nYour website is ready at ${url}`);
 }
