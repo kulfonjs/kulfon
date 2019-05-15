@@ -85,13 +85,25 @@ env.addExtension('LinkExt', new LinkExt());
 
 markdown.register(env, md.render.bind(md));
 
-const linkify = () => tree =>
+
+const linkify = pathOnDisk => () => tree =>
   unistMap(tree, node => {
     const { type, uri: { protocol = '', location = '/' } = '' } = node;
 
     if (type === 'link' && protocol === 'file') {
-      const { dir, name } = path.parse(location);
-      node.uri.raw = path.join('/', dir, name);
+      let l = location;
+
+      let finalPath = '';
+      if (location.startsWith('~')) {
+        l = location.split(path.join(config.directory, 'website/pages')).pop();
+        const { dir, name } = path.parse(l);
+        finalPath = path.join('/', dir, name, '/');
+      } else {
+        const { name } = path.parse(l);
+        finalPath = path.join('/', pathOnDisk, name, '/');
+      }
+
+      node.uri.raw = finalPath;
     }
 
     return node;
@@ -298,7 +310,7 @@ function compile(prefix) {
             } else if (path.extname(file) === '.org') {
               const processor = unified()
                 .use(parse)
-                .use(linkify)
+                .use(linkify(filepath))
                 .use(mutate)
                 .use(highlight)
                 .use(html);
