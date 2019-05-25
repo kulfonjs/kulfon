@@ -466,7 +466,7 @@ async function transform(prefix) {
         data.ast = ast;
       }
 
-      const { title, created_at, categories = [], tags = [] } =
+      const { title, created_at, abstract, categories = [], tags = [] } =
         isOrg && lacksFrontMatter ? data.ast.meta : data;
 
       // update categories
@@ -498,6 +498,7 @@ async function transform(prefix) {
         content,
         filepath,
         title,
+        abstract,
         categories,
         tags,
         created_at
