@@ -86,7 +86,7 @@ env.addExtension('LinkExt', new LinkExt());
 markdown.register(env, md.render.bind(md));
 
 
-const linkify = pathOnDisk => () => tree =>
+const linkify = ({ filepath: pathOnDisk }) => tree =>
   unistMap(tree, node => {
     const { type, uri: { protocol = '', location = '/' } = '' } = node;
 
@@ -99,8 +99,13 @@ const linkify = pathOnDisk => () => tree =>
         const { dir, name } = path.parse(l);
         finalPath = path.join('/', dir, name, '/');
       } else {
-        const { name } = path.parse(l);
-        finalPath = path.join('/', pathOnDisk, name, '/');
+        const splitted = pathOnDisk.split(path.sep);
+        splitted.pop(); // cannot chain, mutable function
+        splitted.pop(); // cannot chain, mutable function
+        const locationDir = splitted.join(path.sep);
+
+        const { dir, name } = path.parse(l);
+        finalPath = path.join('/', locationDir, dir, name, '/');
       }
 
       node.uri.raw = finalPath;
@@ -256,7 +261,7 @@ function compile(prefix) {
           const { title, created_at, categories = [], tags = [] } =
             isOrg && lacksFrontMatter ? data.ast.meta : data;
 
-          const { filepath } = page;
+          let { filepath } = page;
 
           let renderString = content;
           let renderParams = {
@@ -312,7 +317,7 @@ function compile(prefix) {
             } else if (path.extname(file) === '.org') {
               const processor = await unified()
                 .use(parse)
-                .use(linkify(filepath))
+                .use(linkify, { filepath })
                 .use(mutate)
                 .use(highlight)
                 .use(html);
