@@ -459,6 +459,7 @@ async function transform(prefix) {
 
     for (let file of entries) {
       const filepath = pathname(file);
+      const breadcrumbs = filepath.split(path.sep).slice(0, -2);
 
       const { data, content } = matter.read(__current(prefix, file));
 
@@ -479,6 +480,7 @@ async function transform(prefix) {
         let c = anchorize(category);
         (__categories[c] = __categories[c] || []).push({
           filepath,
+          breadcrumbs,
           title,
           created_at,
           tags,
@@ -491,6 +493,7 @@ async function transform(prefix) {
         let t = anchorize(tag);
         (__tags[t] = __tags[t] || []).push({
           filepath,
+          breadcrumbs,
           title,
           created_at,
           tags,
@@ -502,6 +505,7 @@ async function transform(prefix) {
         ...data,
         content,
         filepath,
+        breadcrumbs,
         title,
         abstract,
         categories,
