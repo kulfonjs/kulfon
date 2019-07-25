@@ -340,6 +340,11 @@ function compile(prefix) {
         }
       };
       break;
+    case 'root':
+      compiler = async file => {
+        fs.copyAsync(__current('root', file), __public(file));
+      };
+      break;
     default:
       compiler = async file => file;
       break;
@@ -616,6 +621,7 @@ async function compileAll({ dir, env }) {
     await transform('stylesheets');
     await transform('javascripts');
     await transform('pages');
+    await transform('root');
 
     await buildTagsPages();
 
