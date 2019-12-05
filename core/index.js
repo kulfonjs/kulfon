@@ -272,16 +272,11 @@ function compile(prefix) {
           const { data, content } = matter.read(__current(prefix, file));
 
           const isOrg = path.extname(file) === '.org';
-          const lacksFrontMatter = isEmpty(data);
-
           if (isOrg) {
             const processor = unified().use(parse);
             const ast = await processor.parse(content);
             data.ast = ast;
           }
-
-          const { title, created_at, categories = [], tags = [] } =
-            isOrg && lacksFrontMatter ? data.ast.meta : data;
 
           let { filepath } = page;
 
@@ -499,8 +494,11 @@ async function transform(prefix) {
         data.ast = ast;
       }
 
-      const { title, created_at, abstract, categories = [], tags = [] } =
+      let { title, created_at, abstract, categories = [], tags = [] } =
         isOrg && lacksFrontMatter ? data.ast.meta : data;
+
+      if (typeof tags === 'string') tags = [tags];
+      if (title) title = title.replace(/\*/g, '');
 
       // update categories
       for (let category of categories || []) {
