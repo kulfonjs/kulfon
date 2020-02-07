@@ -4,7 +4,7 @@
   "version": "0.37.0",
   "main": "./core/index.js",
   "devDependencies": {
-    "ava": "^3.1.0",
+    "ava": "^3.2.0",
     "debug": "^4.1.1",
     "nixt": "^0.5.1"
   },
@@ -73,7 +73,7 @@
     "prismjs": "^1.19.0",
     "rehype-prism": "^0.1.1",
     "rehype-stringify": "^6.0.1",
-    "rollup": "^1.30.1",
+    "rollup": "^1.31.0",
     "rollup-plugin-terser": "^5.2.0",
     "rsyncwrapper": "^3.0.1",
     "sha1": "^1.1.1",
