@@ -13,6 +13,7 @@
 
 const Promise = require('bluebird');
 const sass = Promise.promisifyAll(require('node-sass'));
+const crypto = require('crypto');
 
 const nunjucks = require('nunjucks');
 const markdown = require('nunjucks-markdown');
@@ -141,6 +142,7 @@ let bundles = { js: '', css: '' };
 let __data = {};
 let __pages = {};
 let __tags = {};
+let __cache = {};
 
 function __public(filename, inside = '') {
   return path.join(CWD, 'public', inside, filename);
@@ -178,7 +180,6 @@ function compile(prefix) {
   let filename;
 
   let compiler;
-
   switch (prefix) {
     case 'images':
       compiler = async file => {
@@ -494,11 +495,13 @@ async function transform(prefix) {
         data.ast = ast;
       }
 
-      let { title, created_at, abstract, categories = [], tags = [] } =
+      let { title = '', created_at, abstract, categories = [], tags = [] } =
         isOrg && lacksFrontMatter ? data.ast.meta : data;
 
+      let title_raw = title;
+      title = title.replace(/\*/g, '');
+
       if (typeof tags === 'string') tags = [tags];
-      if (title) title = title.replace(/\*/g, '');
 
       // update categories
       for (let category of categories || []) {
@@ -532,6 +535,7 @@ async function transform(prefix) {
         filepath,
         breadcrumbs,
         title,
+        title_raw,
         abstract,
         categories,
         tags,
@@ -551,7 +555,17 @@ async function transform(prefix) {
           if (!['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(file)))
             continue;
       }
-      let page = await compile(prefix)(file);
+
+      const raw = await fs.readFile(__current(prefix, file));
+      let fileKey = `${prefix}/${file}`;
+      // get rev
+
+      const hash = crypto.createHash('md5').update(raw).digest('hex').slice(0, 10);
+
+      if (__cache[fileKey] !== hash) {
+        await compile(prefix)(file);
+        __cache[fileKey] = hash;
+      }
     } catch (error) {
       console.log('ERROR: ', error.message);
     }
@@ -630,6 +644,8 @@ async function recompile(file) {
 async function compileAll({ dir, env }) {
   process.env.KULFON_ENV = env;
 
+  __cache = await fs.readJSON('public/.cache');
+
   try {
     await fs.ensureDirAsync('public/images');
     await checkDirectoryStructure();
@@ -646,6 +662,8 @@ async function compileAll({ dir, env }) {
     await buildTagsPages();
 
     await generateSitemap();
+
+    await fs.outputFileAsync(path.join(CWD, 'public/.cache'), JSON.stringify(__cache));
   } catch (error) {
     console.error('Error: '.red + error.message);
     process.exit();
