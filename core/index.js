@@ -644,7 +644,11 @@ async function recompile(file) {
 async function compileAll({ dir, env }) {
   process.env.KULFON_ENV = env;
 
-  __cache = await fs.readJSON('public/.cache');
+  try {
+    __cache = await fs.readJSON('public/.cache');
+  } catch (error) {
+    __cache = {};
+  }
 
   try {
     await fs.ensureDirAsync('public/images');
