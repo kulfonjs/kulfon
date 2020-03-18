@@ -49,7 +49,6 @@ const html = require('rehype-stringify');
 const unistMap = require('unist-util-map');
 const spawn = require('child_process').spawnSync;
 const fg = require('fast-glob');
-const mkdirp = require('mkdirp-promise');
 
 const {
   unique,
@@ -186,7 +185,7 @@ function compile(prefix) {
         const imageExists = await exists(__public(file, 'images'));
         if (imageExists) return; // poor's man optimizaion
 
-        await mkdirp(path.join(CWD, 'public', 'images', path.dirname(file)));
+        await fs.ensureDir(path.join(CWD, 'public', 'images', path.dirname(file)));
 
         switch (path.extname(file)) {
           case '.svg':
