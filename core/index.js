@@ -142,6 +142,7 @@ let __data = {};
 let __pages = {};
 let __tags = {};
 let __cache = {};
+let __website = {};
 
 function __public(filename, inside = '') {
   return path.join(CWD, 'public', inside, filename);
@@ -269,7 +270,10 @@ function compile(prefix) {
         try {
           const page = __pages[file];
 
-          const { data, content } = matter.read(__current(prefix, file));
+          const raw = await fs.readFile(__current(prefix, file));
+          __website[`${prefix}/${file}`] = raw.toString();
+
+          const { data, content } = matter(raw.toString());
 
           const isOrg = path.extname(file) === '.org';
           if (isOrg) {
@@ -466,10 +470,10 @@ const buildTagsPages = async () => {
   }
 };
 
-async function transform(prefix) {
+async function transform(prefix, { force = false } = {}) {
   let startTime = new Date();
 
-  const entries = await fg('**', {
+  const entries = await fg('**/*', {
     cwd: `website/${prefix}`
   });
 
@@ -482,8 +486,10 @@ async function transform(prefix) {
     for (let file of entries) {
       const filepath = pathname(file);
       const breadcrumbs = filepath.split(path.sep).slice(0, -2);
+      const raw = await fs.readFile(__current(prefix, file));
+      __website[`${prefix}/${file}`] = raw.toString();
 
-      const { data, content } = matter.read(__current(prefix, file));
+      const { data, content } = matter(raw.toString());
 
       const isOrg = path.extname(file) === '.org';
       const lacksFrontMatter = isEmpty(data);
@@ -557,11 +563,13 @@ async function transform(prefix) {
 
       const raw = await fs.readFile(__current(prefix, file));
       let fileKey = `${prefix}/${file}`;
+      __website[fileKey] = raw.toString();
+
       // get rev
 
       const hash = crypto.createHash('md5').update(raw).digest('hex').slice(0, 10);
 
-      if (__cache[fileKey] !== hash) {
+      if (__cache[fileKey] !== hash || force == true) {
         await compile(prefix)(file);
         __cache[fileKey] = hash;
       }
@@ -625,18 +633,14 @@ async function generateSitemap() {
 }
 
 async function recompile(file) {
-  let fileSegments = file.split(path.sep);
-  const prefix = fileSegments.shift();
-  file = path.join(...fileSegments);
-
   //debug(`file to recompile: ${file}`);
 
   await loadData();
 
-  if (prefix.match(/pages/)) {
-    await compile(prefix)(file);
+  if (file.includes('pages')) {
+    await compile('pages')(file.split('pages/')[1]);
   } else {
-    await transform('pages');
+    await transform('pages', { force: true });
   }
 }
 
