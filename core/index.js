@@ -15,8 +15,8 @@ const Promise = require('bluebird');
 const sass = Promise.promisifyAll(require('node-sass'));
 const crypto = require('crypto');
 
-const nunjucks = require('nunjucks');
-const markdown = require('nunjucks-markdown');
+const Boxwood = require('boxwood')
+
 const md = require('markdown-it')({
   html: true
 });
@@ -343,11 +343,18 @@ function compile(prefix) {
                 .use(highlight)
                 .use(html);
 
-              renderParams.content = await processor.process(content);
+              const { contents } = await processor.process(content);
+              renderParams.content = contents;
             }
           }
 
-          output = nunjucks.renderString(renderString, renderParams);
+          // FIXME Display compilation errors & warnings
+          const { template, warnings, errors } = await Boxwood.compile(renderString, { cache: false, paths: ['website/pages', 'website/components'] })
+          try {
+            output = template(renderParams, escape);
+          } catch (error) {
+            console.log(error.message)
+          }
 
           if (isProduction)
             output = minifyHTML(output, { collapseWhitespace: true });
@@ -459,14 +466,16 @@ const buildTagsPages = async () => {
 
   for (let tag in __tags) {
     let output = nunjucks.renderString(tagsPage, {
+    const { template } = await Boxwood.compile(tagsPage, { cache: false, paths: ['website/pages', 'website/components'] })
+    const output = template({
       tag,
       posts: __tags[tag],
       pages: filterBy({}),
       config,
       javascripts,
       stylesheets
-    });
     await fs.outputFileAsync(__public('index.html', `tags/${tag}`), output);
+    }, escape);
   }
 };
 
