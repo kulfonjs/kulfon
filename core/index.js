@@ -74,37 +74,32 @@ EXTENSIONS = {
   images: ['.jpg', '.png', '.jpeg', '.svg']
 };
 
-let env = nunjucks.configure(['website/pages', 'website/components'], {
-  autoescape: true,
-  noCache: true
-});
+let env = { nunjucks: 'empty' }
 
-env.addFilter('date', (date, format) =>
-  Date.create(date).format(format || '{yyyy}-{MM}-{dd}')
-);
+// TODO
+// env.addFilter('date', (date, format) =>
+//   Date.create(date).format(format || '{yyyy}-{MM}-{dd}')
+// );
 
-env.addFilter('logo', names => {
-  NameToLogo = {
-    'Ruby': 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Ruby_logo.png',
-    'TypeScript': 'https://cdn.jsdelivr.net/gh/remojansen/logo.ts@master/ts.svg',
-    'Node.js': 'https://miro.medium.com/max/400/1*tfZa4vsI6UusJYt_fzvGnQ.png',
-    'JavaScript': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/512px-Unofficial_JavaScript_logo_2.svg.png',
-    'Dart': 'https://pbs.twimg.com/profile_images/993555605078994945/Yr-pWI4G_400x400.jpg',
-    'Flutter': 'https://cdn.worldvectorlogo.com/logos/flutter-logo.svg'
-  };
+// TODO
+// env.addFilter('logo', names => {
+//   NameToLogo = {
+//     'Ruby': 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Ruby_logo.png',
+//     'TypeScript': 'https://cdn.jsdelivr.net/gh/remojansen/logo.ts@master/ts.svg',
+//     'Node.js': 'https://miro.medium.com/max/400/1*tfZa4vsI6UusJYt_fzvGnQ.png',
+//     'JavaScript': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/512px-Unofficial_JavaScript_logo_2.svg.png',
+//     'Dart': 'https://pbs.twimg.com/profile_images/993555605078994945/Yr-pWI4G_400x400.jpg',
+//     'Flutter': 'https://cdn.worldvectorlogo.com/logos/flutter-logo.svg'
+//   };
 
-  return names
-    .map(name => NameToLogo[name])
-    .filter(element => element)
-    .reduce((stored, current) => stored.concat('&', 'images=', encodeURIComponent(current)), '');
-});
+//   return names
+//     .map(name => NameToLogo[name])
+//     .filter(element => element)
+//     .reduce((stored, current) => stored.concat('&', 'images=', encodeURIComponent(current)), '');
+// });
 
-
-
-env.addExtension('LinkExt', new LinkExt());
-
-markdown.register(env, md.render.bind(md));
-
+// TODO
+// env.addExtension('LinkExt', new LinkExt());
 
 const linkify = ({ filepath: pathOnDisk }) => tree =>
   unistMap(tree, node => {
@@ -324,10 +319,11 @@ function compile(prefix) {
               renderString = `{% extends "layouts/${itself}.njk" %}`;
             } else {
               renderString = `
-                {% extends "layouts/index.njk" %}
-                {% block content %}
-                  {{ content | safe }}
-                {% endblock %}`;
+<import layout from="layouts/index.html">
+
+<layout {bundles} {website} {stylesheets}>
+  {content | unescape}
+</layout>`;
             }
 
             if (path.extname(file) === '.md') {
@@ -464,8 +460,7 @@ const buildTagsPages = async () => {
     'utf8'
   );
 
-  for (let tag in __tags) {
-    let output = nunjucks.renderString(tagsPage, {
+  for (const tag in __tags) {
     const { template } = await Boxwood.compile(tagsPage, { cache: false, paths: ['website/pages', 'website/components'] })
     const output = template({
       tag,
