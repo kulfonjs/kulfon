@@ -24,13 +24,13 @@ async function init({ dir, theme }) {
   const themeDir = path.join(path.resolve(__dirname, '..'), 'themes', theme);
 
   try {
-    await fs.accessAsync(themeDir);
+    await fs.access(themeDir);
 
     process.stdout.write(
       `Initialising '${dir.yellow}' using '${theme.yellow}' theme... `
     );
 
-    await fs.copyAsync(themeDir, path.join(currentDirectory, dir));
+    await fs.copy(themeDir, path.join(currentDirectory, dir));
 
     println('done'.green);
   } catch (error) {

@@ -29,7 +29,7 @@ md.use(require('markdown-it-prism'));
 md.use(require('markdown-it-highlight-lines'));
 md.use(require('markdown-it-container'), 'label');
 
-const fs = Promise.promisifyAll(require('fs-extra'));
+const fs = require('fs-extra');
 const path = require('path');
 const yaml = require('js-yaml');
 const rollup = require('rollup').rollup;
@@ -190,16 +190,16 @@ function compile(prefix) {
 
         switch (path.extname(file)) {
           case '.svg':
-            // const data = await fs.readFileAsync(
+            // const data = await fs.readFile(
             //   __current("images", file),
             //   "utf8"
             // );
             // const result = await svgOptimizer.optimize(data);
             // fs.writeFileSync(__public(file, "images"), result.data);
-            fs.copyAsync(__current('images', file), __public(file, 'images'));
+            fs.copy(__current('images', file), __public(file, 'images'));
             break;
           case '.gif':
-            fs.copyAsync(__current('images', file), __public(file, 'images'));
+            fs.copy(__current('images', file), __public(file, 'images'));
             break;
           default:
             await sharp(__current('images', file)).toFile(
@@ -259,7 +259,7 @@ function compile(prefix) {
 
           bundles.css = filename;
 
-          await fs.writeFileAsync(__public(filename), output);
+          await fs.writeFile(__public(filename), output);
         } catch (error) {
           println(error.formatted);
         }
@@ -360,7 +360,7 @@ function compile(prefix) {
             output = minifyHTML(output, { collapseWhitespace: true });
 
           const filename = pathname(file);
-          await fs.outputFileAsync(__public('index.html', filename), output);
+          await fs.outputFile(__public('index.html', filename), output);
 
           return page;
         } catch (error) {
@@ -370,7 +370,7 @@ function compile(prefix) {
       break;
     case 'root':
       compiler = async file => {
-        fs.copyAsync(__current('root', file), __public(file));
+        fs.copy(__current('root', file), __public(file));
       };
       break;
     default:
@@ -414,7 +414,7 @@ function pathname(file) {
 }
 
 async function loadConfig() {
-  const yamlContent = await fs.readFileAsync(
+  const yamlContent = await fs.readFile(
     path.join(CWD, 'config.yml'),
     'utf8'
   );
@@ -429,11 +429,11 @@ async function loadData() {
   let data = {};
 
   try {
-    let stats = await fs.statAsync(path.join(dataPath, 'data'));
+    let stats = await fs.stat(path.join(dataPath, 'data'));
 
     if (stats.isDirectory()) {
       dataPath = path.join(dataPath, 'data');
-      entries = fs.readdirAsync(dataPath);
+      entries = fs.readdir(dataPath);
     }
   } catch (error) {
     // do nothing
@@ -459,8 +459,8 @@ async function loadData() {
 const buildTagsPages = async () => {
   const { stylesheets, javascripts, includePaths } = config;
 
-  const tagsPage = await fs.readFileAsync(
-    __current('pages', 'tags.njk'),
+  const tagsPage = await fs.readFile(
+    __current('pages', 'tags.html'),
     'utf8'
   );
 
@@ -474,8 +474,8 @@ const buildTagsPages = async () => {
       config,
       javascripts,
       stylesheets
-    await fs.outputFileAsync(__public('index.html', `tags/${tag}`), output);
     }, escape);
+    await fs.outputFile(__public('index.html', `tags/${tag}`), output);
   }
 };
 
@@ -638,7 +638,7 @@ async function generateSitemap() {
     }))
   });
 
-  await fs.outputFileAsync(__public('sitemap.xml'), sitemap.toString());
+  await fs.outputFile(__public('sitemap.xml'), sitemap.toString());
 }
 
 async function recompile(file) {
@@ -663,7 +663,7 @@ async function compileAll({ dir, env }) {
   }
 
   try {
-    await fs.ensureDirAsync('public/images');
+    await fs.ensureDir('public/images');
     await checkDirectoryStructure();
     await loadConfig();
     await loadData();
@@ -679,7 +679,7 @@ async function compileAll({ dir, env }) {
 
     await generateSitemap();
 
-    await fs.outputFileAsync(path.join(CWD, 'public/.cache'), JSON.stringify(__cache));
+    await fs.outputFile(path.join(CWD, 'public/.cache'), JSON.stringify(__cache));
   } catch (error) {
     console.error('Error: '.red + error.message);
     process.exit();
