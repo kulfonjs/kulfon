@@ -1,0 +1,32 @@
+<import meta from="meta.html" />
+<import navigation from="navigation.html" />
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta {website} />
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+  <for stylesheet of stylesheets>
+    <link rel="stylesheet" href="{ stylesheet | unescape }" />
+  </for>
+
+  <link href="/{ bundles.css }" rel="stylesheet">
+  <title>{website.title || 'A new website by Kulfon'</title>
+</head>
+
+<body>
+  <navigation />
+
+  <main class="container">
+    <slot />
+  </main>
+
+  <for javascript of javascripts>
+    <script type="text/javascript" src="{ javascript | unescape }"></script>
+  </for>
+</body>
+
+</html>
