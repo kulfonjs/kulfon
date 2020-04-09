@@ -11,12 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Szelmostwo = require('szelmostwo');
-const { serve } = require('szelmostwo/middleware');
 const chokidar = require('chokidar');
 const path = require('path');
 const colors = require('colors');
 
+const { server: serve } = require('../core/server');
 const { recompile, compileAll } = require('../core');
 
 const { println } = require('./util');
@@ -39,9 +38,7 @@ async function server({ port, dir }) {
 
   watcher.on('change', recompile);
 
-  const app = new Szelmostwo();
-  app.use(serve('./public'));
-
+  const app = serve
   app.on('error', err => {
     println('Error: '.red + err.message);
   });
