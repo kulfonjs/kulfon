@@ -293,30 +293,35 @@ function compile(prefix) {
           const extension = path.extname(file);
 
           if (['.md', '.org'].includes(extension)) {
-            const parentDir = path
-              .parse(file)
-              .dir.split(path.sep)
-              .slice(-1)[0];
+            const { name, dir } = path.parse(file);
 
-            const foo = await fs.pathExists(
-              __current(
-                'components/layouts',
-                path.format({ name: parentDir, ext: '.njk' })
-              )
-            );
+            const dirs = dir.split(path.sep).reverse();
 
-            const itself = path.parse(file).name;
+            let parentDir;
+            for (const name of dirs) {
+              const r = await fs.pathExists(__current('components/layouts', path.format({ name, ext: '.html' })))
+              if (r) {
+                parentDir = name;
+                break;
+              }
+            }
+
             const itselfExists = await fs.pathExists(
               __current(
                 'components/layouts',
-                path.format({ name: itself, ext: '.njk' })
+                path.format({ name, ext: '.njk' })
               )
             );
 
-            if (parentDir && foo) {
-              renderString = `{% extends "layouts/${parentDir}.njk" %}`;
+            if (parentDir) {
+              renderString = `
+<import layout from="layouts/${parentDir}.html" />
+
+<layout {bundles} {websites} {stylesheets}>
+  {content | unescape}
+</layout>`;
             } else if (itselfExists) {
-              renderString = `{% extends "layouts/${itself}.njk" %}`;
+              renderString = `{% extends "layouts/${name}.njk" %}`;
             } else {
               renderString = `
 <import layout from="layouts/index.html">
