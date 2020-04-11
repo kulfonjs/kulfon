@@ -352,7 +352,7 @@ function compile(prefix) {
           // FIXME Display compilation errors & warnings
           const { template, warnings, errors } = await Boxwood.compile(renderString, { cache: false, paths: ['website/pages', 'website/components'] })
           try {
-            output = template(renderParams, escape);
+            output = template(renderParams, Boxwood.escape);
           } catch (error) {
             console.log(error.message)
           }
@@ -474,7 +474,7 @@ const buildTagsPages = async () => {
       config,
       javascripts,
       stylesheets
-    }, escape);
+    }, Boxwood.escape);
     await fs.outputFile(__public('index.html', `tags/${tag}`), output);
   }
 };
