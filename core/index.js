@@ -566,7 +566,7 @@ async function transform(prefix, { force = false } = {}) {
     try {
       switch (prefix) {
         case 'images':
-          if (!['.jpg', '.png', '.jpeg', '.svg'].includes(path.extname(file)))
+          if (!['.jpg', '.png', '.jpeg', '.svg', '.gif'].includes(path.extname(file)))
             continue;
       }
 
