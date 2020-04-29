@@ -1,4 +1,4 @@
-// Copyright 2019 Zaiste & contributors. All rights reserved.
+// Copyright 2020 Zaiste & contributors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,15 +11,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require('bluebird');
-const sass = Promise.promisifyAll(require('node-sass'));
 const crypto = require('crypto');
+const path = require('path');
+const Boxwood = require('boxwood');
 
-const Boxwood = require('boxwood')
+const CWD = process.cwd();
 
-const md = require('markdown-it')({
-  html: true
-});
+const postcss = require('postcss');
+const postcssPresetEnv = require('postcss-preset-env');
+const tailwindcss = require('tailwindcss');
+const purgecss = require('@fullhuman/postcss-purgecss')({
+  content: [
+    `${CWD}/website/pages/**/*.html`,
+    `${CWD}/website/parts/**/*.html`
+  ],
+
+  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
+})
+
+const md = require('markdown-it')();
 
 md.use(require('markdown-it-anchor'));
 md.use(require('markdown-it-table-of-contents'), {
@@ -30,7 +40,6 @@ md.use(require('markdown-it-highlight-lines'));
 md.use(require('markdown-it-container'), 'label');
 
 const fs = require('fs-extra');
-const path = require('path');
 const yaml = require('js-yaml');
 const rollup = require('rollup').rollup;
 const sha1 = require('sha1');
@@ -66,7 +75,6 @@ const {
 
 const LinkExt = require('./LinkExt');
 
-const CWD = process.cwd();
 Sugar.Date.extend();
 // const svgOptimizer = new svgo({});
 
@@ -236,27 +244,31 @@ function compile(prefix) {
       compiler = async file => {
         let filePath = __current(prefix, file);
 
-        try {
-          let result = await sass.renderAsync({
-            file: filePath,
-            includePaths: includePaths || [],
-            outputStyle: 'compressed',
-            sourceMap: true,
-            sourceMapEmbed: !isProduction
-          });
+        const transformers = [
+          tailwindcss,
+          postcssPresetEnv,
+          ...isProduction ? [purgecss] : []
+        ];
 
-          output = result.css;
+        try {
+          const content = await fs.readFile(path.join(CWD, 'website', 'stylesheets', 'main.css'));
+          const { css: output } = await postcss(transformers).process(content, {
+            from: 'stylesheets/main.css', to: 'main.css', map: { inline: true }
+          });
 
           let hash = sha1(output);
           let name = path.basename(file, path.extname(file));
 
           filename = !isProduction ? `${name}.css` : `${name}.${hash}.css`;
-
           bundles.css = filename;
 
           await fs.writeFile(__public(filename), output);
         } catch (error) {
-          println(error.formatted);
+          if (error.name === 'CssSyntaxError') {
+            console.error(`  ${error.message}\n${error.showSourceCode()}`);
+          } else {
+            println(error.message);
+          }
         }
       };
       break;
