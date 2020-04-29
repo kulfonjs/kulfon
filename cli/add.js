@@ -11,7 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Promise = require('bluebird');
 const fs = require('fs-extra');
 const path = require('path');
 const yaml = require('js-yaml');
@@ -19,7 +18,7 @@ const merge = require('deepmerge');
 
 const { println } = require('./util');
 
-const exec = Promise.promisify(require('child_process').exec);
+const exec = require('child_process').exec;
 
 const cwd = process.cwd();
 const registryPath = path.join(__dirname, '..', 'registry.yml');
