@@ -311,7 +311,7 @@ function compile(prefix) {
 
             let parentDir;
             for (const name of dirs) {
-              const r = await fs.pathExists(__current('components/layouts', path.format({ name, ext: '.html' })))
+              const r = await fs.pathExists(__current('parts/layouts', path.format({ name, ext: '.html' })))
               if (r) {
                 parentDir = name;
                 break;
@@ -320,7 +320,7 @@ function compile(prefix) {
 
             const itselfExists = await fs.pathExists(
               __current(
-                'components/layouts',
+                'parts/layouts',
                 path.format({ name, ext: '.njk' })
               )
             );
@@ -362,7 +362,7 @@ function compile(prefix) {
           }
 
           // FIXME Display compilation errors & warnings
-          const { template, warnings, errors } = await Boxwood.compile(renderString, { cache: false, paths: ['website/pages', 'website/components'] })
+          const { template, warnings, errors } = await Boxwood.compile(renderString, { cache: false, paths: [path.join(CWD, 'website/pages'), path.join(CWD, 'website/parts')], languages: ['en', 'pl'] })
           try {
             output = template(renderParams, Boxwood.escape);
           } catch (error) {
@@ -478,7 +478,7 @@ const buildTagsPages = async () => {
   );
 
   for (const tag in __tags) {
-    const { template } = await Boxwood.compile(tagsPage, { cache: false, paths: ['website/pages', 'website/components'] })
+    const { template } = await Boxwood.compile(tagsPage, { cache: false, paths: ['website/pages', 'website/parts'] })
     const output = template({
       tag,
       posts: __tags[tag],
@@ -607,14 +607,12 @@ async function checkDirectoryStructure() {
   const paths = [
     'website/images',
     'website/javascripts',
-    'website/components',
+    'website/parts',
     'website/pages',
     'website/stylesheets'
   ].map(el => path.join(CWD, el));
 
-  const result = await Promise.resolve(paths)
-    .map(fs.pathExists)
-    .all();
+  const result = await Promise.all(paths.map(fs.pathExists));
 
   if (!result.every(_ => _)) {
     const tree = spawn('tree', ['-d', '-I', 'node_modules'], { cwd: '.' });
@@ -622,9 +620,9 @@ async function checkDirectoryStructure() {
 
 . (your project root)
 └── website
-  ├── components
   ├── images
   ├── javascripts
+  ├── parts
   ├── pages
   └── stylesheets
 
@@ -697,6 +695,7 @@ async function compileAll({ dir, env }) {
     process.exit();
   }
 }
+
 
 module.exports = {
   recompile,
