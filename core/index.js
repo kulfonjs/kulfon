@@ -155,13 +155,13 @@ function __current(prefix, f = '') {
   return path.join(CWD, 'website', prefix, f);
 }
 
-function profile(func, prefix, allowedExtensions) {
-  return async file => {
-    const result = await func(file);
+// function profile(func, prefix, allowedExtensions) {
+//   return async file => {
+//     const result = await func(file);
 
-    return result;
-  };
-}
+//     return result;
+//   };
+// }
 
 function filterBy(entities) {
   return prefix => {
@@ -187,7 +187,7 @@ function compile(prefix) {
     case 'images':
       compiler = async file => {
         const imageExists = await exists(__public(file, 'images'));
-        if (imageExists) return; // poor's man optimizaion
+        if (imageExists) return file; // poor's man optimizaion
 
         await fs.ensureDir(path.join(CWD, 'public', 'images', path.dirname(file)));
 
@@ -293,6 +293,7 @@ function compile(prefix) {
 
           let renderString = content;
           let renderParams = {
+            language: 'en',
             config,
             page,
             website: __data,
@@ -329,8 +330,8 @@ function compile(prefix) {
               renderString = `
 <import layout from="layouts/${parentDir}.html" />
 
-<layout {bundles} {websites} {stylesheets}>
-  {content | unescape}
+<layout {bundles} {website} {stylesheets} {page}>
+  <div html="{content}" class="markdown"></div>
 </layout>`;
             } else if (itselfExists) {
               renderString = `{% extends "layouts/${name}.njk" %}`;
@@ -338,8 +339,8 @@ function compile(prefix) {
               renderString = `
 <import layout from="layouts/index.html">
 
-<layout {bundles} {website} {stylesheets}>
-  {content | unescape}
+<layout {bundles} {website} {stylesheets} {page}>
+  <div html="{content}"></div>
 </layout>`;
             }
 
@@ -490,6 +491,21 @@ const buildTagsPages = async () => {
     await fs.outputFile(__public('index.html', `tags/${tag}`), output);
   }
 };
+
+const profile = prefix => async (fn) => {
+  let startTime = new Date();
+  print(`${'●'.red}  ${prefix.padEnd(11).blue} : `);
+
+  await fn()
+
+  let endTime = new Date();
+  const timeAsString = `${endTime - startTime}ms`.underline;
+  println(`${timeAsString.padStart(18)} ${'done'.green}`);
+}
+
+const transformCSS = async () => {
+  await compile('stylesheets')('main.css');
+}
 
 async function transform(prefix, { force = false } = {}) {
   let startTime = new Date();
@@ -680,7 +696,7 @@ async function compileAll({ dir, env }) {
 
     // order is important
     await transform('images');
-    await transform('stylesheets');
+    await profile('stylesheets')(transformCSS)
     await transform('javascripts');
     await transform('pages');
     await transform('root');
