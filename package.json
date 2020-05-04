@@ -60,7 +60,7 @@
     "markdown-it-table-of-contents": "^0.4.4",
     "orga-rehype": "^1.7.0",
     "orga-unified": "^1.8.15",
-    "postcss": "^7.0.28",
+    "postcss": "^7.0.29",
     "postcss-preset-env": "^6.7.0",
     "prismjs": "^1.20.0",
     "refractor": "^3.0.0",
