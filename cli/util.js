@@ -92,7 +92,7 @@ function buildTableOfContents(pos, tokens) {
     var level = token.tag && parseInt(token.tag.substr(1, 1));
     if (
       token.type !== 'heading_close' ||
-      [1, 2].indexOf(level) == -1 ||
+        [2, 3].indexOf(level) == -1 ||
       heading.type !== 'inline'
     ) {
       i++;
