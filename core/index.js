@@ -32,9 +32,6 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 const md = require('markdown-it')();
 
 md.use(require('markdown-it-anchor'));
-md.use(require('markdown-it-table-of-contents'), {
-  includeLevel: [1, 2, 3, 4, 5, 6]
-});
 md.use(require('./prism'));
 md.use(require('markdown-it-highlight-lines'));
 md.use(require('markdown-it-container'), 'label');
