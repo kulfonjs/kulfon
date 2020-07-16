@@ -35,6 +35,9 @@ md.use(require('markdown-it-anchor'));
 md.use(require('./prism'));
 md.use(require('markdown-it-highlight-lines'));
 md.use(require('markdown-it-container'), 'label');
+md.use(require('markdown-it-video'), {
+  youtube: { width: 854, height: 480, nocookie: true }
+})
 
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
