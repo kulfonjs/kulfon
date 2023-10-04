@@ -63,7 +63,7 @@
     "markdown-it-video": "^0.6.3",
     "orga-rehype": "^1.7.0",
     "orga-unified": "^1.8.16",
-    "postcss": "^7.0.32",
+    "postcss": "^8.4.31",
     "postcss-preset-env": "^6.7.0",
     "prismjs": "^1.21.0",
     "refractor": "^3.1.0",
